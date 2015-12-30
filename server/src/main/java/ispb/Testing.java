@@ -11,6 +11,7 @@ import ispb.base.db.dataset.*;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.frontend.HttpServer;
 import ispb.base.resources.Config;
+import ispb.base.service.UserAccountService;
 import ispb.db.dao.BuildingDataSetDaoImpl;
 import ispb.db.dao.CityDataSetDaoImpl;
 import ispb.db.dao.StreetDataSetDaoImpl;
@@ -18,11 +19,13 @@ import ispb.db.util.DaoFactoryImpl;
 import ispb.frontend.HttpServerImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
+import ispb.users.UserAccountServiceImpl;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.Session;
 
-import ispb.base.DBService;
+import ispb.base.service.DBService;
 import ispb.db.DBServiceImpl;
 
 import org.flywaydb.core.Flyway;
@@ -141,11 +144,13 @@ public class Testing
 
         UserDataSet user = new UserDataSet();
         user.setLogin("alex");
-        user.setPassword("123456");
+        user.setPassword(DigestUtils.sha1Hex("abc123456"));
+        user.setSalt("abc");
         user.setAccessLevel(10);
         user.setName("alexander");
         user.setSurname("------");
         System.out.println(daoF.getUserDao().save(user));
+
         System.out.println(user);
         System.out.println(daoF.getUserDao().getAll());
         System.out.println(daoF.getUserDao().getByLogin("alex"));
@@ -155,6 +160,10 @@ public class Testing
         application.setConfig(conf);
         application.setAppResources(AppResourcesImpl.getInstance());
         application.setDaoFactory(daoF);
+        application.setUserAccountService(new UserAccountServiceImpl(application));
+
+        UserAccountService accSer = new UserAccountServiceImpl(application);
+        System.out.println(accSer.addUser("lex", "123456", "Lex", "---", 20));
 
         HttpServer server = new HttpServerImpl(application);
         server.start();

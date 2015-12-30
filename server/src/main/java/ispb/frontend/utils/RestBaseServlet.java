@@ -56,7 +56,7 @@ public class RestBaseServlet extends HttpServlet  {
         }
         if (obj instanceof Verifiable)
             if (!((Verifiable)obj).verify()){
-                this.writeMessage(response, "Error in data structure.", 400);
+                this.writeMessage(response, "Incompatible data structure format.", 400);
                 return null;
             }
         return obj;

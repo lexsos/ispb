@@ -23,6 +23,9 @@ public class UserDataSet extends BaseDataSet implements DeletedMarkable, Identif
     private String password;
 
     @Column(nullable = false)
+    private String salt;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -107,5 +110,13 @@ public class UserDataSet extends BaseDataSet implements DeletedMarkable, Identif
 
     public void setDeleteAt(Date deleteAt) {
         this.deleteAt = deleteAt;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

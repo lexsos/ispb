@@ -1,4 +1,4 @@
-package ispb.base;
+package ispb.base.service;
 
 import org.hibernate.SessionFactory;
 

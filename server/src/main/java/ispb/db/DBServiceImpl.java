@@ -5,7 +5,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
 
-import ispb.base.DBService;
+import ispb.base.service.DBService;
 
 
 public class DBServiceImpl implements DBService {

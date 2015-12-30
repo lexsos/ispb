@@ -1,6 +1,7 @@
 package ispb.frontend;
 
-import ispb.frontend.servlets.AuthServlet;
+import ispb.frontend.servlets.LoginServlet;
+import ispb.frontend.servlets.LogoutServlet;
 import org.eclipse.jetty.server.Server;
 
 import ispb.base.Application;
@@ -9,7 +10,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 public class HttpServerImpl implements HttpServer {
@@ -83,8 +84,9 @@ public class HttpServerImpl implements HttpServer {
     }
 
     private void AddAuthServlet(){
-        ServletHandler handler = new ServletHandler();
-        handler.addServletWithMapping(AuthServlet.class, "/auth/");
+        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        handler.addServlet(LoginServlet.class, "/auth/login/");
+        handler.addServlet(LogoutServlet.class, "/auth/logout/");
         handlers.addHandler(handler);
     }
 }

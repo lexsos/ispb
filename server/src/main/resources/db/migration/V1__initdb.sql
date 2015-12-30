@@ -37,6 +37,7 @@ create table users (
     id  bigserial not null,
     login varchar(255) not null,
     password varchar(255) not null,
+    salt varchar(255) not null,
     name varchar(255) not null,
     surname varchar(255) not null,
     accessLevel int4 not null,
