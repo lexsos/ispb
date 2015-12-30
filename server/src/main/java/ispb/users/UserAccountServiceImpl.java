@@ -44,7 +44,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     public UserDataSet addUser(String login, String password, String name, String surname, int accessLevel){
 
         UserDataSet user = new UserDataSet();
-        user.setLogin(login);
+        user.setLogin(login.toLowerCase());
         user.setAccessLevel(accessLevel);
         user.setName(name);
         user.setSurname(surname);
