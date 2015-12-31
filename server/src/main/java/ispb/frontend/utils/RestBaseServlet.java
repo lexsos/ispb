@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import ispb.ApplicationImpl;
 import ispb.base.Application;
 import ispb.base.frontend.rest.RestMessage;
+import ispb.base.frontend.utils.ResponseCodes;
 import ispb.base.frontend.utils.Verifiable;
 
 import javax.servlet.http.HttpServlet;
@@ -51,12 +52,12 @@ public class RestBaseServlet extends HttpServlet  {
                                        Class<T> clazz)  throws IOException{
         T obj = this.readJsonObject(request, clazz);
         if (obj == null) {
-            this.writeMessage(response, "Error in JSON structure.", 400);
+            this.writeMessage(response, "Error in JSON structure.", ResponseCodes.JSON_ERROR);
             return null;
         }
         if (obj instanceof Verifiable)
             if (!((Verifiable)obj).verify()){
-                this.writeMessage(response, "Incompatible data structure format.", 400);
+                this.writeMessage(response, "Incompatible data structure format.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
                 return null;
             }
         return obj;

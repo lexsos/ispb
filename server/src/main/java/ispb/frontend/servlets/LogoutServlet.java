@@ -1,5 +1,6 @@
 package ispb.frontend.servlets;
 
+import ispb.base.frontend.utils.ResponseCodes;
 import ispb.frontend.utils.RestBaseServlet;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,6 @@ public class LogoutServlet extends RestBaseServlet {
                           HttpServletResponse response ) throws ServletException, IOException {
 
         request.getSession().setAttribute("user", null);
-        this.writeMessage(response, "Logout successful.", 200);
+        this.writeMessage(response, "Logout successful.", ResponseCodes.OK);
     }
 }
