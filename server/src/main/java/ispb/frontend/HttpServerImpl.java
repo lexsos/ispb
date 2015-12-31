@@ -1,5 +1,6 @@
 package ispb.frontend;
 
+import ispb.frontend.servlets.CityServlet;
 import ispb.frontend.servlets.LoginServlet;
 import ispb.frontend.servlets.LogoutServlet;
 import org.eclipse.jetty.server.Server;
@@ -31,6 +32,7 @@ public class HttpServerImpl implements HttpServer {
         addHttpConnector();
         addStaticHandler();
         AddAuthServlet();
+        AddApiServlet();
 
         server.setHandler(handlers);
         server.start();
@@ -85,8 +87,16 @@ public class HttpServerImpl implements HttpServer {
 
     private void AddAuthServlet(){
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.addServlet(LoginServlet.class, "/auth/login/");
-        handler.addServlet(LogoutServlet.class, "/auth/logout/");
+        handler.setContextPath("/auth/");
+        handler.addServlet(LoginServlet.class, "/login/");
+        handler.addServlet(LogoutServlet.class, "/logout/");
+        handlers.addHandler(handler);
+    }
+
+    private void AddApiServlet(){
+        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        handler.setContextPath("/api/0.1/");
+        handler.addServlet(CityServlet.class, "/city/*");
         handlers.addHandler(handler);
     }
 }

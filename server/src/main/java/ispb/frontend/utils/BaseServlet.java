@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import ispb.ApplicationImpl;
 import ispb.base.Application;
-import ispb.base.frontend.rest.RestMessage;
+import ispb.base.frontend.response.MessageRestResponse;
 import ispb.base.frontend.utils.ResponseCodes;
 import ispb.base.frontend.utils.Verifiable;
 
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RestBaseServlet extends HttpServlet  {
+public class BaseServlet extends HttpServlet  {
 
     private static final Gson GSON = new Gson();
 
@@ -28,9 +28,17 @@ public class RestBaseServlet extends HttpServlet  {
         response.getWriter().println(json);
     }
 
-    protected void writeMessage(HttpServletResponse response, String msg, int code) throws IOException{
-        RestMessage message = new RestMessage(msg, code);
+    protected void writeMessage(HttpServletResponse response, String msg, int code, boolean success) throws IOException{
+        MessageRestResponse message = new MessageRestResponse(msg, code, success);
         this.writeJson(response, message.toJson());
+    }
+
+    protected void writeFailMessage(HttpServletResponse response, String msg, int code) throws IOException{
+        writeMessage(response, msg, code, false);
+    }
+
+    protected void writeSuccessMessage(HttpServletResponse response, String msg) throws IOException{
+        writeMessage(response, msg, ResponseCodes.OK, true);
     }
 
     protected <T> T readJsonObject(HttpServletRequest request, Class<T> clazz){
@@ -52,12 +60,12 @@ public class RestBaseServlet extends HttpServlet  {
                                        Class<T> clazz)  throws IOException{
         T obj = this.readJsonObject(request, clazz);
         if (obj == null) {
-            this.writeMessage(response, "Error in JSON structure.", ResponseCodes.JSON_ERROR);
+            this.writeFailMessage(response, "Error in JSON structure.", ResponseCodes.JSON_ERROR);
             return null;
         }
         if (obj instanceof Verifiable)
             if (!((Verifiable)obj).verify()){
-                this.writeMessage(response, "Incompatible data structure format.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
+                this.writeFailMessage(response, "Incompatible data structure format.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
                 return null;
             }
         return obj;
