@@ -87,7 +87,7 @@ public class HttpServerImpl implements HttpServer {
 
     private void AddAuthServlet(){
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/auth/");
+        handler.setContextPath("/auth");
         handler.addServlet(LoginServlet.class, "/login/");
         handler.addServlet(LogoutServlet.class, "/logout/");
         handlers.addHandler(handler);
@@ -95,7 +95,7 @@ public class HttpServerImpl implements HttpServer {
 
     private void AddApiServlet(){
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/api/0.1/");
+        handler.setContextPath("/api/0.1");
         handler.addServlet(CityServlet.class, "/city/*");
         handlers.addHandler(handler);
     }

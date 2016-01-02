@@ -28,22 +28,22 @@ import org.hibernate.Session;
 import ispb.base.service.DBService;
 import ispb.db.DBServiceImpl;
 
-import org.flywaydb.core.Flyway;
-
 
 public class Testing
 {
     public static void main( String[] args ) throws Exception
     {
-        Flyway flyway = new Flyway();
-        flyway.setDataSource("jdbc:postgresql://localhost:5432/ispb", "ispb", "123456");
-        flyway.clean();
+        Application application = ApplicationImpl.getApplication();
+        Config conf = new ConfigImpl( args[0] );
+        application.setConfig(conf);
+        application.setAppResources(AppResourcesImpl.getInstance());
 
-        flyway = new Flyway();
-        flyway.setDataSource("jdbc:postgresql://localhost:5432/ispb", "ispb", "123456");
-        flyway.migrate();
+        DBService dbSrv = new DBServiceImpl(application);
+        dbSrv.clearDB();
+        dbSrv.migrate();
+        application.setDaoFactory(dbSrv.getDaoFactory());
 
-        DBService db = new DBServiceImpl();
+        DBService db = new DBServiceImpl(application);
         SessionFactory sf = db.getSessionFactory();
         Session s = sf.openSession();
         s.beginTransaction();
@@ -135,7 +135,7 @@ public class Testing
         System.out.println( customerDao.getByBuilding(b) );
 
 
-        Config conf = new ConfigImpl( args[0] );
+
         System.out.println(conf.getAsStr("db.host"));
         System.out.println(conf.getAsStr("db.port"));
         System.out.println(conf.getAsStr("db.base"));
@@ -156,9 +156,6 @@ public class Testing
         System.out.println(daoF.getUserDao().getByLogin("alex"));
         System.out.println(daoF.getUserDao().getByLogin("lex"));
 
-        Application application = ApplicationImpl.getApplication();
-        application.setConfig(conf);
-        application.setAppResources(AppResourcesImpl.getInstance());
         application.setDaoFactory(daoF);
         application.setUserAccountService(new UserAccountServiceImpl(application));
 
