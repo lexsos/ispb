@@ -43,7 +43,7 @@ public class DBServiceImpl implements DBService {
         return daoFactory;
     }
 
-    public SessionFactory getSessionFactory(){
+    private SessionFactory getSessionFactory(){
 
         Configuration configuration = getHbmConf();
 
