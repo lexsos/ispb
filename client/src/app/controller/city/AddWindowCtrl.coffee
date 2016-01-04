@@ -18,5 +18,14 @@ Ext.define 'ISPBClient.controller.city.AddWindowCtrl',
     form   = window.down('form')
     record = form.getRecord()
     values = form.getValues()
-    record.set(values)
+    store = Ext.widget('CityGrid').getStore()
+
+    if (!record)
+      record = Ext.create('ISPBClient.model.City')
+      record.set(values)
+      store.add(record)
+    else
+      record.set(values)
+
+    store.sync()
     window.close()

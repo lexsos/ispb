@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class ApiBaseServlet extends BaseServlet {
+public abstract class ApiBaseServlet<TEntity> extends BaseServlet {
 
     protected void service( HttpServletRequest request,
                             HttpServletResponse response ) throws ServletException, IOException {
@@ -40,6 +40,14 @@ public abstract class ApiBaseServlet extends BaseServlet {
             restResponse = delEntity(id, parameterMap);
         else if (Objects.equals(method, "DELETE") && id != null)
             restResponse = delEntityList(parameterMap);
+        else if(Objects.equals(method, "POST") && id == null){
+            TEntity entity = (TEntity)readJsonObject(request, getEntityType());
+            if (entity == null) {
+                this.writeFailMessage(response, "Error in JSON structure.", ResponseCodes.JSON_ERROR);
+                return;
+            }
+            restResponse = createEntity(entity, parameterMap);
+        }
         else {
             this.writeFailMessage(response, "Method not implemented.", ResponseCodes.METHOD_NOT_ALLOWED);
             return;
@@ -57,4 +65,7 @@ public abstract class ApiBaseServlet extends BaseServlet {
     protected abstract RestResponse getEntityList(Map<String, String[]> params);
     protected abstract RestResponse delEntity(long id, Map<String, String[]> params);
     protected abstract RestResponse delEntityList(Map<String, String[]> params);
+    protected abstract RestResponse createEntity(TEntity entity, Map<String, String[]> params);
+
+    protected abstract Class getEntityType();
 }
