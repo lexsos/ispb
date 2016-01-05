@@ -1,6 +1,7 @@
 package ispb.frontend.utils;
 
 import ispb.base.frontend.utils.ResponseCodes;
+import ispb.base.frontend.utils.RestEntity;
 import ispb.base.frontend.utils.RestResponse;
 
 import javax.servlet.ServletException;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class ApiBaseServlet<TEntity> extends BaseServlet {
+public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseServlet {
 
     protected void service( HttpServletRequest request,
                             HttpServletResponse response ) throws ServletException, IOException {
@@ -41,12 +42,16 @@ public abstract class ApiBaseServlet<TEntity> extends BaseServlet {
         else if (Objects.equals(method, "DELETE") && id != null)
             restResponse = delEntityList(parameterMap);
         else if(Objects.equals(method, "POST") && id == null){
-            TEntity entity = (TEntity)readJsonObject(request, getEntityType());
-            if (entity == null) {
-                this.writeFailMessage(response, "Error in JSON structure.", ResponseCodes.JSON_ERROR);
+            TEntity entity = (TEntity)prepareJsonRequest(request, response, getEntityType());
+            if (entity == null)
                 return;
-            }
             restResponse = createEntity(entity, parameterMap);
+        }
+        else if(Objects.equals(method, "PUT") && id != null){
+            TEntity entity = (TEntity)prepareJsonRequest(request, response, getEntityType());
+            if (entity == null)
+                return;
+            restResponse = updateEntity(id, entity, parameterMap);
         }
         else {
             this.writeFailMessage(response, "Method not implemented.", ResponseCodes.METHOD_NOT_ALLOWED);
@@ -66,6 +71,7 @@ public abstract class ApiBaseServlet<TEntity> extends BaseServlet {
     protected abstract RestResponse delEntity(long id, Map<String, String[]> params);
     protected abstract RestResponse delEntityList(Map<String, String[]> params);
     protected abstract RestResponse createEntity(TEntity entity, Map<String, String[]> params);
+    protected abstract RestResponse updateEntity(long id, TEntity entity, Map<String, String[]> params);
 
     protected abstract Class getEntityType();
 }

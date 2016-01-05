@@ -14,6 +14,12 @@ public class CityRestEntity extends RestEntity {
         setName(city.getName());
     }
 
+    public boolean verify(){
+        if (name != null)
+            return true;
+        return false;
+    }
+
     public String getName() {
         return name;
     }

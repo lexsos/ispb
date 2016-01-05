@@ -9,7 +9,7 @@ public class RestResponse implements Jsonable {
     private boolean success = true;
     private int code = ResponseCodes.OK;
 
-    public boolean isSuccess() {
+    public boolean getSuccess() {
         return success;
     }
 

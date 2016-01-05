@@ -20,6 +20,11 @@ public class CityListRestResponse extends RestResponse {
         }
     }
 
+    public CityListRestResponse(CityDataSet city){
+        this.city_list = new LinkedList<CityRestEntity>();
+        this.city_list.add(new CityRestEntity(city));
+    }
+
     public List<CityRestEntity> getCity_list() {
         return city_list;
     }
