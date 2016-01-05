@@ -1,6 +1,6 @@
 package ispb.base.frontend.utils;
 
-public abstract class RestEntity implements Verifiable {
+public abstract class RestEntity extends RestRequest {
 
     private long id = -1;
 

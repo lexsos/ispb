@@ -4,8 +4,7 @@ import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
 import ispb.base.frontend.entity.CityRestEntity;
 import ispb.base.frontend.response.CityListRestResponse;
-import ispb.base.frontend.response.MessageRestResponse;
-import ispb.base.frontend.utils.ResponseCodes;
+import ispb.base.frontend.response.ErrorRestResponse;
 import ispb.base.frontend.utils.RestResponse;
 import ispb.frontend.utils.ApiBaseServlet;
 
@@ -34,15 +33,13 @@ public class CityServlet extends ApiBaseServlet<CityRestEntity> {
 
     protected RestResponse createEntity(CityRestEntity entity, Map<String, String[]> params){
         CityDataSetDao dao = getApplication().getDaoFactory().getCityDao();
-        if (dao.getByName(entity.getName()) != null){
-            return new MessageRestResponse("City already exist.", ResponseCodes.ENTITY_ALREADY_EXIST, false);
-        }
-        CityDataSet city = new CityDataSet(-1, entity.getName());
+        if (dao.getByName(entity.getName()) != null)
+            return ErrorRestResponse.alreadyExist();
+        CityDataSet city = new CityDataSet();
+        city.setName(entity.getName());
         dao.save(city);
         return new CityListRestResponse(city);
     }
-
-
 
     protected RestResponse updateEntity(long id, CityRestEntity entity, Map<String, String[]> params){
         CityDataSetDao dao = getApplication().getDaoFactory().getCityDao();

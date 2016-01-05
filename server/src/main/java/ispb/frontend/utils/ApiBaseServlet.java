@@ -1,5 +1,6 @@
 package ispb.frontend.utils;
 
+import ispb.base.frontend.response.ErrorRestResponse;
 import ispb.base.frontend.utils.ResponseCodes;
 import ispb.base.frontend.utils.RestEntity;
 import ispb.base.frontend.utils.RestResponse;
@@ -12,6 +13,11 @@ import java.util.Map;
 import java.util.Objects;
 
 public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseServlet {
+
+    protected void writeFailMessage(HttpServletResponse response, String msg, int code) throws IOException {
+        String json = new ErrorRestResponse(msg, code).toJson();
+        this.writeJson(response, json);
+    }
 
     protected void service( HttpServletRequest request,
                             HttpServletResponse response ) throws ServletException, IOException {
