@@ -1,18 +1,18 @@
-package ispb.frontend.servlets;
+package ispb.frontend.rest;
 
 import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
-import ispb.base.frontend.entity.CityRestEntity;
-import ispb.base.frontend.response.CityListRestResponse;
-import ispb.base.frontend.response.ErrorRestResponse;
-import ispb.base.frontend.utils.RestResponse;
-import ispb.frontend.utils.ApiBaseServlet;
+import ispb.base.frontend.rest.entity.CityRestEntity;
+import ispb.base.frontend.rest.response.CityListRestResponse;
+import ispb.base.frontend.rest.response.ErrorRestResponse;
+import ispb.base.frontend.rest.utils.RestResponse;
+import ispb.frontend.utils.RestBaseServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-public class CityServlet extends ApiBaseServlet<CityRestEntity> {
+public class CityServlet extends RestBaseServlet<CityRestEntity> {
 
     protected RestResponse getEntity(long id,
                                      Map<String, String[]> params,

@@ -1,8 +1,8 @@
-package ispb.base.frontend.response;
+package ispb.base.frontend.rest.response;
 
 import ispb.base.db.dataset.CityDataSet;
-import ispb.base.frontend.entity.CityRestEntity;
-import ispb.base.frontend.utils.RestResponse;
+import ispb.base.frontend.rest.entity.CityRestEntity;
+import ispb.base.frontend.rest.utils.RestResponse;
 
 import java.util.Iterator;
 import java.util.LinkedList;

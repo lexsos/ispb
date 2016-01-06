@@ -1,7 +1,8 @@
-package ispb.base.frontend.utils;
+package ispb.base.frontend.rest.utils;
 
 import com.google.gson.Gson;
 import ispb.base.frontend.utils.Jsonable;
+import ispb.base.frontend.utils.ResponseCodes;
 
 public class RestResponse implements Jsonable {
 

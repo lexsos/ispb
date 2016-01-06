@@ -1,7 +1,7 @@
-package ispb.base.frontend.entity;
+package ispb.base.frontend.rest.entity;
 
 import ispb.base.db.dataset.CityDataSet;
-import ispb.base.frontend.utils.RestEntity;
+import ispb.base.frontend.rest.utils.RestEntity;
 
 public class CityRestEntity extends RestEntity {
 

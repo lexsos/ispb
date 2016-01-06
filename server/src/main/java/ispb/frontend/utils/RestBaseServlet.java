@@ -1,9 +1,8 @@
 package ispb.frontend.utils;
 
-import ispb.base.frontend.response.ErrorRestResponse;
-import ispb.base.frontend.utils.ResponseCodes;
-import ispb.base.frontend.utils.RestEntity;
-import ispb.base.frontend.utils.RestResponse;
+import ispb.base.frontend.rest.response.ErrorRestResponse;
+import ispb.base.frontend.rest.utils.RestEntity;
+import ispb.base.frontend.rest.utils.RestResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseServlet {
+public abstract class RestBaseServlet<TEntity extends RestEntity> extends BaseServlet {
 
     protected void writeFailMessage(HttpServletResponse response, String msg, int code) throws IOException {
         String json = new ErrorRestResponse(msg, code).toJson();

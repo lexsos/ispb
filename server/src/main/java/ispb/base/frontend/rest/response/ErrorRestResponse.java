@@ -1,7 +1,7 @@
-package ispb.base.frontend.response;
+package ispb.base.frontend.rest.response;
 
 import ispb.base.frontend.utils.ResponseCodes;
-import ispb.base.frontend.utils.RestResponse;
+import ispb.base.frontend.rest.utils.RestResponse;
 
 import java.util.LinkedList;
 import java.util.List;

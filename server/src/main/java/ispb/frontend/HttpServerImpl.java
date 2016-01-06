@@ -1,6 +1,6 @@
 package ispb.frontend;
 
-import ispb.frontend.servlets.CityServlet;
+import ispb.frontend.rest.CityServlet;
 import ispb.frontend.servlets.LoginServlet;
 import ispb.frontend.servlets.LogoutServlet;
 import org.eclipse.jetty.server.Server;

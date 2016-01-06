@@ -1,6 +1,6 @@
 package ispb.base.frontend.response;
 
-import ispb.base.frontend.utils.RestResponse;
+import ispb.base.frontend.rest.utils.RestResponse;
 
 public class MessageRestResponse extends RestResponse {
     private String message = null;
