@@ -8,30 +8,46 @@ import ispb.base.frontend.response.ErrorRestResponse;
 import ispb.base.frontend.utils.RestResponse;
 import ispb.frontend.utils.ApiBaseServlet;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public class CityServlet extends ApiBaseServlet<CityRestEntity> {
 
-    protected RestResponse getEntity(long id, Map<String, String[]> params){
+    protected RestResponse getEntity(long id,
+                                     Map<String, String[]> params,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response){
         CityDataSet city = getApplication().getDaoFactory().getCityDao().getById(id);
         if (city == null)
             return null;
         return new CityListRestResponse(city);
     }
 
-    protected RestResponse getEntityList(Map<String, String[]> params){
+    protected RestResponse getEntityList(Map<String, String[]> params,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response){
         return new CityListRestResponse(getApplication().getDaoFactory().getCityDao().getAll());
     }
 
-    protected RestResponse delEntity(long id, Map<String, String[]> params){
+    protected RestResponse delEntity(long id, Map<String, String[]> params,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response){
+        // TODO: delete entity
         return null;
     }
 
-    protected RestResponse delEntityList(Map<String, String[]> params){
+    protected RestResponse delEntityList(Map<String, String[]> params,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response){
+        // TODO: delete entity list
         return null;
     }
 
-    protected RestResponse createEntity(CityRestEntity entity, Map<String, String[]> params){
+    protected RestResponse createEntity(CityRestEntity entity,
+                                        Map<String, String[]> params,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response){
         CityDataSetDao dao = getApplication().getDaoFactory().getCityDao();
         if (dao.getByName(entity.getName()) != null)
             return ErrorRestResponse.alreadyExist();
@@ -41,7 +57,11 @@ public class CityServlet extends ApiBaseServlet<CityRestEntity> {
         return new CityListRestResponse(city);
     }
 
-    protected RestResponse updateEntity(long id, CityRestEntity entity, Map<String, String[]> params){
+    protected RestResponse updateEntity(long id,
+                                        CityRestEntity entity,
+                                        Map<String, String[]> params,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response){
         CityDataSetDao dao = getApplication().getDaoFactory().getCityDao();
         CityDataSet city = dao.getById(id);
         if (city == null)

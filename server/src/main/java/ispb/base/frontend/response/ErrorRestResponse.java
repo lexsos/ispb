@@ -41,4 +41,10 @@ public class ErrorRestResponse extends RestResponse {
     public static ErrorRestResponse alreadyExist(){
         return new ErrorRestResponse("Entity already exist.", ResponseCodes.ENTITY_ALREADY_EXIST);
     }
+
+    public static ErrorRestResponse methodNotAllowed(){
+        return new ErrorRestResponse("Method not allowed.", ResponseCodes.METHOD_NOT_ALLOWED);
+    }
+
+
 }

@@ -40,24 +40,24 @@ public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseSer
         RestResponse restResponse;
         Map<String, String[]> parameterMap = request.getParameterMap();
         if (Objects.equals(method, "GET") && id == null)
-            restResponse = getEntityList(parameterMap);
+            restResponse = getEntityList(parameterMap, request, response);
         else if (Objects.equals(method, "GET") && id != null)
-            restResponse = getEntity(id, parameterMap);
+            restResponse = getEntity(id, parameterMap, request, response);
         else if (Objects.equals(method, "DELETE") && id == null)
-            restResponse = delEntity(id, parameterMap);
+            restResponse = delEntity(id, parameterMap, request, response);
         else if (Objects.equals(method, "DELETE") && id != null)
-            restResponse = delEntityList(parameterMap);
+            restResponse = delEntityList(parameterMap, request, response);
         else if(Objects.equals(method, "POST") && id == null){
             TEntity entity = (TEntity)prepareJsonRequest(request, response, getEntityType());
             if (entity == null)
                 return;
-            restResponse = createEntity(entity, parameterMap);
+            restResponse = createEntity(entity, parameterMap, request, response);
         }
         else if(Objects.equals(method, "PUT") && id != null){
             TEntity entity = (TEntity)prepareJsonRequest(request, response, getEntityType());
             if (entity == null)
                 return;
-            restResponse = updateEntity(id, entity, parameterMap);
+            restResponse = updateEntity(id, entity, parameterMap, request, response);
         }
         else {
             this.writeFailMessage(response, "Method not implemented.", ResponseCodes.METHOD_NOT_ALLOWED);
@@ -72,12 +72,46 @@ public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseSer
         writeJson(response, restResponse.toJson());
     }
 
-    protected abstract RestResponse getEntity(long id, Map<String, String[]> params);
-    protected abstract RestResponse getEntityList(Map<String, String[]> params);
-    protected abstract RestResponse delEntity(long id, Map<String, String[]> params);
-    protected abstract RestResponse delEntityList(Map<String, String[]> params);
-    protected abstract RestResponse createEntity(TEntity entity, Map<String, String[]> params);
-    protected abstract RestResponse updateEntity(long id, TEntity entity, Map<String, String[]> params);
+    protected RestResponse getEntity(long id,
+                                     Map<String, String[]> params,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response){
+        return ErrorRestResponse.methodNotAllowed();
+    }
+
+    protected RestResponse getEntityList(Map<String, String[]> params,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response){
+        return ErrorRestResponse.methodNotAllowed();
+    }
+
+    protected RestResponse delEntity(long id,
+                                     Map<String, String[]> params,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response){
+        return ErrorRestResponse.methodNotAllowed();
+    }
+
+    protected RestResponse delEntityList(Map<String, String[]> params,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response){
+        return ErrorRestResponse.methodNotAllowed();
+    }
+
+    protected RestResponse createEntity(TEntity entity,
+                                        Map<String, String[]> params,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response){
+        return ErrorRestResponse.methodNotAllowed();
+    }
+
+    protected RestResponse updateEntity(long id,
+                                        TEntity entity,
+                                        Map<String, String[]> params,
+                                        HttpServletRequest request,
+                                        HttpServletResponse response){
+        return ErrorRestResponse.methodNotAllowed();
+    }
 
     protected abstract Class getEntityType();
 }
