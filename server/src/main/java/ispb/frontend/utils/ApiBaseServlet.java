@@ -19,6 +19,12 @@ public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseSer
         this.writeJson(response, json);
     }
 
+    protected void writeRestResponse(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     RestResponse restResponse) throws IOException {
+        writeJson(response, restResponse.toJson());
+    }
+
     protected void service( HttpServletRequest request,
                             HttpServletResponse response ) throws ServletException, IOException {
 
@@ -31,7 +37,7 @@ public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseSer
                     id = Long.parseLong(params[1]);
                 }
                 catch (Exception e){
-                    this.writeFailMessage(response, "The id must be integer.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
+                    writeRestResponse(request, response, ErrorRestResponse.IntegerId());
                     return;
                 }
         }
@@ -59,17 +65,13 @@ public abstract class ApiBaseServlet<TEntity extends RestEntity> extends BaseSer
                 return;
             restResponse = updateEntity(id, entity, parameterMap, request, response);
         }
-        else {
-            this.writeFailMessage(response, "Method not implemented.", ResponseCodes.METHOD_NOT_ALLOWED);
-            return;
-        }
+        else
+            restResponse = ErrorRestResponse.methodNotAllowed();
 
-        if (restResponse == null){
-            this.writeFailMessage(response, "Not found.", ResponseCodes.NOT_FOUND);
-            return;
-        }
+        if (restResponse == null)
+            restResponse = ErrorRestResponse.notFound();
 
-        writeJson(response, restResponse.toJson());
+        writeRestResponse(request, response, restResponse);
     }
 
     protected RestResponse getEntity(long id,

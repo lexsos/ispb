@@ -46,5 +46,12 @@ public class ErrorRestResponse extends RestResponse {
         return new ErrorRestResponse("Method not allowed.", ResponseCodes.METHOD_NOT_ALLOWED);
     }
 
+    public static ErrorRestResponse notFound(){
+        return new ErrorRestResponse("Not found.", ResponseCodes.NOT_FOUND);
+    }
+
+    public static ErrorRestResponse IntegerId(){
+        return new ErrorRestResponse("The id must be integer.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
+    }
 
 }
