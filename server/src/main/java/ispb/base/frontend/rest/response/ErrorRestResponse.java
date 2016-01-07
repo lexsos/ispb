@@ -54,4 +54,12 @@ public class ErrorRestResponse extends RestResponse {
         return new ErrorRestResponse("The id must be integer.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
     }
 
+    public static ErrorRestResponse jsonError(){
+        return new ErrorRestResponse("Error in JSON structure.", ResponseCodes.JSON_ERROR);
+    }
+
+    public static ErrorRestResponse incompatibleDataStruct(){
+        return new ErrorRestResponse("Incompatible data structure format.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
+    }
+
 }

@@ -1,5 +1,7 @@
 package ispb.frontend.utils;
 
+import ispb.base.frontend.exception.IncompatibleDataStruct;
+import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rest.response.ErrorRestResponse;
 import ispb.base.frontend.rest.utils.RestEntity;
 import ispb.base.frontend.rest.utils.RestResponse;
@@ -12,11 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public abstract class RestBaseServlet<TEntity extends RestEntity> extends BaseServlet {
-
-    protected void writeFailMessage(HttpServletResponse response, String msg, int code) throws IOException {
-        String json = new ErrorRestResponse(msg, code).toJson();
-        this.writeJson(response, json);
-    }
 
     protected void writeRestResponse(HttpServletRequest request,
                                      HttpServletResponse response,
@@ -53,16 +50,28 @@ public abstract class RestBaseServlet<TEntity extends RestEntity> extends BaseSe
         else if (Objects.equals(method, "DELETE") && id != null)
             restResponse = delEntityList(parameterMap, request, response);
         else if(Objects.equals(method, "POST") && id == null){
-            TEntity entity = (TEntity)prepareJsonRequest(request, response, getEntityType());
-            if (entity == null)
-                return;
-            restResponse = createEntity(entity, parameterMap, request, response);
+            try {
+                TEntity entity = (TEntity) prepareJsonRequest(request, response, getEntityType());
+                restResponse = createEntity(entity, parameterMap, request, response);
+            }
+            catch (ReadJsonError e){
+                restResponse = ErrorRestResponse.jsonError();
+            }
+            catch (IncompatibleDataStruct e){
+                restResponse = ErrorRestResponse.incompatibleDataStruct();
+            }
         }
         else if(Objects.equals(method, "PUT") && id != null){
-            TEntity entity = (TEntity)prepareJsonRequest(request, response, getEntityType());
-            if (entity == null)
-                return;
-            restResponse = updateEntity(id, entity, parameterMap, request, response);
+            try {
+                TEntity entity = (TEntity)prepareJsonRequest(request, response, getEntityType());
+                restResponse = updateEntity(id, entity, parameterMap, request, response);
+            }
+            catch (ReadJsonError e){
+                restResponse = ErrorRestResponse.jsonError();
+            }
+            catch (IncompatibleDataStruct e){
+                restResponse = ErrorRestResponse.incompatibleDataStruct();
+            }
         }
         else
             restResponse = ErrorRestResponse.methodNotAllowed();

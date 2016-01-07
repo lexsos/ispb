@@ -1,9 +1,4 @@
 package ispb.frontend.servlets;
-
-import ispb.base.db.dataset.UserDataSet;
-import ispb.base.frontend.request.AuthRestRequest;
-import ispb.base.frontend.utils.ResponseCodes;
-import ispb.base.service.UserAccountService;
 import ispb.frontend.utils.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -17,13 +12,14 @@ public class LoginServlet extends BaseServlet {
     protected void doGet( HttpServletRequest request,
                           HttpServletResponse response ) throws ServletException, IOException {
 
-        this.writeFailMessage(response, "You need use POST method.", ResponseCodes.METHOD_NOT_ALLOWED);
+        //this.writeFailMessage(response, "You need use POST method.", ResponseCodes.METHOD_NOT_ALLOWED);
     }
 
     protected void doPost( HttpServletRequest request,
                           HttpServletResponse response ) throws ServletException, IOException {
 
-        AuthRestRequest authRequest = this.prepareJsonRequest(request, response, AuthRestRequest.class);
+
+        /*AuthRestRequest authRequest = this.prepareJsonRequest(request, response, AuthRestRequest.class);
         if (authRequest == null)
             return;
 
@@ -36,6 +32,6 @@ public class LoginServlet extends BaseServlet {
 
         request.getSession().setAttribute("user", user);
         this.writeSuccessMessage(response, "Login successful.");
-        return;
+        return;*/
     }
 }

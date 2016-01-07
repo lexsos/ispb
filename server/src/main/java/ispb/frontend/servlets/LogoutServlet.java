@@ -13,6 +13,6 @@ public class LogoutServlet extends BaseServlet {
                           HttpServletResponse response ) throws ServletException, IOException {
 
         request.getSession().setAttribute("user", null);
-        this.writeSuccessMessage(response, "Logout successful.");
+        //this.writeSuccessMessage(response, "Logout successful.");
     }
 }
