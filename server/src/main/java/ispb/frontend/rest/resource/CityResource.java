@@ -108,6 +108,7 @@ public class CityResource extends RestResource {
                                      Application application){
         CityEntity entity = (CityEntity)obj;
         CityDataSetDao dao = application.getDaoFactory().getCityDao();
+
         if (dao.getByName(entity.getName()) != null)
             return ErrorRestResponse.alreadyExist();
 
@@ -125,9 +126,12 @@ public class CityResource extends RestResource {
         CityEntity entity = (CityEntity)obj;
         CityDataSetDao dao = application.getDaoFactory().getCityDao();
         CityDataSet city = dao.getById(id);
+
         if (city == null)
-            return null; // TODO: Return error
-        // TODO: Check not city exist
+            return null;
+        if (dao.getByName(entity.getName()) != null)
+            return ErrorRestResponse.alreadyExist();
+
         entity.updateDataSet(city);
         dao.save(city);
         return new CityListRestResponse(city);
@@ -138,7 +142,13 @@ public class CityResource extends RestResource {
                                      long id,
                                      Map<String, String[]> params,
                                      Application application){
-        // TODO: delete entity
-        return null;
+        CityDataSetDao dao = application.getDaoFactory().getCityDao();
+        CityDataSet city = dao.getById(id);
+
+        if (city == null)
+            return null;
+
+        dao.delete(city);
+        return new RestResponse();
     }
 }
