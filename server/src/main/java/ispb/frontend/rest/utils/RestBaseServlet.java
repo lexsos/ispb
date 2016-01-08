@@ -1,10 +1,11 @@
-package ispb.frontend.utils;
+package ispb.frontend.rest.utils;
 
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rest.response.ErrorRestResponse;
 import ispb.base.frontend.rest.utils.RestEntity;
 import ispb.base.frontend.rest.utils.RestResponse;
+import ispb.frontend.utils.BaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package ispb.frontend.rest;
+package ispb.frontend.rest.resource;
 
 import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
@@ -6,13 +6,13 @@ import ispb.base.frontend.rest.entity.CityRestEntity;
 import ispb.base.frontend.rest.response.CityListRestResponse;
 import ispb.base.frontend.rest.response.ErrorRestResponse;
 import ispb.base.frontend.rest.utils.RestResponse;
-import ispb.frontend.utils.RestBaseServlet;
+import ispb.frontend.rest.utils.RestBaseServlet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-public class CityServlet extends RestBaseServlet<CityRestEntity> {
+public class CityResource extends RestBaseServlet<CityRestEntity> {
 
     protected RestResponse getEntity(long id,
                                      Map<String, String[]> params,

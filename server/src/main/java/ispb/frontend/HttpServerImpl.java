@@ -1,8 +1,7 @@
 package ispb.frontend;
 
-import ispb.frontend.rest.CityServlet;
-import ispb.frontend.servlets.LoginServlet;
-import ispb.frontend.servlets.LogoutServlet;
+import ispb.frontend.rest.resource.CityResource;
+import ispb.frontend.rpc.RpcServlet;
 import org.eclipse.jetty.server.Server;
 
 import ispb.base.Application;
@@ -31,8 +30,8 @@ public class HttpServerImpl implements HttpServer {
         createServer();
         addHttpConnector();
         addStaticHandler();
-        AddAuthServlet();
-        AddApiServlet();
+        addRestServlet();
+        addRpcServlet();
 
         server.setHandler(handlers);
         server.start();
@@ -85,18 +84,17 @@ public class HttpServerImpl implements HttpServer {
         handlers.addHandler(staticHandler);
     }
 
-    private void AddAuthServlet(){
+    private void addRestServlet(){
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/auth");
-        handler.addServlet(LoginServlet.class, "/login/");
-        handler.addServlet(LogoutServlet.class, "/logout/");
+        handler.setContextPath("/api/0.1");
+        handler.addServlet(CityResource.class, "/city/*");
         handlers.addHandler(handler);
     }
 
-    private void AddApiServlet(){
+    private void addRpcServlet(){
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/api/0.1");
-        handler.addServlet(CityServlet.class, "/city/*");
+        handler.setContextPath("/api/rpc");
+        handler.addServlet(RpcServlet.class, "/*");
         handlers.addHandler(handler);
     }
 }

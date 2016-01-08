@@ -8,4 +8,5 @@ public class ResponseCodes {
     public static final int ENTITY_ALREADY_EXIST = 495;
     public static final int DATA_FORMAT_INCOMPATIBLE = 496;
     public static final int JSON_ERROR = 497;
+    public static final int INTERNAL_ERROR = 500;
 }
