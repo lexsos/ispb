@@ -57,7 +57,6 @@ public class BaseServlet extends HttpServlet  {
     }
 
     protected UserDataSet getCurrentUser(HttpServletRequest request){
-        UserDataSet user = (UserDataSet)request.getSession().getAttribute("user");
-        return user;
+        return  (UserDataSet)request.getSession().getAttribute("user");
     }
 }
