@@ -8,5 +8,5 @@ Ext.define 'ISPBClient.model.City',
 
   proxy:
     type: 'rest'
-    url : '/api/0.1/city'
+    url : '/api/rest/city'
     reader: {type: 'json', root: 'city_list'}

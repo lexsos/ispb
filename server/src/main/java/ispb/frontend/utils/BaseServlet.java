@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import ispb.ApplicationImpl;
 import ispb.base.Application;
@@ -17,6 +19,7 @@ import ispb.base.frontend.utils.Verifiable;
 
 public class BaseServlet extends HttpServlet  {
 
+    private Properties typeList;
     private static final Gson GSON = new Gson();
 
     protected Application getApplication(){
@@ -58,5 +61,33 @@ public class BaseServlet extends HttpServlet  {
 
     protected UserDataSet getCurrentUser(HttpServletRequest request){
         return  (UserDataSet)request.getSession().getAttribute("user");
+    }
+
+    protected void loadTypes(String resourceName){
+        typeList = new Properties();
+        InputStream in = getClass().getResourceAsStream(resourceName);
+        try {
+            typeList.load(in);
+        }
+        catch (IOException e){
+            // TODO: log error msg
+        }
+    }
+
+    protected Class getTypeByKey(String key){
+        String typeName = typeList.getProperty(key, null);
+        if (typeName == null)
+            return null;
+
+        Class clazz;
+        try {
+            clazz = Class.forName(typeName);
+        }
+        catch (ClassNotFoundException e){
+            // TODO: log error
+            return null;
+        }
+
+        return clazz;
     }
 }

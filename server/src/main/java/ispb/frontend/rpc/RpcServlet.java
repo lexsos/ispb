@@ -21,35 +21,11 @@ public class RpcServlet extends BaseServlet {
 
     public RpcServlet(){
         super();
-        loadTypes();
-    }
-
-    protected void loadTypes(){
-        requestTypes = new Properties();
-        InputStream in = getClass().getResourceAsStream("rpc_procedure.properties");
-        try {
-            requestTypes.load(in);
-        }
-        catch (IOException e){
-            // TODO: log error msg
-        }
+        loadTypes("rpc_procedure.properties");
     }
 
     private Class getRpcRequestClass(String procedureName){
-        String typeName = requestTypes.getProperty(procedureName, null);
-        if (typeName == null)
-            return null;
-
-        Class clazz;
-        try {
-            clazz = Class.forName(typeName);
-        }
-        catch (ClassNotFoundException e){
-            // TODO: log error
-            return null;
-        }
-
-        return clazz;
+        return getTypeByKey(procedureName);
     }
 
     protected void writeRpcResponse(HttpServletRequest request,

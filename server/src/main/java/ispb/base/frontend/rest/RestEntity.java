@@ -1,4 +1,4 @@
-package ispb.base.frontend.rest.utils;
+package ispb.base.frontend.rest;
 
 import ispb.base.frontend.utils.Verifiable;
 

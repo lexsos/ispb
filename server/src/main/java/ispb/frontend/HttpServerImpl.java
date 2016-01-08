@@ -1,6 +1,6 @@
 package ispb.frontend;
 
-import ispb.frontend.rest.resource.CityResource;
+import ispb.frontend.rest.RestServlet;
 import ispb.frontend.rpc.RpcServlet;
 import org.eclipse.jetty.server.Server;
 
@@ -86,8 +86,8 @@ public class HttpServerImpl implements HttpServer {
 
     private void addRestServlet(){
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/api/0.1");
-        handler.addServlet(CityResource.class, "/city/*");
+        handler.setContextPath("/api/rest");
+        handler.addServlet(RestServlet.class, "/*");
         handlers.addHandler(handler);
     }
 

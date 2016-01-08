@@ -1,7 +1,6 @@
-package ispb.base.frontend.rest.response;
+package ispb.base.frontend.rest;
 
 import ispb.base.frontend.utils.ResponseCodes;
-import ispb.base.frontend.rest.utils.RestResponse;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -60,6 +59,10 @@ public class ErrorRestResponse extends RestResponse {
 
     public static ErrorRestResponse incompatibleDataStruct(){
         return new ErrorRestResponse("Incompatible data structure format.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
+    }
+
+    public static ErrorRestResponse internalError(){
+        return new ErrorRestResponse("Internal server error.", ResponseCodes.INTERNAL_ERROR);
     }
 
 }
