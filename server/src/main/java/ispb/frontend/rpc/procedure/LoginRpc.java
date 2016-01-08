@@ -2,7 +2,7 @@ package ispb.frontend.rpc.procedure;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.UserDataSet;
-import ispb.base.frontend.rpc.utils.RpcRequest;
+import ispb.base.frontend.rpc.RpcRequest;
 import ispb.base.frontend.utils.AccessLevel;
 
 import javax.servlet.ServletException;

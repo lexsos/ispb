@@ -1,4 +1,4 @@
-package ispb.base.frontend.rpc.utils;
+package ispb.base.frontend.rpc;
 
 import ispb.base.Application;
 import ispb.base.frontend.utils.Verifiable;

@@ -1,7 +1,6 @@
-package ispb.base.frontend.rpc.utils;
+package ispb.base.frontend.rpc;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.bcel.internal.generic.PUSH;
 import ispb.base.frontend.utils.Jsonable;
 import ispb.base.frontend.utils.ResponseCodes;
 
