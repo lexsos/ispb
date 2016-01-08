@@ -3,6 +3,7 @@ package ispb.frontend.rpc.procedure;
 import ispb.base.Application;
 import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.rpc.utils.RpcRequest;
+import ispb.base.frontend.utils.AccessLevel;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,10 @@ public class LoginRpc extends RpcRequest {
         if (login != null && password != null)
             return true;
         return false;
+    }
+
+    public int getAccessLevel(){
+        return AccessLevel.ALL;
     }
 
     public String getLogin() {

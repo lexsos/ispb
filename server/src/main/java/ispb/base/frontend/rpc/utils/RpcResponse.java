@@ -1,6 +1,7 @@
 package ispb.base.frontend.rpc.utils;
 
 import com.google.gson.Gson;
+import com.sun.org.apache.bcel.internal.generic.PUSH;
 import ispb.base.frontend.utils.Jsonable;
 import ispb.base.frontend.utils.ResponseCodes;
 
@@ -55,5 +56,13 @@ public class RpcResponse implements Jsonable {
 
     public static RpcResponse notFound(){
         return new RpcResponse(null, ResponseCodes.NOT_FOUND);
+    }
+
+    public static RpcResponse lowAccessLevel(){
+        return new RpcResponse(null, ResponseCodes.LOW_CURRENT_ACCESS_LEVEL);
+    }
+
+    public static RpcResponse unauthorized(){
+        return new RpcResponse(null, ResponseCodes.UNAUTHORIZED);
     }
 }

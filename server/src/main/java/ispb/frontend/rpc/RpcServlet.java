@@ -1,9 +1,11 @@
 package ispb.frontend.rpc;
 
+import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rpc.utils.RpcRequest;
 import ispb.base.frontend.rpc.utils.RpcResponse;
+import ispb.base.frontend.utils.AccessLevel;
 import ispb.frontend.utils.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -82,6 +84,18 @@ public class RpcServlet extends BaseServlet {
         catch (IncompatibleDataStruct e){
             writeRpcResponse(request, response, RpcResponse.incompatibleDataStruct());
             return;
+        }
+
+        if (req.getAccessLevel() != AccessLevel.ALL){
+            UserDataSet user = getCurrentUser(request);
+            if (user == null){
+                writeRpcResponse(request, response, RpcResponse.unauthorized());
+                return;
+            }
+            if (user.getAccessLevel() < req.getAccessLevel()){
+                writeRpcResponse(request, response, RpcResponse.lowAccessLevel());
+                return;
+            }
         }
 
         Object value;

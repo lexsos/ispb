@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import ispb.ApplicationImpl;
 import ispb.base.Application;
+import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.utils.Verifiable;
@@ -53,5 +54,10 @@ public class BaseServlet extends HttpServlet  {
             if (!((Verifiable)obj).verify())
                 throw new IncompatibleDataStruct();
         return obj;
+    }
+
+    protected UserDataSet getCurrentUser(HttpServletRequest request){
+        UserDataSet user = (UserDataSet)request.getSession().getAttribute("user");
+        return user;
     }
 }
