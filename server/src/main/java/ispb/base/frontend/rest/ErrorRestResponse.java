@@ -65,4 +65,11 @@ public class ErrorRestResponse extends RestResponse {
         return new ErrorRestResponse("Internal server error.", ResponseCodes.INTERNAL_ERROR);
     }
 
+    public static ErrorRestResponse unauthorized(){
+        return new ErrorRestResponse("Unauthorized.", ResponseCodes.UNAUTHORIZED);
+    }
+
+    public static ErrorRestResponse lowAccessLevel(){
+        return new ErrorRestResponse("Low current access level.", ResponseCodes.LOW_CURRENT_ACCESS_LEVEL);
+    }
 }

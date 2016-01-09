@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-public abstract class RestResource {
+public abstract class RestResource implements RestAccessLevelable {
 
     public abstract Class<RestEntity> getEntityType();
 

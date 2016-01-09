@@ -1,11 +1,13 @@
 package ispb.frontend.rest;
 
+import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rest.ErrorRestResponse;
 import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
+import ispb.base.frontend.utils.AccessLevel;
 import ispb.frontend.utils.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -70,11 +72,25 @@ public class RestServlet extends BaseServlet {
             return;
         }
 
-
+        int requiredAccessLevel = resource.getWriteAccessLevel();
         String method = request.getMethod();
+        if (Objects.equals(method, "GET"))
+            requiredAccessLevel = resource.getReadAccessLevel();
+
+        if(requiredAccessLevel != AccessLevel.ALL){
+            UserDataSet user = getCurrentUser(request);
+            if (user == null){
+                writeRestResponse(request, response, ErrorRestResponse.unauthorized());
+                return;
+            }
+            if (user.getAccessLevel() < requiredAccessLevel){
+                writeRestResponse(request, response, ErrorRestResponse.lowAccessLevel());
+                return;
+            }
+        }
+
         Map<String, String[]> parameterMap = request.getParameterMap();
         RestResponse restResponse = ErrorRestResponse.methodNotAllowed();
-
         try {
             if (Objects.equals(method, "GET") && id == null)
                 restResponse = resource.getEntityList(request, response, parameterMap, getApplication());

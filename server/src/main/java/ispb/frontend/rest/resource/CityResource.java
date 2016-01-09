@@ -7,6 +7,7 @@ import ispb.base.frontend.rest.ErrorRestResponse;
 import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
+import ispb.base.frontend.utils.AccessLevel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -77,6 +78,16 @@ public class CityResource extends RestResource {
         public void setCity_list(List<CityEntity> city_list) {
             this.city_list = city_list;
         }
+    }
+
+    public int getReadAccessLevel(){
+        // TODO: Set level to KASS
+        return AccessLevel.ALL;
+    }
+
+    public int getWriteAccessLevel(){
+        // TODO: Set level to MANAGER
+        return AccessLevel.ALL;
     }
 
     public Class getEntityType(){
