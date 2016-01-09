@@ -16,11 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 
 public class RestServlet extends BaseServlet {
-
-    private Properties resourceTypes;
 
     public RestServlet(){
         super();
