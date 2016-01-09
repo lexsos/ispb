@@ -3,7 +3,7 @@ package ispb.frontend.rpc.procedure;
 import ispb.base.Application;
 import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.rpc.RpcArg;
-import ispb.base.frontend.rpc.RpcRequest;
+import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
 
 import javax.servlet.ServletException;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LoginRpc extends RpcRequest {
+public class LoginRpc extends RpcProcedure {
 
     private static class LoginArgs extends RpcArg {
 

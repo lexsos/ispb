@@ -4,7 +4,7 @@ import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rpc.RpcArg;
-import ispb.base.frontend.rpc.RpcRequest;
+import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.rpc.RpcResponse;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.frontend.utils.BaseServlet;
@@ -46,9 +46,9 @@ public class RpcServlet extends BaseServlet {
             return;
         }
 
-        RpcRequest req;
+        RpcProcedure req;
         try {
-            req = (RpcRequest)rpcRequestClass.newInstance();
+            req = (RpcProcedure)rpcRequestClass.newInstance();
         }
         catch (Throwable e){
             // TODO: log error

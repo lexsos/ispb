@@ -2,7 +2,7 @@ package ispb.frontend.rpc.procedure;
 
 import ispb.base.Application;
 import ispb.base.frontend.rpc.RpcArg;
-import ispb.base.frontend.rpc.RpcRequest;
+import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
 
 import javax.servlet.ServletException;
@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class LogoutRpc extends RpcRequest {
+public class LogoutRpc extends RpcProcedure {
 
     public Object call(HttpServletRequest request,
                        HttpServletResponse response,
