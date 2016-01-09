@@ -12,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 public class RpcServlet extends BaseServlet {
@@ -76,7 +75,7 @@ public class RpcServlet extends BaseServlet {
 
         Object value;
         try {
-            value = req.Do(request, response, getApplication());
+            value = req.call(request, response, getApplication());
         }
         catch (Throwable e){
             // TODO: log error

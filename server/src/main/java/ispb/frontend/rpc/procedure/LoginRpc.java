@@ -15,9 +15,9 @@ public class LoginRpc extends RpcRequest {
     private String login;
     private String password;
 
-    public Object Do(HttpServletRequest request,
-                     HttpServletResponse response,
-                     Application application) throws ServletException, IOException {
+    public Object call(HttpServletRequest request,
+                       HttpServletResponse response,
+                       Application application) throws ServletException, IOException {
 
         UserDataSet user = application.getUserAccountService().auth(getLogin(), getPassword());
         if (user == null)

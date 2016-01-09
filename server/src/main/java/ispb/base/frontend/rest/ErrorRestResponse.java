@@ -70,6 +70,6 @@ public class ErrorRestResponse extends RestResponse {
     }
 
     public static ErrorRestResponse lowAccessLevel(){
-        return new ErrorRestResponse("Low current access level.", ResponseCodes.LOW_CURRENT_ACCESS_LEVEL);
+        return new ErrorRestResponse("Current user has to low access level.", ResponseCodes.LOW_CURRENT_ACCESS_LEVEL);
     }
 }

@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public abstract class RpcRequest implements Verifiable, RpcAccessLevelable {
 
-    public abstract Object Do(HttpServletRequest request,
-                              HttpServletResponse response,
-                              Application application) throws ServletException, IOException;
+    public abstract Object call(HttpServletRequest request,
+                                HttpServletResponse response,
+                                Application application) throws ServletException, IOException;
 }

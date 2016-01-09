@@ -11,9 +11,9 @@ import java.io.IOException;
 
 public class LogoutRpc extends RpcRequest {
 
-    public Object Do(HttpServletRequest request,
-                     HttpServletResponse response,
-                     Application application) throws ServletException, IOException {
+    public Object call(HttpServletRequest request,
+                       HttpServletResponse response,
+                       Application application) throws ServletException, IOException {
         request.getSession().setAttribute("user", null);
         return true;
     }
