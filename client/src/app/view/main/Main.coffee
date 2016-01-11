@@ -26,6 +26,7 @@ Ext.define 'ISPBClient.view.main.Main',
           text: 'Выход'
           scale: 'large'
           icon: 'static/img/logout.png'
+          action: 'logout'
         }
       ]
     }

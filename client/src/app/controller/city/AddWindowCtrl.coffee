@@ -27,5 +27,6 @@ Ext.define 'ISPBClient.controller.city.AddWindowCtrl',
     else
       record.set(values)
 
-    store.sync()
+    store.sync failure: (batch) ->
+      Ext.MessageBox.alert 'Ошибка', 'Не удалось сохранить запись!'
     window.close()

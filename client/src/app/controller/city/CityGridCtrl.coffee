@@ -41,7 +41,9 @@ Ext.define 'ISPBClient.controller.city.CityGridCtrl',
 
   onDeletelick: (btn) ->
     record = this.getSelectedRecord(btn)
+    store = this.getStore('CityStore')
     if record
       Ext.MessageBox.confirm 'Удаление', 'Вы действительно хотите удалить город ' + record.get('name') + '?', (btn) ->
-        if btn == yes
-          return
+        if btn == 'yes'
+          store.remove(record)
+          store.sync()

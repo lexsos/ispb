@@ -1,9 +1,12 @@
 Ext.define 'ISPBClient.controller.Main',
     extend: 'Ext.app.Controller'
 
+    requires: ['ISPBClient.utils.RpcProcedure']
+
     views: [
         'main.Main',
         'main.Dictionaries',
+        'main.LoginWindow',
         'city.CityList',
         'street.StreetList',
         'building.BuildingList',
@@ -14,6 +17,12 @@ Ext.define 'ISPBClient.controller.Main',
         this.control
             '#menu_panel menuitem':
                 click: this.onMenuItemClick
+
+            'Main button[action=logout]':
+                click: this.onLogoutClick
+
+
+        this.checkLogin()
 
     getOrCreateView: (className) ->
         if this.viewInstance[className]
@@ -35,3 +44,11 @@ Ext.define 'ISPBClient.controller.Main',
 
     onMenuItemClick: (item) ->
         this.showView(item.widget)
+
+    onLogoutClick: () ->
+        ISPBClient.utils.RpcProcedure.logout()
+        view = Ext.widget('loginWindow')
+
+    checkLogin: ->
+        if not ISPBClient.utils.RpcProcedure.loginInfo().authed
+            view = Ext.widget('loginWindow')

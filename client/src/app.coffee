@@ -5,6 +5,7 @@ Ext.application
 
   controllers: [
     'Main',
+    'LoginWindowCtrl',
     'city.CityGridCtrl',
     'city.AddWindowCtrl',
   ]
