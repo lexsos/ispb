@@ -15,6 +15,12 @@ Ext.define 'ISPBClient.view.city.CityGrid',
       dock: 'top'
       items:[
         {
+          text: 'Обновить'
+          icon: 'static/img/table_refresh.png'
+          action: 'refresh'
+        }
+        '-'
+        {
           text: 'Добавить'
           icon:'static/img/add.png'
           action: 'add'

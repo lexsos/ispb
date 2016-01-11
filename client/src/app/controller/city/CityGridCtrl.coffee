@@ -7,6 +7,9 @@ Ext.define 'ISPBClient.controller.city.CityGridCtrl',
 
   init: ->
     this.control
+      'CityGrid button[action=refresh]':
+        click: this.onRefreshClick
+
       'CityGrid button[action=add]':
         click: this.onAddClick
 
@@ -47,3 +50,6 @@ Ext.define 'ISPBClient.controller.city.CityGridCtrl',
         if btn == 'yes'
           store.remove(record)
           store.sync()
+
+  onRefreshClick: (btn) ->
+    this.getStore('CityStore').load()

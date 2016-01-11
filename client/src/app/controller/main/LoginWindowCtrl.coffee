@@ -1,4 +1,4 @@
-Ext.define 'ISPBClient.controller.LoginWindowCtrl',
+Ext.define 'ISPBClient.controller.main.LoginWindowCtrl',
   extend: 'Ext.app.Controller'
   views: ['main.LoginWindow']
 

@@ -4,8 +4,8 @@ Ext.application
   appFolder: 'app'
 
   controllers: [
-    'Main',
-    'LoginWindowCtrl',
+    'main.Main',
+    'main.LoginWindowCtrl',
     'city.CityGridCtrl',
     'city.AddWindowCtrl',
   ]

@@ -1,4 +1,4 @@
-Ext.define 'ISPBClient.controller.Main',
+Ext.define 'ISPBClient.controller.main.Main',
     extend: 'Ext.app.Controller'
 
     requires: ['ISPBClient.utils.RpcProcedure']
