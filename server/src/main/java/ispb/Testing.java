@@ -9,6 +9,7 @@ import ispb.base.db.dao.StreetDataSetDao;
 import ispb.base.db.dataset.*;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.frontend.HttpServer;
+import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.resources.Config;
 import ispb.base.service.UserAccountService;
 import ispb.frontend.HttpServerImpl;
@@ -111,7 +112,7 @@ public class Testing
         user.setLogin("alex");
         user.setPassword(DigestUtils.sha1Hex("abc123456"));
         user.setSalt("abc");
-        user.setAccessLevel(10);
+        user.setAccessLevel(AccessLevel.ADMIN);
         user.setName("alexander");
         user.setSurname("------");
         System.out.println(daoF.getUserDao().save(user));
@@ -125,7 +126,7 @@ public class Testing
         application.setUserAccountService(new UserAccountServiceImpl(application));
 
         UserAccountService accSer = new UserAccountServiceImpl(application);
-        System.out.println(accSer.addUser("lex", "123456", "Lex", "---", 20));
+        System.out.println(accSer.addUser("lex", "123456", "Lex", "---", AccessLevel.ADMIN));
 
         HttpServer server = new HttpServerImpl(application);
         server.start();

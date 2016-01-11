@@ -81,13 +81,11 @@ public class CityResource extends RestResource {
     }
 
     public int getReadAccessLevel(){
-        // TODO: Set level to KASS
-        return AccessLevel.ALL;
+        return AccessLevel.MIN;
     }
 
     public int getWriteAccessLevel(){
-        // TODO: Set level to MANAGER
-        return AccessLevel.ALL;
+        return AccessLevel.MANAGER;
     }
 
     public Class getEntityType(){

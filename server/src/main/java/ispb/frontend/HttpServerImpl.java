@@ -30,8 +30,7 @@ public class HttpServerImpl implements HttpServer {
         createServer();
         addHttpConnector();
         addStaticHandler();
-        addRestServlet();
-        addRpcServlet();
+        addApiServlets();
 
         server.setHandler(handlers);
         server.start();
@@ -84,17 +83,11 @@ public class HttpServerImpl implements HttpServer {
         handlers.addHandler(staticHandler);
     }
 
-    private void addRestServlet(){
+    private void addApiServlets(){
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/api/rest");
-        handler.addServlet(RestServlet.class, "/*");
-        handlers.addHandler(handler);
-    }
-
-    private void addRpcServlet(){
-        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        handler.setContextPath("/api/rpc");
-        handler.addServlet(RpcServlet.class, "/*");
+        handler.setContextPath("/api");
+        handler.addServlet(RestServlet.class, "/rest/*");
+        handler.addServlet(RpcServlet.class, "/rpc/*");
         handlers.addHandler(handler);
     }
 }
