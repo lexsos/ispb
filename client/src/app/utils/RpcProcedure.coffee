@@ -24,3 +24,7 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
 
     logout: () ->
       this.call("logout", {})
+
+    cityNameExist: (name) ->
+      this.call "city_name_exist",
+        name: name
