@@ -64,7 +64,7 @@ public class RestServlet extends BaseServlet {
             resource = (RestResource)restResourceClass.newInstance();
         }
         catch (Exception e){
-            // TODO: log error
+            getApplication().getLogService().error("Can't create instance for REST resource", e);
             writeRestResponse(request, response, ErrorRestResponse.internalError());
             return;
         }
@@ -117,7 +117,7 @@ public class RestServlet extends BaseServlet {
                 }
         }
         catch (Throwable e){
-            // TODO: log error
+            getApplication().getLogService().error("Can't execute REST resource handler", e);
             restResponse = ErrorRestResponse.internalError();
         }
 

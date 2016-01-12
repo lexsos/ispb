@@ -13,6 +13,7 @@ import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.resources.Config;
 import ispb.base.service.UserAccountService;
 import ispb.frontend.HttpServerImpl;
+import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
 import ispb.users.UserAccountServiceImpl;
@@ -29,6 +30,8 @@ public class Testing
         Config conf = new ConfigImpl( args[0] );
         application.setConfig(conf);
         application.setAppResources(AppResourcesImpl.getInstance());
+
+        application.setLogService(new LogServiceImpl(conf));
 
         DBService dbSrv = new DBServiceImpl(application);
         dbSrv.clearDB();
@@ -127,6 +130,8 @@ public class Testing
 
         UserAccountService accSer = new UserAccountServiceImpl(application);
         System.out.println(accSer.addUser("lex", "123456", "Lex", "---", AccessLevel.ADMIN));
+
+        application.getLogService().info("Starting http server");
 
         HttpServer server = new HttpServerImpl(application);
         server.start();

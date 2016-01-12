@@ -51,7 +51,7 @@ public class RpcServlet extends BaseServlet {
             req = (RpcProcedure)rpcRequestClass.newInstance();
         }
         catch (Throwable e){
-            // TODO: log error
+            getApplication().getLogService().error("Can't create instance for RPC procedure", e);
             writeRpcResponse(request, response, RpcResponse.internalError());
             return;
         }
@@ -86,7 +86,7 @@ public class RpcServlet extends BaseServlet {
             value = req.call(request, response, arg, getApplication());
         }
         catch (Throwable e){
-            // TODO: log error
+            getApplication().getLogService().error("Can't execute RPC procedure", e);
             writeRpcResponse(request, response, RpcResponse.internalError());
             return;
         }

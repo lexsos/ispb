@@ -4,6 +4,7 @@ import ispb.base.Application;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
+import ispb.base.service.LogService;
 import ispb.base.service.UserAccountService;
 
 public class ApplicationImpl implements Application {
@@ -13,6 +14,7 @@ public class ApplicationImpl implements Application {
     private AppResources resources = null;
     private DaoFactory daoFactory = null;
     private UserAccountService userAccountService = null;
+    private LogService logService = null;
 
     private ApplicationImpl(){}
 
@@ -48,5 +50,12 @@ public class ApplicationImpl implements Application {
     }
     public void setUserAccountService(UserAccountService userAccountService) {
         this.userAccountService = userAccountService;
+    }
+
+    public LogService getLogService(){
+        return logService;
+    }
+    public void setLogService(LogService logService){
+        this.logService = logService;
     }
 }

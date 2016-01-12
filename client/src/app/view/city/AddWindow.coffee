@@ -24,8 +24,16 @@ Ext.define 'ISPBClient.view.city.AddWindow',
   items: [
     {
       xtype: 'form'
+      trackResetOnLoad: true
       items:[
-        {xtype: 'textfield', name : 'name', fieldLabel: 'Название города', margin: '5 5 5 5', vtype: 'cityName'}
+        {
+          xtype: 'textfield'
+          name : 'name'
+          fieldLabel: 'Название города'
+          margin: '5 5 5 5'
+          vtype: 'cityName'
+          validateOnChange: false
+        }
       ]
     }
   ]
