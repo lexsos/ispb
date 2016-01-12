@@ -5,6 +5,7 @@ import ispb.base.db.utils.DaoFactory;
 import ispb.base.resources.Config;
 import ispb.db.util.DaoFactoryImpl;
 import org.flywaydb.core.Flyway;
+import org.flywaydb.core.api.FlywayException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -34,7 +35,14 @@ public class DBServiceImpl implements DBService {
         Config config = application.getConfig();
         Flyway flyway = new Flyway();
         flyway.setDataSource(getConnectionString(), config.getAsStr("db.user"), config.getAsStr("db.password"));
-        flyway.migrate();
+        try {
+            flyway.migrate();
+        }
+        catch (FlywayException e){
+            application.getLogService().error("Can't perform DB migration");
+            throw e;
+        }
+
     }
 
     public DaoFactory getDaoFactory(){
