@@ -8,6 +8,7 @@ Ext.application
     'main.LoginWindowCtrl',
     'city.CityGridCtrl',
     'city.AddWindowCtrl',
+    'street.StreetGridCtrl',
   ]
 
   launch: ->

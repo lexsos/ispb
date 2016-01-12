@@ -3,6 +3,10 @@ Ext.define 'ISPBClient.view.street.StreetList',
     alias: 'widget.StreetList'
     title: 'Улицы'
 
+    listeners:
+        show: () ->
+            this.down('gridpanel').getStore().load()
+
     items: [
-        {xtype: 'button', text: 'Click me', id: 'StreetList_button'}
+        {xtype: 'StreetGrid'}
     ]

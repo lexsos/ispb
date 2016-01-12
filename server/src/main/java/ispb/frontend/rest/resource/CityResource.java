@@ -58,9 +58,9 @@ public class CityResource extends RestResource {
 
         private List<CityEntity> city_list = null;
 
-        public CityListRestResponse(List<CityDataSet> city_list){
+        public CityListRestResponse(List<CityDataSet> cityList){
             this.city_list = new LinkedList<CityEntity>();
-            for (Iterator<CityDataSet> i = city_list.iterator(); i.hasNext(); ){
+            for (Iterator<CityDataSet> i = cityList.iterator(); i.hasNext(); ){
                 CityEntity city = new CityEntity(i.next());
                 this.city_list.add(city);
             }
