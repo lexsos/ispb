@@ -6,6 +6,9 @@ Ext.define 'ISPBClient.view.street.EditStreetWindow',
   layout: 'fit'
   autoShow: true
 
+  config:
+    store: null
+
   buttons: [
     {
       text: 'Сохранить'

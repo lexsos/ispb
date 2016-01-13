@@ -18,6 +18,9 @@ Ext.define 'ISPBClient.controller.street.StreetGridCtrl',
       'StreetGrid button[action=delete]':
         click: this.onDeleteClick
 
+      'StreetGrid':
+        itemdblclick: this.onItemDblClick
+
   getSelectedRecord: (control) ->
     grid = control.up('StreetGrid')
     s = grid.getSelectionModel().getSelection()
@@ -28,14 +31,21 @@ Ext.define 'ISPBClient.controller.street.StreetGridCtrl',
   onRefreshClick: (btn) ->
     btn.up('StreetGrid').getStore().load()
 
-  onAddClick: () ->
+  onAddClick: (btn) ->
     view = Ext.widget('editStreetWindow')
+    view.setStore(btn.up('StreetGrid').getStore())
 
   onEditClick: (btn) ->
     record = this.getSelectedRecord(btn)
     if record
       view = Ext.widget('editStreetWindow')
       view.down('form').loadRecord(record)
+      view.setStore(btn.up('StreetGrid').getStore())
 
   onDeleteClick: () ->
     return
+
+  onItemDblClick: (grid, record) ->
+    view = Ext.widget('editStreetWindow')
+    view.down('form').loadRecord(record);
+    view.setStore(grid.getStore())

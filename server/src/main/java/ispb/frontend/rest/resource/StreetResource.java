@@ -1,7 +1,11 @@
 package ispb.frontend.rest.resource;
 
 import ispb.base.Application;
+import ispb.base.db.dao.CityDataSetDao;
+import ispb.base.db.dao.StreetDataSetDao;
+import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.dataset.StreetDataSet;
+import ispb.base.frontend.rest.ErrorRestResponse;
 import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
@@ -71,6 +75,11 @@ public class StreetResource extends RestResource {
             for (Iterator<StreetDataSet> i = streetList.iterator(); i.hasNext(); )
                 this.streetList.add(new StreetEntity(i.next()));
         }
+
+        public StreetListRestResponse(StreetDataSet street){
+            streetList = new LinkedList<StreetEntity>();
+            streetList.add(new  StreetEntity(street));
+        }
     }
 
     public int getReadAccessLevel(){
@@ -90,5 +99,57 @@ public class StreetResource extends RestResource {
                                       Map<String, String[]> params,
                                       Application application){
         return new StreetListRestResponse(application.getDaoFactory().getStreetDao().getAll());
+    }
+
+    public RestResponse createEntity(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     RestEntity obj,
+                                     Map<String, String[]> params,
+                                     Application application){
+        StreetEntity entity = (StreetEntity)obj;
+        StreetDataSetDao streetDao = application.getDaoFactory().getStreetDao();
+        CityDataSetDao cityDao = application.getDaoFactory().getCityDao();
+
+        CityDataSet city = cityDao.getById(entity.getCityId());
+
+        if (city == null)
+            return ErrorRestResponse.notFound();
+
+        if (streetDao.getByName(city, entity.getName()) != null)
+            return ErrorRestResponse.alreadyExist();
+
+        StreetDataSet street = new StreetDataSet(entity.getName(), city);
+        streetDao.save(street);
+
+        return new StreetListRestResponse(street);
+    }
+
+    public RestResponse updateEntity(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     long id,
+                                     RestEntity obj,
+                                     Map<String, String[]> params,
+                                     Application application){
+        StreetEntity entity = (StreetEntity)obj;
+        StreetDataSetDao streetDao = application.getDaoFactory().getStreetDao();
+        CityDataSetDao cityDao = application.getDaoFactory().getCityDao();
+        StreetDataSet street = streetDao.getById(id);
+
+        if (street == null)
+            return ErrorRestResponse.notFound();
+
+        CityDataSet city = cityDao.getById(entity.getCityId());
+
+        if (city == null)
+            return ErrorRestResponse.notFound();
+
+        if (streetDao.getByName(city, entity.getName()) != null)
+            return ErrorRestResponse.alreadyExist();
+
+        street.setName(entity.getName());
+        street.setCity(city);
+        streetDao.save(street);
+
+        return new StreetListRestResponse(street);
     }
 }

@@ -48,4 +48,16 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     public StreetDataSet getById(long id){
         return (StreetDataSet)this.getEntityById(StreetDataSet.class, id);
     }
+
+    public StreetDataSet getByName(CityDataSet city, String name){
+        String hql = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/getByCityByStreeName.hql");
+        Object result = this.doTransaction(
+                (session, transaction) ->
+                        session.createQuery(hql).setParameter("city", city).setParameter("name", name).list()
+        );
+        List<StreetDataSet> list = (List<StreetDataSet>)result;
+        if (list.isEmpty())
+            return null;
+        return list.get(0);
+    }
 }

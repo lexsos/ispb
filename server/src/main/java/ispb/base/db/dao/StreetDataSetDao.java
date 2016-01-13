@@ -11,4 +11,5 @@ public interface StreetDataSetDao {
     List<StreetDataSet> getAll();
     List<StreetDataSet> getByCity(CityDataSet city);
     StreetDataSet getById(long id);
+    StreetDataSet getByName(CityDataSet city, String name);
 }
