@@ -2,6 +2,8 @@ Ext.define 'ISPBClient.controller.city.AddWindowCtrl',
   extend: 'Ext.app.Controller'
   views: ['city.AddWindow']
 
+  requires: ['ISPBClient.utils.RpcProcedure']
+
   init: ->
     this.control
       'addCityWindow button[action=cancel]':
@@ -13,14 +15,30 @@ Ext.define 'ISPBClient.controller.city.AddWindowCtrl',
   onCancelClick: (btn) ->
     btn.up('addCityWindow').close()
 
+  validateForm: (form) ->
+    cityNameField = form.findField('name')
+
+    if cityNameField.getValue() == ""
+      cityNameField.markInvalid('Укажите имя города')
+      return false
+
+    if !form.isDirty()
+      return true
+
+    if ISPBClient.utils.RpcProcedure.cityNameExist(cityNameField.getValue())
+      cityNameField.markInvalid('Город с указанным именем уже существует')
+      return false
+
+    return true
+
   onSaveClick: (btn) ->
     window = btn.up('addCityWindow')
     form   = window.down('form').getForm()
     record = form.getRecord()
     values = form.getValues()
-    store = Ext.widget('CityGrid').getStore()
+    store =  window.getStore()
 
-    if !form.isValid()
+    if !this.validateForm(form)
       return
 
     if (!record)

@@ -1,13 +1,10 @@
-Ext.define 'ISPBClient.view.city.AddWindow',
+Ext.define 'ISPBClient.view.street.EditStreetWindow',
   extend: 'Ext.window.Window'
-  alias: 'widget.addCityWindow'
+  alias: 'widget.editStreetWindow'
 
-  title: 'Город'
+  title: 'Улица'
   layout: 'fit'
   autoShow: true
-
-  config:
-    store: null
 
   buttons: [
     {
@@ -28,9 +25,21 @@ Ext.define 'ISPBClient.view.city.AddWindow',
       trackResetOnLoad: true
       items:[
         {
+          xtype: 'combobox'
+          name : 'cityId'
+          fieldLabel: 'Город'
+          margin: '5 5 5 5'
+          displayField: 'name',
+          valueField: 'id',
+          typeAhead: true
+          store:
+            model: 'ISPBClient.model.City'
+            autoLoad: true
+        }
+        {
           xtype: 'textfield'
           name : 'name'
-          fieldLabel: 'Название города'
+          fieldLabel: 'Название улицы'
           margin: '5 5 5 5'
         }
       ]

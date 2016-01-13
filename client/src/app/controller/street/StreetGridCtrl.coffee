@@ -2,5 +2,40 @@ Ext.define 'ISPBClient.controller.street.StreetGridCtrl',
   extend: 'Ext.app.Controller'
 
   views: ['street.StreetGrid']
-  stores: ['StreetStore']
   models: ['Street']
+
+  init: ->
+    this.control
+      'StreetGrid button[action=refresh]':
+        click: this.onRefreshClick
+
+      'StreetGrid button[action=add]':
+        click: this.onAddClick
+
+      'StreetGrid button[action=edit]':
+        click: this.onEditClick
+
+      'StreetGrid button[action=delete]':
+        click: this.onDeleteClick
+
+  getSelectedRecord: (control) ->
+    grid = control.up('StreetGrid')
+    s = grid.getSelectionModel().getSelection()
+    if s.length > 0
+      return s[0]
+    return null
+
+  onRefreshClick: (btn) ->
+    btn.up('StreetGrid').getStore().load()
+
+  onAddClick: () ->
+    view = Ext.widget('editStreetWindow')
+
+  onEditClick: (btn) ->
+    record = this.getSelectedRecord(btn)
+    if record
+      view = Ext.widget('editStreetWindow')
+      view.down('form').loadRecord(record)
+
+  onDeleteClick: () ->
+    return

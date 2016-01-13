@@ -10,7 +10,10 @@ Ext.define 'ISPBClient.view.street.StreetGrid',
 
   features: [Ext.create('Ext.grid.feature.Grouping', {groupHeaderTpl: 'Город  {name} ({rows.length})' })]
 
-  store: 'StreetStore'
+  store:
+    model: 'ISPBClient.model.Street'
+    autoLoad: true
+    groupField: 'cityName'
 
   dockedItems: [
     {

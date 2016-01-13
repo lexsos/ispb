@@ -2,7 +2,6 @@ Ext.define 'ISPBClient.controller.city.CityGridCtrl',
   extend: 'Ext.app.Controller'
 
   views: ['city.CityGrid']
-  stores: ['CityStore']
   models: ['City']
 
   init: ->
@@ -32,19 +31,22 @@ Ext.define 'ISPBClient.controller.city.CityGridCtrl',
   onItemDblClick: (grid, record) ->
     view = Ext.widget('addCityWindow')
     view.down('form').loadRecord(record);
+    view.setStore(grid.getStore())
 
-  onAddClick: ->
+  onAddClick: (btn) ->
     view = Ext.widget('addCityWindow')
+    view.setStore(btn.up('CityGrid').getStore())
 
   onEditClick: (btn) ->
     record = this.getSelectedRecord(btn)
     if record
       view = Ext.widget('addCityWindow')
       view.down('form').loadRecord(record)
+      view.setStore(btn.up('CityGrid').getStore())
 
   onDeletelick: (btn) ->
     record = this.getSelectedRecord(btn)
-    store = this.getStore('CityStore')
+    store = btn.up('CityGrid').getStore()
     if record
       Ext.MessageBox.confirm 'Удаление', 'Вы действительно хотите удалить город ' + record.get('name') + '?', (btn) ->
         if btn == 'yes'
@@ -52,4 +54,4 @@ Ext.define 'ISPBClient.controller.city.CityGridCtrl',
           store.sync()
 
   onRefreshClick: (btn) ->
-    this.getStore('CityStore').load()
+    btn.up('CityGrid').getStore().load()

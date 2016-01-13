@@ -8,7 +8,7 @@ Ext.define 'ISPBClient.view.building.BuildingGrid',
     {header: 'Улица', dataIndex: 'name', flex: 1}
   ]
 
-  #store: 'CityStore'
+  #store:
 
   dockedItems: [
     {

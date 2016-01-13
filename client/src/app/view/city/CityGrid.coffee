@@ -7,7 +7,9 @@ Ext.define 'ISPBClient.view.city.CityGrid',
     {header: 'Название', dataIndex: 'name', flex: 1}
   ]
 
-  store: 'CityStore'
+  store:
+    model: 'ISPBClient.model.City'
+    autoLoad: true
 
   dockedItems: [
     {
