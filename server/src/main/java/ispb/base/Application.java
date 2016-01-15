@@ -8,6 +8,12 @@ import ispb.base.service.UserAccountService;
 
 public interface Application {
 
+    <T> void addByType(Class<T> clazz, T obj);
+    <T> T getByType(Class<T> clazz);
+
+    void addByName(String name, Object obj);
+    <T> T getByName(String name, Class<T> clazz);
+
     Config getConfig();
     void setConfig(Config config);
 

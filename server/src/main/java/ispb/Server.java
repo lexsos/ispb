@@ -28,29 +28,34 @@ public class Server {
 
         Config conf = new ConfigImpl( args[0] );
         application.setConfig(conf);
+        application.addByType(Config.class, conf);
 
         AppResources resources = AppResourcesImpl.getInstance();
         application.setAppResources(resources);
+        application.addByType(AppResources.class, resources);
 
         LogService logService  = new LogServiceImpl(conf);
         application.setLogService(logService);
+        application.addByType(LogService.class, logService);
 
         DBService dbService = new DBServiceImpl(application);
         dbService.migrate();
 
         DaoFactory daoFactory = dbService.getDaoFactory();
         application.setDaoFactory(daoFactory);
+        application.addByType(DaoFactory.class, daoFactory);
 
         UserAccountService userAccountService = new UserAccountServiceImpl(application);
         application.setUserAccountService(userAccountService);
+        application.addByType(UserAccountService.class, userAccountService);
 
-        application.getLogService().info("Starting http server");
+        application.getByType(LogService.class).info("Starting http server");
         HttpServer server = new HttpServerImpl(application);
         try {
             server.start();
         }
         catch (Exception e){
-            application.getLogService().error("Can't start http server", e);
+            application.getByType(LogService.class).error("Can't start http server", e);
             System.exit(0);
         }
 
@@ -58,7 +63,7 @@ public class Server {
             server.join();
         }
         catch (InterruptedException e){
-            application.getLogService().info("Join was interrupted", e);
+            application.getByType(LogService.class).info("Join was interrupted", e);
         }
 
     }

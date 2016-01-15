@@ -10,7 +10,9 @@ import ispb.base.db.dataset.*;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.frontend.HttpServer;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
+import ispb.base.service.LogService;
 import ispb.base.service.UserAccountService;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
@@ -29,15 +31,28 @@ public class Testing
         Application application = ApplicationImpl.getApplication();
         Config conf = new ConfigImpl( args[0] );
         application.setConfig(conf);
+        application.addByType(Config.class, conf);
         application.setAppResources(AppResourcesImpl.getInstance());
+        application.addByType(AppResources.class, AppResourcesImpl.getInstance());
 
-        application.setLogService(new LogServiceImpl(conf));
+        LogService logService = new LogServiceImpl(conf);
+        application.setLogService(logService);
+        application.addByType(LogService.class, logService);
+
 
         DBService dbSrv = new DBServiceImpl(application);
         dbSrv.clearDB();
         dbSrv.migrate();
-        application.setDaoFactory(dbSrv.getDaoFactory());
+        DaoFactory daoFactory = dbSrv.getDaoFactory();
+        application.setDaoFactory(daoFactory);
+        application.addByType(DaoFactory.class, daoFactory);
 
+        System.out.println(DBService.class.getTypeName());
+        System.out.println(DBService.class.getCanonicalName());
+        System.out.println(DBService.class.getName());
+        System.out.println(DBService.class.getSimpleName());
+        application.addByType(DBService.class, dbSrv);
+        DBService dbSrv1 = application.getByType(DBService.class);
 
         CityDataSet c = new CityDataSet("Vologda");
         application.getDaoFactory().getCityDao().save(c);
@@ -126,7 +141,9 @@ public class Testing
         System.out.println(daoF.getUserDao().getByLogin("lex"));
 
         application.setDaoFactory(daoF);
-        application.setUserAccountService(new UserAccountServiceImpl(application));
+        UserAccountService userAccountService = new UserAccountServiceImpl(application);
+        application.setUserAccountService(userAccountService);
+        application.addByType(UserAccountService.class, userAccountService);
 
         UserAccountService accSer = new UserAccountServiceImpl(application);
         System.out.println(accSer.addUser("lex", "123456", "Lex", "---", AccessLevel.ADMIN));
