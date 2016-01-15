@@ -152,4 +152,19 @@ public class StreetResource extends RestResource {
 
         return new StreetListRestResponse(street);
     }
+
+    public RestResponse deleteEntity(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     long id,
+                                     Map<String, String[]> params,
+                                     Application application){
+        StreetDataSetDao dao = application.getDaoFactory().getStreetDao();
+        StreetDataSet street = dao.getById(id);
+
+        if (street == null)
+            return ErrorRestResponse.notFound();;
+
+        dao.delete(street);
+        return new RestResponse();
+    }
 }

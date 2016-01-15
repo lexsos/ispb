@@ -42,8 +42,14 @@ Ext.define 'ISPBClient.controller.street.StreetGridCtrl',
       view.down('form').loadRecord(record)
       view.setStore(btn.up('StreetGrid').getStore())
 
-  onDeleteClick: () ->
-    return
+  onDeleteClick: (btn) ->
+    record = this.getSelectedRecord(btn)
+    store = btn.up('StreetGrid').getStore()
+    if record
+      Ext.MessageBox.confirm 'Удаление', 'Вы действительно хотите удалить улицу ' + record.get('name') + '?', (btn) ->
+        if btn == 'yes'
+          store.remove(record)
+          store.sync()
 
   onItemDblClick: (grid, record) ->
     view = Ext.widget('editStreetWindow')
