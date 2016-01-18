@@ -27,6 +27,10 @@ public class BaseServlet extends HttpServlet  {
         return ApplicationImpl.getApplication();
     }
 
+    protected LogService getLogService(){
+        return getApplication().getByType(LogService.class);
+    }
+
     protected void writeJson(HttpServletResponse response, String json) throws IOException{
 
         response.setContentType("application/json");
@@ -40,10 +44,10 @@ public class BaseServlet extends HttpServlet  {
             jsonObj = GSON.fromJson(request.getReader(), clazz);
         }
         catch (JsonParseException e){
-            getApplication().getByType(LogService.class).debug("Can't parse json", e);
+            getLogService().debug("Can't parse json", e);
         }
         catch (IOException e){
-            getApplication().getByType(LogService.class).info("Can't read request", e);
+            getLogService().info("Can't read request", e);
         }
         return jsonObj;
     }
@@ -71,7 +75,7 @@ public class BaseServlet extends HttpServlet  {
             typeList.load(in);
         }
         catch (IOException e){
-            getApplication().getByType(LogService.class).warn("Can't load resource: " + resourceName, e);
+            getLogService().warn("Can't load resource: " + resourceName, e);
         }
     }
 
@@ -85,7 +89,7 @@ public class BaseServlet extends HttpServlet  {
             clazz = Class.forName(typeName);
         }
         catch (ClassNotFoundException e){
-            getApplication().getByType(LogService.class).warn("Type not found: " + typeName, e);
+            getLogService().warn("Type not found: " + typeName, e);
             return null;
         }
 

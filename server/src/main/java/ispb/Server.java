@@ -35,22 +35,22 @@ public class Server {
         LogService logService  = new LogServiceImpl(conf);
         application.addByType(LogService.class, logService);
 
-        DBService dbService = new DBServiceImpl(application);
+        DBService dbService = new DBServiceImpl(conf, resources, logService);
         dbService.migrate();
 
         DaoFactory daoFactory = dbService.getDaoFactory();
         application.addByType(DaoFactory.class, daoFactory);
 
-        UserAccountService userAccountService = new UserAccountServiceImpl(application);
+        UserAccountService userAccountService = new UserAccountServiceImpl(daoFactory);
         application.addByType(UserAccountService.class, userAccountService);
 
-        application.getByType(LogService.class).info("Starting http server");
-        HttpServer server = new HttpServerImpl(application);
+        logService.info("Starting http server");
+        HttpServer server = new HttpServerImpl(conf);
         try {
             server.start();
         }
         catch (Exception e){
-            application.getByType(LogService.class).error("Can't start http server", e);
+            logService.error("Can't start http server", e);
             System.exit(0);
         }
 
@@ -58,7 +58,7 @@ public class Server {
             server.join();
         }
         catch (InterruptedException e){
-            application.getByType(LogService.class).info("Join was interrupted", e);
+            logService.info("Join was interrupted", e);
         }
 
     }

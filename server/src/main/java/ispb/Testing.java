@@ -67,13 +67,14 @@ public class Testing
         Application application = ApplicationImpl.getApplication();
         Config conf = new ConfigImpl( args[0] );
         application.addByType(Config.class, conf);
-        application.addByType(AppResources.class, AppResourcesImpl.getInstance());
+        AppResources resources = AppResourcesImpl.getInstance();
+        application.addByType(AppResources.class, resources);
 
         LogService logService = new LogServiceImpl(conf);
         application.addByType(LogService.class, logService);
 
 
-        DBService dbSrv = new DBServiceImpl(application);
+        DBService dbSrv = new DBServiceImpl(conf, resources, logService);
         dbSrv.clearDB();
         dbSrv.migrate();
         DaoFactory daoFactory = dbSrv.getDaoFactory();
@@ -172,15 +173,15 @@ public class Testing
         System.out.println(daoF.getUserDao().getByLogin("alex"));
         System.out.println(daoF.getUserDao().getByLogin("lex"));
 
-        UserAccountService userAccountService = new UserAccountServiceImpl(application);
+        UserAccountService userAccountService = new UserAccountServiceImpl(daoFactory);
         application.addByType(UserAccountService.class, userAccountService);
 
-        UserAccountService accSer = new UserAccountServiceImpl(application);
+        UserAccountService accSer = new UserAccountServiceImpl(daoFactory);
         System.out.println(accSer.addUser("lex", "123456", "Lex", "---", AccessLevel.ADMIN));
 
         application.getByType(LogService.class).info("Starting http server");
 
-        HttpServer server = new HttpServerImpl(application);
+        HttpServer server = new HttpServerImpl(conf);
         server.start();
         server.join();
 

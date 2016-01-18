@@ -16,12 +16,12 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 public class HttpServerImpl implements HttpServer {
 
-    private Application application;
     private Server server;
     private HandlerList handlers;
+    private Config config;
 
-    public HttpServerImpl(Application application){
-        this.application =application;
+    public HttpServerImpl(Config config){
+        this.config = config;
         server = null;
         handlers = new HandlerList();
     }
@@ -43,7 +43,7 @@ public class HttpServerImpl implements HttpServer {
     }
 
     private void createServer(){
-        int maxThreads = application.getByType(Config.class).getAsInt("frontend.max_threads");
+        int maxThreads = config.getAsInt("frontend.max_threads");
 
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setMaxThreads(maxThreads);
@@ -53,8 +53,8 @@ public class HttpServerImpl implements HttpServer {
 
     private void addHttpConnector(){
 
-        int httpPort = application.getByType(Config.class).getAsInt("frontend.port");
-        int idleTimeout = application.getByType(Config.class).getAsInt("frontend.idle_timeout");
+        int httpPort = config.getAsInt("frontend.port");
+        int idleTimeout = config.getAsInt("frontend.idle_timeout");
 
         ServerConnector http =new ServerConnector(server);
         http.setPort(httpPort);
@@ -64,10 +64,10 @@ public class HttpServerImpl implements HttpServer {
     }
 
     private void addStaticHandler(){
-        boolean useStatic = application.getByType(Config.class).getAsBool("frontend.use_static");
-        String staticDir = application.getByType(Config.class).getAsStr("frontend.static_dir");
-        String staticPrfix = application.getByType(Config.class).getAsStr("frontend.static_prefix");
-        String[] welcomeFiles = application.getByType(Config.class).getAsStr("frontend.static_welcome_file").split(";");
+        boolean useStatic = config.getAsBool("frontend.use_static");
+        String staticDir = config.getAsStr("frontend.static_dir");
+        String staticPrfix = config.getAsStr("frontend.static_prefix");
+        String[] welcomeFiles = config.getAsStr("frontend.static_welcome_file").split(";");
 
         if (!useStatic)
             return;

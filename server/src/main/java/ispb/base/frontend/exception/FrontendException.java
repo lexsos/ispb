@@ -1,4 +1,6 @@
 package ispb.base.frontend.exception;
 
-public class FrontendException extends Exception{
+import ispb.base.IspbExeption;
+
+public class FrontendException extends IspbExeption{
 }

@@ -13,19 +13,15 @@ import java.util.Objects;
 
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private Application application;
+    private DaoFactory daoFactory;
 
-    public UserAccountServiceImpl(Application application){
-        this.application = application;
-    }
-
-    private DaoFactory getDaoFactory() {
-        return application.getByType(DaoFactory.class);
+    public UserAccountServiceImpl(DaoFactory daoFactory){
+        this.daoFactory = daoFactory;
     }
 
     public UserDataSet auth(String login, String password){
 
-        UserDataSetDao userDao = getDaoFactory().getUserDao();
+        UserDataSetDao userDao = daoFactory.getUserDao();
         UserDataSet user = userDao.getByLogin(login.toLowerCase());
         if (user == null)
             return null;
@@ -37,7 +33,7 @@ public class UserAccountServiceImpl implements UserAccountService {
     }
 
     public boolean loginExist(String login){
-        UserDataSetDao userDao = getDaoFactory().getUserDao();
+        UserDataSetDao userDao = daoFactory.getUserDao();
         return userDao.getByLogin(login.toLowerCase()) != null;
     }
 
@@ -58,7 +54,7 @@ public class UserAccountServiceImpl implements UserAccountService {
         user.setSalt(salt);
         user.setPassword(DigestUtils.sha1Hex(salt + password));
 
-        getDaoFactory().getUserDao().save(user);
+        daoFactory.getUserDao().save(user);
         return user;
     }
 }
