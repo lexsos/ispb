@@ -1,5 +1,6 @@
 package ispb.frontend;
 
+import ispb.base.resources.Config;
 import ispb.frontend.rest.RestServlet;
 import ispb.frontend.rpc.RpcServlet;
 import org.eclipse.jetty.server.Server;
@@ -42,7 +43,7 @@ public class HttpServerImpl implements HttpServer {
     }
 
     private void createServer(){
-        int maxThreads = application.getConfig().getAsInt("frontend.max_threads");
+        int maxThreads = application.getByType(Config.class).getAsInt("frontend.max_threads");
 
         QueuedThreadPool threadPool = new QueuedThreadPool();
         threadPool.setMaxThreads(maxThreads);
@@ -52,8 +53,8 @@ public class HttpServerImpl implements HttpServer {
 
     private void addHttpConnector(){
 
-        int httpPort = application.getConfig().getAsInt("frontend.port");
-        int idleTimeout = application.getConfig().getAsInt("frontend.idle_timeout");
+        int httpPort = application.getByType(Config.class).getAsInt("frontend.port");
+        int idleTimeout = application.getByType(Config.class).getAsInt("frontend.idle_timeout");
 
         ServerConnector http =new ServerConnector(server);
         http.setPort(httpPort);
@@ -63,10 +64,10 @@ public class HttpServerImpl implements HttpServer {
     }
 
     private void addStaticHandler(){
-        boolean useStatic = application.getConfig().getAsBool("frontend.use_static");
-        String staticDir = application.getConfig().getAsStr("frontend.static_dir");
-        String staticPrfix = application.getConfig().getAsStr("frontend.static_prefix");
-        String[] welcomeFiles = application.getConfig().getAsStr("frontend.static_welcome_file").split(";");
+        boolean useStatic = application.getByType(Config.class).getAsBool("frontend.use_static");
+        String staticDir = application.getByType(Config.class).getAsStr("frontend.static_dir");
+        String staticPrfix = application.getByType(Config.class).getAsStr("frontend.static_prefix");
+        String[] welcomeFiles = application.getByType(Config.class).getAsStr("frontend.static_welcome_file").split(";");
 
         if (!useStatic)
             return;

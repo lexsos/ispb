@@ -45,7 +45,7 @@ public class CityNameExistRpc extends RpcProcedure {
                        RpcArg obj,
                        Application application) throws ServletException, IOException {
         CityNameExistArgs args = (CityNameExistArgs)obj;
-        CityDataSetDao dao = application.getDaoFactory().getCityDao();
+        CityDataSetDao dao = getDaoFactory(application).getCityDao();
         if (dao.getByName(args.getName()) != null)
             return true;
         return false;

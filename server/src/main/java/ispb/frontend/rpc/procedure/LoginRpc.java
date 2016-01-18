@@ -5,6 +5,7 @@ import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.service.UserAccountService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +48,7 @@ public class LoginRpc extends RpcProcedure {
                        Application application) throws ServletException, IOException {
 
         LoginArgs arg = (LoginArgs)obj;
-        UserDataSet user = application.getUserAccountService().auth(arg.getLogin(), arg.getPassword());
+        UserDataSet user = application.getByType(UserAccountService.class).auth(arg.getLogin(), arg.getPassword());
         if (user == null)
             return false;
         request.getSession().setAttribute("user", user);

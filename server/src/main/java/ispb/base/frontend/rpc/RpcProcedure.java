@@ -1,6 +1,7 @@
 package ispb.base.frontend.rpc;
 
 import ispb.base.Application;
+import ispb.base.db.utils.DaoFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,5 +17,9 @@ public abstract class RpcProcedure implements RpcAccessLevelable {
 
     public Class<RpcArg> getArgType(){
         return (Class)VoidArg.class;
+    }
+
+    protected DaoFactory getDaoFactory(Application application){
+        return application.getByType(DaoFactory.class);
     }
 }

@@ -27,26 +27,21 @@ public class Server {
         Application application = ApplicationImpl.getApplication();
 
         Config conf = new ConfigImpl( args[0] );
-        application.setConfig(conf);
         application.addByType(Config.class, conf);
 
         AppResources resources = AppResourcesImpl.getInstance();
-        application.setAppResources(resources);
         application.addByType(AppResources.class, resources);
 
         LogService logService  = new LogServiceImpl(conf);
-        application.setLogService(logService);
         application.addByType(LogService.class, logService);
 
         DBService dbService = new DBServiceImpl(application);
         dbService.migrate();
 
         DaoFactory daoFactory = dbService.getDaoFactory();
-        application.setDaoFactory(daoFactory);
         application.addByType(DaoFactory.class, daoFactory);
 
         UserAccountService userAccountService = new UserAccountServiceImpl(application);
-        application.setUserAccountService(userAccountService);
         application.addByType(UserAccountService.class, userAccountService);
 
         application.getByType(LogService.class).info("Starting http server");

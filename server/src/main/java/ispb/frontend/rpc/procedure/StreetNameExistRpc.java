@@ -57,8 +57,8 @@ public class StreetNameExistRpc extends RpcProcedure {
                        RpcArg obj,
                        Application application) throws ServletException, IOException {
         StreetNameExistArgs street = (StreetNameExistArgs)obj;
-        StreetDataSetDao streetDao = application.getDaoFactory().getStreetDao();
-        CityDataSetDao cityDao = application.getDaoFactory().getCityDao();
+        StreetDataSetDao streetDao = getDaoFactory(application).getStreetDao();
+        CityDataSetDao cityDao = getDaoFactory(application).getCityDao();
 
         CityDataSet city = cityDao.getById(street.getCityId());
 

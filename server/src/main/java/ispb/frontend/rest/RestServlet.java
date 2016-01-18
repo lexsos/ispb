@@ -8,6 +8,7 @@ import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.service.LogService;
 import ispb.frontend.utils.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -64,7 +65,7 @@ public class RestServlet extends BaseServlet {
             resource = (RestResource)restResourceClass.newInstance();
         }
         catch (Exception e){
-            getApplication().getLogService().error("Can't create instance for REST resource", e);
+            getApplication().getByType(LogService.class).error("Can't create instance for REST resource", e);
             writeRestResponse(request, response, ErrorRestResponse.internalError());
             return;
         }
@@ -117,7 +118,7 @@ public class RestServlet extends BaseServlet {
                 }
         }
         catch (Throwable e){
-            getApplication().getLogService().error("Can't execute REST resource handler", e);
+            getApplication().getByType(LogService.class).error("Can't execute REST resource handler", e);
             restResponse = ErrorRestResponse.internalError();
         }
 

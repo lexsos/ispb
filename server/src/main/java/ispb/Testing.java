@@ -1,6 +1,11 @@
 package ispb;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
 import ispb.base.Application;
 import ispb.base.db.dao.BuildingDataSetDao;
 import ispb.base.db.dao.CityDataSetDao;
@@ -26,17 +31,45 @@ import ispb.db.DBServiceImpl;
 
 public class Testing
 {
+    public static class JsonTest {
+
+        private Map<String, String> params = new HashMap<String, String>();
+
+        public static JsonTest fromJson(String jsonData){
+            Gson gson = new Gson();
+            return gson.fromJson(jsonData, JsonTest.class);
+        }
+
+        public Map<String, String> getParams() {
+            return params;
+        }
+
+        public void setParams(Map<String, String> params) {
+            this.params = params;
+        }
+
+        public String toJson() {
+            Gson gson = new Gson();
+            return gson.toJson(this);
+        }
+    }
+
     public static void main( String[] args ) throws Exception
     {
+        JsonTest jsonTest = new JsonTest();
+        jsonTest.getParams().put("1", "2");
+        jsonTest.getParams().put("3", "4");
+        String jsonData = jsonTest.toJson();
+        System.out.println(jsonData);
+
+        JsonTest jsonTest2 = JsonTest.fromJson(jsonData);
+
         Application application = ApplicationImpl.getApplication();
         Config conf = new ConfigImpl( args[0] );
-        application.setConfig(conf);
         application.addByType(Config.class, conf);
-        application.setAppResources(AppResourcesImpl.getInstance());
         application.addByType(AppResources.class, AppResourcesImpl.getInstance());
 
         LogService logService = new LogServiceImpl(conf);
-        application.setLogService(logService);
         application.addByType(LogService.class, logService);
 
 
@@ -44,7 +77,6 @@ public class Testing
         dbSrv.clearDB();
         dbSrv.migrate();
         DaoFactory daoFactory = dbSrv.getDaoFactory();
-        application.setDaoFactory(daoFactory);
         application.addByType(DaoFactory.class, daoFactory);
 
         System.out.println(DBService.class.getTypeName());
@@ -55,34 +87,34 @@ public class Testing
         DBService dbSrv1 = application.getByType(DBService.class);
 
         CityDataSet c = new CityDataSet("Vologda");
-        application.getDaoFactory().getCityDao().save(c);
+        application.getByType(DaoFactory.class).getCityDao().save(c);
         System.out.println(c);
 
         StreetDataSet st = new StreetDataSet("Mira", c);
-        application.getDaoFactory().getStreetDao().save(st);
+        application.getByType(DaoFactory.class).getStreetDao().save(st);
 
         BuildingDataSet b = new BuildingDataSet("1A", st);
-        application.getDaoFactory().getBuildingDao().save(b);
+        application.getByType(DaoFactory.class).getBuildingDao().save(b);
 
         b = new BuildingDataSet("2", st);
-        application.getDaoFactory().getBuildingDao().save(b);
+        application.getByType(DaoFactory.class).getBuildingDao().save(b);
 
         b = new BuildingDataSet("3", st);
-        application.getDaoFactory().getBuildingDao().save(b);
+        application.getByType(DaoFactory.class).getBuildingDao().save(b);
 
         c.setName("Sokol");
-        application.getDaoFactory().getCityDao().save(c);
+        application.getByType(DaoFactory.class).getCityDao().save(c);
 
 
         CustomerDataSet cus = new CustomerDataSet("user", "", b, "113", "c0000111");
-        application.getDaoFactory().getCustomerDao().save(cus);
+        application.getByType(DaoFactory.class).getCustomerDao().save(cus);
 
-        for (Iterator iterator = application.getDaoFactory().getBuildingDao().getAll().iterator(); iterator.hasNext();){
+        for (Iterator iterator = application.getByType(DaoFactory.class).getBuildingDao().getAll().iterator(); iterator.hasNext();){
             BuildingDataSet building = (BuildingDataSet) iterator.next();
             System.out.println( building );
         }
 
-        CityDataSetDao CityDao = application.getDaoFactory().getCityDao();
+        CityDataSetDao CityDao = application.getByType(DaoFactory.class).getCityDao();
 
         System.out.println( CityDao.save(new CityDataSet("Vologda")) );
         System.out.println( CityDao.save(new CityDataSet("Moscow")) );
@@ -93,13 +125,13 @@ public class Testing
         System.out.println( CityDao.getByName("Vologda") );
         System.out.println( CityDao.getByName("Spb") );
 
-        StreetDataSetDao StreetDao = application.getDaoFactory().getStreetDao();
+        StreetDataSetDao StreetDao = application.getByType(DaoFactory.class).getStreetDao();
         StreetDao.save(new StreetDataSet("Koneva", c));
         StreetDao.save(new StreetDataSet("Kirova", c));
         System.out.println( StreetDao.getAll() );
         System.out.println( StreetDao.getByCity(c) );
 
-        BuildingDataSetDao buildingDao = application.getDaoFactory().getBuildingDao();
+        BuildingDataSetDao buildingDao = application.getByType(DaoFactory.class).getBuildingDao();
         System.out.println( buildingDao.getAll() );
         System.out.println("--------------------------------------");
         System.out.println( buildingDao.getByCity(c) );
@@ -109,7 +141,7 @@ public class Testing
         System.out.println( buildingDao.getById(1) );
 
 
-        DaoFactory daoF = application.getDaoFactory();
+        DaoFactory daoF = application.getByType(DaoFactory.class);
 
         CustomerDataSetDao customerDao = daoF.getCustomerDao();
         CustomerDataSet customer = new CustomerDataSet("alex", "", b, "123", "+7(921)12345678");
@@ -140,15 +172,13 @@ public class Testing
         System.out.println(daoF.getUserDao().getByLogin("alex"));
         System.out.println(daoF.getUserDao().getByLogin("lex"));
 
-        application.setDaoFactory(daoF);
         UserAccountService userAccountService = new UserAccountServiceImpl(application);
-        application.setUserAccountService(userAccountService);
         application.addByType(UserAccountService.class, userAccountService);
 
         UserAccountService accSer = new UserAccountServiceImpl(application);
         System.out.println(accSer.addUser("lex", "123456", "Lex", "---", AccessLevel.ADMIN));
 
-        application.getLogService().info("Starting http server");
+        application.getByType(LogService.class).info("Starting http server");
 
         HttpServer server = new HttpServerImpl(application);
         server.start();

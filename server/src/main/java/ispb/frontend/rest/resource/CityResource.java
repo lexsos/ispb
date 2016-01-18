@@ -97,7 +97,7 @@ public class CityResource extends RestResource {
                                   long id,
                                   Map<String, String[]> params,
                                   Application application){
-        CityDataSet city = application.getDaoFactory().getCityDao().getById(id);
+        CityDataSet city = getDaoFactory(application).getCityDao().getById(id);
         if (city == null)
             return null;
         return new CityListRestResponse(city);
@@ -107,7 +107,7 @@ public class CityResource extends RestResource {
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
                                       Application application){
-        return new CityListRestResponse(application.getDaoFactory().getCityDao().getAll());
+        return new CityListRestResponse(getDaoFactory(application).getCityDao().getAll());
     }
 
     public RestResponse createEntity(HttpServletRequest request,
@@ -116,7 +116,7 @@ public class CityResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         CityEntity entity = (CityEntity)obj;
-        CityDataSetDao dao = application.getDaoFactory().getCityDao();
+        CityDataSetDao dao = getDaoFactory(application).getCityDao();
 
         if (dao.getByName(entity.getName()) != null)
             return ErrorRestResponse.alreadyExist();
@@ -133,7 +133,7 @@ public class CityResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         CityEntity entity = (CityEntity)obj;
-        CityDataSetDao dao = application.getDaoFactory().getCityDao();
+        CityDataSetDao dao = getDaoFactory(application).getCityDao();
         CityDataSet city = dao.getById(id);
 
         if (city == null)
@@ -151,7 +151,7 @@ public class CityResource extends RestResource {
                                      long id,
                                      Map<String, String[]> params,
                                      Application application){
-        CityDataSetDao dao = application.getDaoFactory().getCityDao();
+        CityDataSetDao dao = getDaoFactory(application).getCityDao();
         CityDataSet city = dao.getById(id);
 
         if (city == null)

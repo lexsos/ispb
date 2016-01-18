@@ -98,7 +98,7 @@ public class StreetResource extends RestResource {
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
                                       Application application){
-        return new StreetListRestResponse(application.getDaoFactory().getStreetDao().getAll());
+        return new StreetListRestResponse(getDaoFactory(application).getStreetDao().getAll());
     }
 
     public RestResponse createEntity(HttpServletRequest request,
@@ -107,8 +107,8 @@ public class StreetResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         StreetEntity entity = (StreetEntity)obj;
-        StreetDataSetDao streetDao = application.getDaoFactory().getStreetDao();
-        CityDataSetDao cityDao = application.getDaoFactory().getCityDao();
+        StreetDataSetDao streetDao = getDaoFactory(application).getStreetDao();
+        CityDataSetDao cityDao = getDaoFactory(application).getCityDao();
 
         CityDataSet city = cityDao.getById(entity.getCityId());
 
@@ -131,8 +131,8 @@ public class StreetResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         StreetEntity entity = (StreetEntity)obj;
-        StreetDataSetDao streetDao = application.getDaoFactory().getStreetDao();
-        CityDataSetDao cityDao = application.getDaoFactory().getCityDao();
+        StreetDataSetDao streetDao = getDaoFactory(application).getStreetDao();
+        CityDataSetDao cityDao = getDaoFactory(application).getCityDao();
         StreetDataSet street = streetDao.getById(id);
 
         if (street == null)
@@ -158,7 +158,7 @@ public class StreetResource extends RestResource {
                                      long id,
                                      Map<String, String[]> params,
                                      Application application){
-        StreetDataSetDao dao = application.getDaoFactory().getStreetDao();
+        StreetDataSetDao dao = getDaoFactory(application).getStreetDao();
         StreetDataSet street = dao.getById(id);
 
         if (street == null)

@@ -1,6 +1,7 @@
 package ispb.base.frontend.rest;
 
 import ispb.base.Application;
+import ispb.base.db.utils.DaoFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,4 +57,9 @@ public abstract class RestResource implements RestAccessLevelable {
                                      Application application){
         return ErrorRestResponse.methodNotAllowed();
     }
+
+    protected DaoFactory getDaoFactory(Application application){
+        return application.getByType(DaoFactory.class);
+    }
+
 }

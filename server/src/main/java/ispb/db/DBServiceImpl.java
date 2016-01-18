@@ -2,7 +2,9 @@ package ispb.db;
 
 import ispb.base.Application;
 import ispb.base.db.utils.DaoFactory;
+import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
+import ispb.base.service.LogService;
 import ispb.db.util.DaoFactoryImpl;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;
@@ -24,7 +26,7 @@ public class DBServiceImpl implements DBService {
     }
 
     public void clearDB(){
-        Config config = application.getConfig();
+        Config config = application.getByType(Config.class);
         Flyway flyway = new Flyway();
         flyway.setDataSource(getConnectionString(), config.getAsStr("db.user"), config.getAsStr("db.password"));
         flyway.clean();
@@ -32,14 +34,14 @@ public class DBServiceImpl implements DBService {
 
     public void migrate(){
 
-        Config config = application.getConfig();
+        Config config = application.getByType(Config.class);
         Flyway flyway = new Flyway();
         flyway.setDataSource(getConnectionString(), config.getAsStr("db.user"), config.getAsStr("db.password"));
         try {
             flyway.migrate();
         }
         catch (FlywayException e){
-            application.getLogService().error("Can't perform DB migration");
+            application.getByType(LogService.class).error("Can't perform DB migration");
             throw e;
         }
 
@@ -47,7 +49,7 @@ public class DBServiceImpl implements DBService {
 
     public DaoFactory getDaoFactory(){
         if (daoFactory == null)
-            daoFactory = new DaoFactoryImpl(getSessionFactory(), application.getAppResources());
+            daoFactory = new DaoFactoryImpl(getSessionFactory(), application.getByType(AppResources.class));
         return daoFactory;
     }
 
@@ -62,7 +64,7 @@ public class DBServiceImpl implements DBService {
     }
 
     private String getConnectionString(){
-        Config config = application.getConfig();
+        Config config = application.getByType(Config.class);
         StringBuilder connStr = new StringBuilder();
         connStr.append("jdbc:postgresql://");
         connStr.append(config.getAsStr("db.host"));
@@ -74,7 +76,7 @@ public class DBServiceImpl implements DBService {
     }
 
     private Configuration getHbmConf(){
-        Config config = application.getConfig();
+        Config config = application.getByType(Config.class);
         Configuration  hdmConfiguration = new Configuration().configure( "hibernate.cfg.xml");
 
         hdmConfiguration.setProperty("hibernate.connection.url", getConnectionString());

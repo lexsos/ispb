@@ -15,6 +15,7 @@ import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.utils.Verifiable;
+import ispb.base.service.LogService;
 
 
 public class BaseServlet extends HttpServlet  {
@@ -39,10 +40,10 @@ public class BaseServlet extends HttpServlet  {
             jsonObj = GSON.fromJson(request.getReader(), clazz);
         }
         catch (JsonParseException e){
-            getApplication().getLogService().debug("Can't parse json", e);
+            getApplication().getByType(LogService.class).debug("Can't parse json", e);
         }
         catch (IOException e){
-            getApplication().getLogService().info("Can't read request", e);
+            getApplication().getByType(LogService.class).info("Can't read request", e);
         }
         return jsonObj;
     }
@@ -70,7 +71,7 @@ public class BaseServlet extends HttpServlet  {
             typeList.load(in);
         }
         catch (IOException e){
-            getApplication().getLogService().warn("Can't load resource: " + resourceName, e);
+            getApplication().getByType(LogService.class).warn("Can't load resource: " + resourceName, e);
         }
     }
 
@@ -84,7 +85,7 @@ public class BaseServlet extends HttpServlet  {
             clazz = Class.forName(typeName);
         }
         catch (ClassNotFoundException e){
-            getApplication().getLogService().warn("Type not found: " + typeName, e);
+            getApplication().getByType(LogService.class).warn("Type not found: " + typeName, e);
             return null;
         }
 
