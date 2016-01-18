@@ -1,6 +1,7 @@
 package ispb.dictionary;
 
 import ispb.base.db.dataset.BuildingDataSet;
+import ispb.base.db.dataset.StreetDataSet;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
@@ -37,6 +38,13 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
     }
 
     public boolean exist(long streetId, String buildingName){
-        return false;
+        StreetDataSet street = daoFactory.getStreetDao().getById(streetId);
+        if (street == null)
+            return false;
+
+        if (daoFactory.getBuildingDao().getByName(street, buildingName) == null )
+            return false;
+
+        return true;
     }
 }

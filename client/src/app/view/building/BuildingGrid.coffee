@@ -4,11 +4,14 @@ Ext.define 'ISPBClient.view.building.BuildingGrid',
 
   columns: [
     {xtype: 'rownumberer'}
-    {header: 'Город', dataIndex: 'city_name', flex: 1}
-    {header: 'Улица', dataIndex: 'name', flex: 1}
+    {header: 'Город', dataIndex: 'cityName', flex: 1}
+    {header: 'Улица', dataIndex: 'streetName', flex: 1}
+    {header: 'Здание', dataIndex: 'name', flex: 1}
   ]
 
-  #store:
+  store:
+    model: 'ISPBClient.model.Building'
+    autoLoad: true
 
   dockedItems: [
     {

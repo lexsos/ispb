@@ -12,6 +12,8 @@ Ext.application
 
     'street.StreetGridCtrl',
     'street.EditStreetWindowCtrl',
+
+    'building.BuildingGridCtrl',
   ]
 
   launch: ->

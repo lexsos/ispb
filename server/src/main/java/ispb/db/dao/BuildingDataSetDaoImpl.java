@@ -56,6 +56,18 @@ public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDa
         return (List<BuildingDataSet>)result;
     }
 
+    public BuildingDataSet getByName(StreetDataSet street, String buildingName){
+        String hql = resources.getAsString(this.getClass(), "BuildingDataSetDaoImpl/getByStreetIdByName.hql");
+        Object result = this.doTransaction(
+                (session, transaction) ->
+                        session.createQuery(hql).setParameter("street", street).setParameter("name", buildingName).list()
+        );
+        List<BuildingDataSet> list = (List<BuildingDataSet>)result;
+        if (list.isEmpty())
+            return null;
+        return list.get(0);
+    }
+
     public BuildingDataSet getById(long id){
         return (BuildingDataSet)this.getEntityById(BuildingDataSet.class, id);
     }

@@ -14,4 +14,5 @@ public interface BuildingDataSetDao {
     List<BuildingDataSet> getByCity(CityDataSet city);
     List<BuildingDataSet> getByStreet(StreetDataSet street);
     BuildingDataSet getById(long id);
+    BuildingDataSet getByName(StreetDataSet street, String buildingName);
 }
