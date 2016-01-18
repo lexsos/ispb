@@ -1,12 +1,10 @@
 package ispb.frontend.rpc.procedure;
 
 import ispb.base.Application;
-import ispb.base.db.dao.CityDataSetDao;
-import ispb.base.db.dao.StreetDataSetDao;
-import ispb.base.db.dataset.CityDataSet;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.service.dictionary.StreetDictionaryService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -57,17 +55,7 @@ public class StreetNameExistRpc extends RpcProcedure {
                        RpcArg obj,
                        Application application) throws ServletException, IOException {
         StreetNameExistArgs street = (StreetNameExistArgs)obj;
-        StreetDataSetDao streetDao = getDaoFactory(application).getStreetDao();
-        CityDataSetDao cityDao = getDaoFactory(application).getCityDao();
-
-        CityDataSet city = cityDao.getById(street.getCityId());
-
-        if (city == null)
-            return false;
-
-        if (streetDao.getByName(city, street.getName()) == null)
-            return false;
-
-        return true;
+        StreetDictionaryService service = application.getByType(StreetDictionaryService.class);
+        return service.exist(street.getCityId(), street.getName());
     }
 }

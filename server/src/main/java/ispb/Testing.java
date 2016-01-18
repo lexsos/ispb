@@ -19,6 +19,8 @@ import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;
 import ispb.base.service.UserAccountService;
+import ispb.base.service.dictionary.CityDictionaryService;
+import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
@@ -178,6 +180,11 @@ public class Testing
 
         UserAccountService accSer = new UserAccountServiceImpl(daoFactory);
         System.out.println(accSer.addUser("lex", "123456", "Lex", "---", AccessLevel.ADMIN));
+
+        CityDictionaryService cityDictionaryService = new CityDictionaryServiceImpl(daoF);
+        application.addByType(CityDictionaryService.class, cityDictionaryService);
+
+        cityDictionaryService.update(c.getId(), c.getName());
 
         application.getByType(LogService.class).info("Starting http server");
 

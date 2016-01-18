@@ -5,6 +5,7 @@ import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.service.dictionary.CityDictionaryService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -45,9 +46,6 @@ public class CityNameExistRpc extends RpcProcedure {
                        RpcArg obj,
                        Application application) throws ServletException, IOException {
         CityNameExistArgs args = (CityNameExistArgs)obj;
-        CityDataSetDao dao = getDaoFactory(application).getCityDao();
-        if (dao.getByName(args.getName()) != null)
-            return true;
-        return false;
+        return application.getByType(CityDictionaryService.class).exist(args.getName());
     }
 }

@@ -8,6 +8,9 @@ import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.service.dictionary.CityDictionaryService;
+import ispb.base.service.exception.AlreadyExistException;
+import ispb.base.service.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,16 +36,6 @@ public class CityResource extends RestResource {
             if (name != null)
                 return true;
             return false;
-        }
-
-        public CityDataSet makeDataSet(){
-            CityDataSet city = new CityDataSet();
-            city.setName(getName());
-            return city;
-        }
-
-        public void updateDataSet(CityDataSet city){
-            city.setName(getName());
         }
 
         public String getName() {
@@ -97,9 +90,9 @@ public class CityResource extends RestResource {
                                   long id,
                                   Map<String, String[]> params,
                                   Application application){
-        CityDataSet city = getDaoFactory(application).getCityDao().getById(id);
+        CityDataSet city = getCityDicService(application).getById(id);
         if (city == null)
-            return null;
+            return ErrorRestResponse.notFound();
         return new CityListRestResponse(city);
     }
 
@@ -107,7 +100,7 @@ public class CityResource extends RestResource {
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
                                       Application application){
-        return new CityListRestResponse(getDaoFactory(application).getCityDao().getAll());
+        return new CityListRestResponse(getCityDicService(application).getAll());
     }
 
     public RestResponse createEntity(HttpServletRequest request,
@@ -116,14 +109,13 @@ public class CityResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         CityEntity entity = (CityEntity)obj;
-        CityDataSetDao dao = getDaoFactory(application).getCityDao();
-
-        if (dao.getByName(entity.getName()) != null)
+        try {
+            CityDataSet city = getCityDicService(application).create(entity.getName());
+            return new CityListRestResponse(city);
+        }
+        catch (AlreadyExistException e){
             return ErrorRestResponse.alreadyExist();
-
-        CityDataSet city = entity.makeDataSet();
-        dao.save(city);
-        return new CityListRestResponse(city);
+        }
     }
 
     public RestResponse updateEntity(HttpServletRequest request,
@@ -133,17 +125,16 @@ public class CityResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         CityEntity entity = (CityEntity)obj;
-        CityDataSetDao dao = getDaoFactory(application).getCityDao();
-        CityDataSet city = dao.getById(id);
-
-        if (city == null)
-            return null;
-        if (dao.getByName(entity.getName()) != null)
+        try {
+            CityDataSet city = getCityDicService(application).update(id, entity.getName());
+            return new CityListRestResponse(city);
+        }
+        catch (AlreadyExistException e){
             return ErrorRestResponse.alreadyExist();
-
-        entity.updateDataSet(city);
-        dao.save(city);
-        return new CityListRestResponse(city);
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
     }
 
     public RestResponse deleteEntity(HttpServletRequest request,
@@ -151,13 +142,16 @@ public class CityResource extends RestResource {
                                      long id,
                                      Map<String, String[]> params,
                                      Application application){
-        CityDataSetDao dao = getDaoFactory(application).getCityDao();
-        CityDataSet city = dao.getById(id);
+        try {
+            getCityDicService(application).delete(id);
+            return new RestResponse();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+    }
 
-        if (city == null)
-            return null;
-
-        dao.delete(city);
-        return new RestResponse();
+    private CityDictionaryService getCityDicService(Application application){
+        return application.getByType(CityDictionaryService.class);
     }
 }

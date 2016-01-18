@@ -10,6 +10,10 @@ import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.service.dictionary.StreetDictionaryService;
+import ispb.base.service.exception.AlreadyExistException;
+import ispb.base.service.exception.DicElementNotFoundException;
+import ispb.base.service.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -98,7 +102,7 @@ public class StreetResource extends RestResource {
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
                                       Application application){
-        return new StreetListRestResponse(getDaoFactory(application).getStreetDao().getAll());
+        return new StreetListRestResponse(getStreetDicService(application).getAll());
     }
 
     public RestResponse createEntity(HttpServletRequest request,
@@ -107,21 +111,17 @@ public class StreetResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         StreetEntity entity = (StreetEntity)obj;
-        StreetDataSetDao streetDao = getDaoFactory(application).getStreetDao();
-        CityDataSetDao cityDao = getDaoFactory(application).getCityDao();
-
-        CityDataSet city = cityDao.getById(entity.getCityId());
-
-        if (city == null)
-            return ErrorRestResponse.notFound();
-
-        if (streetDao.getByName(city, entity.getName()) != null)
+        StreetDictionaryService service = getStreetDicService(application);
+        try {
+            StreetDataSet street = service.create(entity.getCityId(), entity.getName());
+            return new StreetListRestResponse(street);
+        }
+        catch (AlreadyExistException e){
             return ErrorRestResponse.alreadyExist();
-
-        StreetDataSet street = new StreetDataSet(entity.getName(), city);
-        streetDao.save(street);
-
-        return new StreetListRestResponse(street);
+        }
+        catch (DicElementNotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
     }
 
     public RestResponse updateEntity(HttpServletRequest request,
@@ -131,26 +131,20 @@ public class StreetResource extends RestResource {
                                      Map<String, String[]> params,
                                      Application application){
         StreetEntity entity = (StreetEntity)obj;
-        StreetDataSetDao streetDao = getDaoFactory(application).getStreetDao();
-        CityDataSetDao cityDao = getDaoFactory(application).getCityDao();
-        StreetDataSet street = streetDao.getById(id);
-
-        if (street == null)
-            return ErrorRestResponse.notFound();
-
-        CityDataSet city = cityDao.getById(entity.getCityId());
-
-        if (city == null)
-            return ErrorRestResponse.notFound();
-
-        if (streetDao.getByName(city, entity.getName()) != null)
+        StreetDictionaryService service = getStreetDicService(application);
+        try {
+            StreetDataSet street = service.update(id, entity.getCityId(), entity.getName());
+            return new StreetListRestResponse(street);
+        }
+        catch (AlreadyExistException e){
             return ErrorRestResponse.alreadyExist();
-
-        street.setName(entity.getName());
-        street.setCity(city);
-        streetDao.save(street);
-
-        return new StreetListRestResponse(street);
+        }
+        catch (DicElementNotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
     }
 
     public RestResponse deleteEntity(HttpServletRequest request,
@@ -158,13 +152,16 @@ public class StreetResource extends RestResource {
                                      long id,
                                      Map<String, String[]> params,
                                      Application application){
-        StreetDataSetDao dao = getDaoFactory(application).getStreetDao();
-        StreetDataSet street = dao.getById(id);
+        try {
+            getStreetDicService(application).delete(id);
+            return new RestResponse();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+    }
 
-        if (street == null)
-            return ErrorRestResponse.notFound();;
-
-        dao.delete(street);
-        return new RestResponse();
+    private StreetDictionaryService getStreetDicService(Application application){
+        return application.getByType(StreetDictionaryService.class);
     }
 }

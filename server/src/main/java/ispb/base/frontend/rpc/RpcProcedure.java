@@ -18,8 +18,4 @@ public abstract class RpcProcedure implements RpcAccessLevelable {
     public Class<RpcArg> getArgType(){
         return (Class)VoidArg.class;
     }
-
-    protected DaoFactory getDaoFactory(Application application){
-        return application.getByType(DaoFactory.class);
-    }
 }
