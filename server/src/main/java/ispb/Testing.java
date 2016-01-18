@@ -19,7 +19,9 @@ import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;
 import ispb.base.service.UserAccountService;
+import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
+import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
@@ -185,6 +187,10 @@ public class Testing
         application.addByType(CityDictionaryService.class, cityDictionaryService);
 
         cityDictionaryService.update(c.getId(), c.getName());
+
+        BuildingDictionaryService buildingDictionaryService = new BuildingDictionaryServiceImpl(daoF);
+        application.addByType(BuildingDictionaryService.class, buildingDictionaryService);
+
 
         application.getByType(LogService.class).info("Starting http server");
 

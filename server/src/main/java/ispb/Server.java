@@ -9,9 +9,11 @@ import ispb.base.resources.Config;
 import ispb.base.service.DBService;
 import ispb.base.service.LogService;
 import ispb.base.service.UserAccountService;
+import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.db.DBServiceImpl;
+import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
 import ispb.frontend.HttpServerImpl;
@@ -53,6 +55,9 @@ public class Server {
 
         StreetDictionaryService streetDictionaryService = new StreetDictionaryServiceImpl(daoFactory);
         application.addByType(StreetDictionaryService.class, streetDictionaryService);
+
+        BuildingDictionaryService buildingDictionaryService = new BuildingDictionaryServiceImpl(daoFactory);
+        application.addByType(BuildingDictionaryService.class, buildingDictionaryService);
 
         logService.info("Starting http server");
         HttpServer server = new HttpServerImpl(conf);
