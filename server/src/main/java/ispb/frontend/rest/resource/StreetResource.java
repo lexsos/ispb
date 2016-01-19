@@ -1,14 +1,8 @@
 package ispb.frontend.rest.resource;
 
 import ispb.base.Application;
-import ispb.base.db.dao.CityDataSetDao;
-import ispb.base.db.dao.StreetDataSetDao;
-import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.dataset.StreetDataSet;
-import ispb.base.frontend.rest.ErrorRestResponse;
-import ispb.base.frontend.rest.RestEntity;
-import ispb.base.frontend.rest.RestResource;
-import ispb.base.frontend.rest.RestResponse;
+import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
@@ -102,7 +96,17 @@ public class StreetResource extends RestResource {
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
                                       Application application){
-        return new StreetListRestResponse(getStreetDicService(application).getAll());
+        StreetDictionaryService service = getStreetDicService(application);
+        Filter filter = getFilter(params);
+
+        if (filter != null && filter.getCount() == 1){
+            String property = filter.getItem(0).getProperty();
+            String value = filter.getItem(0).getValue();
+            if (property.equals("cityId"))
+                return new StreetListRestResponse(service.getByCity(Long.parseLong(value)));
+        }
+
+        return new StreetListRestResponse(service.getAll());
     }
 
     public RestResponse createEntity(HttpServletRequest request,

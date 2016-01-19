@@ -49,10 +49,10 @@ create table users (
 create unique index index_city__name__delete_at ON city (name) WHERE delete_at IS NULL;
 
 alter table street add constraint FK__street_city__to__city foreign key (city_id) references city;
-create unique index index_street__name__delete_at ON street (name) WHERE delete_at IS NULL;
+create unique index index_street__name__delete_at ON street (name, city_id) WHERE delete_at IS NULL;
 
 alter table building add constraint FK__building_street__to__street foreign key (street_id) references street;
-create unique index index_building__name__delete_at ON building (name) WHERE delete_at IS NULL;
+create unique index index_building__name__delete_at ON building (name, street_id) WHERE delete_at IS NULL;
 
 alter table customer add constraint FK__customer_building__to__building foreign key (building_id) references building;
 alter table customer add constraint Unique__customer__contract_number unique (contract_number);

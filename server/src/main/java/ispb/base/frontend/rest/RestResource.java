@@ -58,8 +58,11 @@ public abstract class RestResource implements RestAccessLevelable {
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    protected DaoFactory getDaoFactory(Application application){
-        return application.getByType(DaoFactory.class);
+    protected Filter getFilter(Map<String, String[]> params){
+        String[] filtersData = params.get("filter");
+        if (filtersData == null || filtersData.length < 1)
+            return null;
+        return new Filter(filtersData[0]);
     }
 
 }

@@ -18,8 +18,21 @@ Ext.define 'ISPBClient.view.main.LoginWindow',
     {
       xtype: 'form'
       items:[
-        {xtype: 'textfield', name : 'login', fieldLabel: 'Имя пользователя', margin: '5 5 5 5'}
-        {xtype: 'textfield', name : 'password', fieldLabel: 'Пароль', margin: '5 5 5 5', inputType: 'password'}
+        {
+          xtype: 'textfield'
+          name : 'login'
+          fieldLabel: 'Имя пользователя'
+          margin: '5 5 5 5'
+          enableKeyEvents: true
+        }
+        {
+          xtype: 'textfield'
+          name : 'password'
+          fieldLabel: 'Пароль'
+          margin: '5 5 5 5'
+          inputType: 'password'
+          enableKeyEvents: true
+        }
       ]
     }
   ]

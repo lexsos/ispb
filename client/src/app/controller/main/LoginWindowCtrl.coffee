@@ -9,8 +9,15 @@ Ext.define 'ISPBClient.controller.main.LoginWindowCtrl',
       'loginWindow button[action=login]':
         click: this.onLoginClick
 
-  onLoginClick: (btn)->
-    window = btn.up('loginWindow')
+      'loginWindow textfield':
+        keypress: this.onKeyPress
+
+  onKeyPress: (element, e)->
+    if e.getKey() == 13
+      this.onLoginClick(element)
+
+  onLoginClick: (element)->
+    window = element.up('loginWindow')
     form   = window.down('form')
     login = form.getValues().login
     password = form.getValues().password

@@ -25,6 +25,13 @@ public class StreetDictionaryServiceImpl implements StreetDictionaryService {
         return daoFactory.getStreetDao().getAll();
     }
 
+    public List<StreetDataSet> getByCity(long cityId){
+        StreetDataSetDao streetDao = daoFactory.getStreetDao();
+        CityDataSetDao cityDao = daoFactory.getCityDao();
+        CityDataSet city = cityDao.getById(cityId);
+        return streetDao.getByCity(city);
+    }
+
     public StreetDataSet create(long cityId, String streetName) throws AlreadyExistException, DicElementNotFoundException {
         StreetDataSetDao streetDao = daoFactory.getStreetDao();
         CityDataSetDao cityDao = daoFactory.getCityDao();

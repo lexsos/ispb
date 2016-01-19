@@ -33,3 +33,8 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
       this.call "street_name_exist",
         name: name
         cityId: cityId
+
+    buildingNameExist: (name, streetId) ->
+      this.call "building_name_exist",
+        name: name
+        streetId: streetId
