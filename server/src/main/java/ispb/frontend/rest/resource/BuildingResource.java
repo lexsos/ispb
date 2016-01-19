@@ -3,11 +3,15 @@ package ispb.frontend.rest.resource;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.BuildingDataSet;
+import ispb.base.frontend.rest.ErrorRestResponse;
 import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.BuildingDictionaryService;
+import ispb.base.service.exception.AlreadyExistException;
+import ispb.base.service.exception.DicElementNotFoundException;
+import ispb.base.service.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +28,7 @@ public class BuildingResource extends RestResource {
         private String cityName;
         private long streetId;
         private String streetName;
+        private String qualifiedStreetName;
 
         public boolean verify(){
             if (name != null && streetId > 0)
@@ -42,6 +47,12 @@ public class BuildingResource extends RestResource {
 
             setCityId(building.getStreet().getCity().getId());
             setCityName(building.getStreet().getCity().getName());
+
+            StringBuilder fullStrName = new StringBuilder();
+            fullStrName.append(getCityName());
+            fullStrName.append(", ");
+            fullStrName.append(getStreetName());
+            setQualifiedStreetName(fullStrName.toString());
         }
 
         public String getName() {
@@ -82,6 +93,14 @@ public class BuildingResource extends RestResource {
 
         public void setStreetName(String streetName) {
             this.streetName = streetName;
+        }
+
+        public String getQualifiedStreetName() {
+            return qualifiedStreetName;
+        }
+
+        public void setQualifiedStreetName(String qualifiedStreetName) {
+            this.qualifiedStreetName = qualifiedStreetName;
         }
     }
 
@@ -130,6 +149,63 @@ public class BuildingResource extends RestResource {
                                       Map<String, String[]> params,
                                       Application application){
         return new BuildingListRestResponse(getBuildingDicService(application).getAll());
+    }
+
+    public RestResponse createEntity(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     RestEntity obj,
+                                     Map<String, String[]> params,
+                                     Application application){
+        BuildingEntity entity = (BuildingEntity)obj;
+        BuildingDictionaryService service = getBuildingDicService(application);
+        try {
+            BuildingDataSet building = service.create(entity.getStreetId(), entity.getName());
+            return new BuildingListRestResponse(building);
+        }
+        catch (AlreadyExistException e){
+            return ErrorRestResponse.alreadyExist();
+        }
+        catch (DicElementNotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+    }
+
+    public RestResponse updateEntity(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     long id,
+                                     RestEntity obj,
+                                     Map<String, String[]> params,
+                                     Application application){
+        BuildingEntity entity = (BuildingEntity)obj;
+        BuildingDictionaryService service = getBuildingDicService(application);
+        try {
+            BuildingDataSet building = service.update(id, entity.getStreetId(), entity.getName());
+            return new BuildingListRestResponse(building);
+        }
+        catch (AlreadyExistException e){
+            return ErrorRestResponse.alreadyExist();
+        }
+        catch (DicElementNotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+    }
+
+    public RestResponse deleteEntity(HttpServletRequest request,
+                                     HttpServletResponse response,
+                                     long id,
+                                     Map<String, String[]> params,
+                                     Application application){
+        BuildingDictionaryService service = getBuildingDicService(application);
+        try {
+            service.delete(id);
+            return new RestResponse();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
     }
 
     private BuildingDictionaryService getBuildingDicService(Application application){

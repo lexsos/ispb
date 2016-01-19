@@ -9,3 +9,17 @@ Ext.define 'ISPBClient.controller.building.BuildingGridCtrl',
     editWindowWidget: 'editBuildingWindow'
     deleteMessageTmpl: 'Вы действительно хотите удалить здание {name}?'
     deleteFieldName: 'name'
+
+  init: ->
+    this.superclass.init.call(this)
+
+    this.control
+      'BuildingGrid combobox[action=groupBy]':
+        change: this.onGroupByChange
+
+  onGroupByChange: (element, newValue) ->
+    store = element.up('grid').getStore()
+    if newValue
+      store.group(newValue)
+    else
+      store.clearGrouping()

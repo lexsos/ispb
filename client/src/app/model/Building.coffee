@@ -8,6 +8,7 @@ Ext.define 'ISPBClient.model.Building',
     { name: 'cityName', type: 'string' }
     { name: 'streetId', type: 'int' }
     { name: 'streetName', type: 'string' }
+    { name: 'qualifiedStreetName', type: 'string' }
   ]
 
   proxy:

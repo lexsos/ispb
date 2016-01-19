@@ -9,6 +9,8 @@ Ext.define 'ISPBClient.view.building.BuildingGrid',
     {header: 'Здание', dataIndex: 'name', flex: 1}
   ]
 
+  features: [Ext.create('Ext.grid.feature.Grouping', {groupHeaderTpl: '{name}' })]
+
   store:
     model: 'ISPBClient.model.Building'
     autoLoad: true
@@ -40,6 +42,22 @@ Ext.define 'ISPBClient.view.building.BuildingGrid',
           text: 'Удалить'
           icon: 'static/img/delete.gif'
           action: 'delete'
+        }
+        '-'
+        {
+          fieldLabel: 'Группировать по'
+          xtype: 'combobox'
+          queryMode: 'local'
+          displayField: 'name'
+          valueField: 'key'
+          action: 'groupBy'
+          store:
+            fields: ['key', 'name']
+            data:[
+              {'key':null, 'name':'Без группировки'}
+              {'key':'cityName', 'name':'Город'}
+              {'key':'qualifiedStreetName', 'name':'Улица'}
+            ]
         }
       ]
     }
