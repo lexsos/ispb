@@ -26,8 +26,12 @@ create table customer (
     create_at timestamp not null,
     delete_at timestamp,
     name varchar(255) not null,
-    room varchar(255) not null,
     surname varchar(255) not null,
+    patronymic varchar(255) not null,
+    passport varchar(255) not null,
+    phone varchar(255) not null,
+    comment text not null,
+    room varchar(255) not null,
     contract_number varchar(255) not null,
     building_id int8 not null,
     primary key (id)
@@ -55,6 +59,6 @@ alter table building add constraint FK__building_street__to__street foreign key 
 create unique index index_building__name__delete_at ON building (name, street_id) WHERE delete_at IS NULL;
 
 alter table customer add constraint FK__customer_building__to__building foreign key (building_id) references building;
-alter table customer add constraint Unique__customer__contract_number unique (contract_number);
+create unique index index_customer__contract_number__delete_at ON customer (contract_number) WHERE delete_at IS NULL;
 
 create unique index index_users__login__delete_at ON users (login) WHERE delete_at IS NULL;

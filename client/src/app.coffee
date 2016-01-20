@@ -15,6 +15,8 @@ Ext.application
 
     'building.BuildingGridCtrl',
     'building.EditBuildingWindowCtrl',
+
+    'customer.CustomerGridCtrl',
   ]
 
   launch: ->

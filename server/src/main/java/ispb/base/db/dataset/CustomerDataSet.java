@@ -21,14 +21,26 @@ public class CustomerDataSet extends BaseDataSet implements DeletedMarkable, Ide
     private String name;
 
     @Column(nullable = false)
-    private String surname;
+    private String surname = "";
+
+    @Column(nullable = false)
+    private String patronymic = "";
+
+    @Column(nullable = false)
+    private String passport = "";
+
+    @Column(nullable = false)
+    private String phone = "";
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String comment = "";
 
     @ManyToOne
     @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "FK__customer_building__to__building"))
     private BuildingDataSet building;
 
     @Column(nullable = false)
-    private String room;
+    private String room = "";
 
     @Column(name = "contract_number", nullable = false, unique = true)
     private String contractNumber;
@@ -43,15 +55,6 @@ public class CustomerDataSet extends BaseDataSet implements DeletedMarkable, Ide
 
     public CustomerDataSet(){
         this.setId(-1);
-    }
-
-    public CustomerDataSet(String name, String surname, BuildingDataSet building, String room, String contractNumber){
-        this.setId(-1);
-        this.setName(name);
-        this.setSurname(surname);
-        this.setBuilding(building);
-        this.setRoom(room);
-        this.setContractNumber(contractNumber);
     }
 
     public long getId(){
@@ -118,4 +121,35 @@ public class CustomerDataSet extends BaseDataSet implements DeletedMarkable, Ide
         this.contractNumber = contractNumber;
     }
 
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public String getPassport() {
+        return passport;
+    }
+
+    public void setPassport(String passport) {
+        this.passport = passport;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 }

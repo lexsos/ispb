@@ -21,8 +21,10 @@ import ispb.base.service.LogService;
 import ispb.base.service.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
+import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
+import ispb.dictionary.StreetDictionaryServiceImpl;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
@@ -111,7 +113,11 @@ public class Testing
         application.getByType(DaoFactory.class).getCityDao().save(c);
 
 
-        CustomerDataSet cus = new CustomerDataSet("user", "", b, "113", "c0000111");
+        CustomerDataSet cus = new CustomerDataSet();
+        cus.setName("user");
+        cus.setContractNumber("c0000111");
+        cus.setBuilding(b);
+
         application.getByType(DaoFactory.class).getCustomerDao().save(cus);
 
         for (Iterator iterator = application.getByType(DaoFactory.class).getBuildingDao().getAll().iterator(); iterator.hasNext();){
@@ -149,7 +155,11 @@ public class Testing
         DaoFactory daoF = application.getByType(DaoFactory.class);
 
         CustomerDataSetDao customerDao = daoF.getCustomerDao();
-        CustomerDataSet customer = new CustomerDataSet("alex", "", b, "123", "+7(921)12345678");
+        CustomerDataSet customer = new CustomerDataSet();
+        customer.setName("alex");
+        customer.setBuilding(b);
+        customer.setContractNumber("123");
+        customer.setPhone("+7(921)12345678");
         customerDao.save(customer);
 
         System.out.println( customerDao.getAll() );
@@ -191,6 +201,8 @@ public class Testing
         BuildingDictionaryService buildingDictionaryService = new BuildingDictionaryServiceImpl(daoF);
         application.addByType(BuildingDictionaryService.class, buildingDictionaryService);
 
+        StreetDictionaryService streetDictionaryService = new StreetDictionaryServiceImpl(daoFactory);
+        application.addByType(StreetDictionaryService.class, streetDictionaryService);
 
         application.getByType(LogService.class).info("Starting http server");
 

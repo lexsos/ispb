@@ -6,10 +6,13 @@ Ext.define 'ISPBClient.controller.main.Main',
     views: [
         'main.Main',
         'main.Dictionaries',
+        'main.MenuAccounting',
         'main.LoginWindow',
+
         'city.CityList',
         'street.StreetList',
         'building.BuildingList',
+        'customer.CustomerList',
     ]
 
     init: ->

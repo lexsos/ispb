@@ -13,7 +13,6 @@ Ext.define 'ISPBClient.view.street.StreetGrid',
   store:
     model: 'ISPBClient.model.Street'
     autoLoad: true
-    groupField: 'cityName'
 
   dockedItems: [
     {
@@ -42,6 +41,21 @@ Ext.define 'ISPBClient.view.street.StreetGrid',
           text: 'Удалить'
           icon: 'static/img/delete.gif'
           action: 'delete'
+        }
+        '-'
+        {
+          fieldLabel: 'Группировать по'
+          xtype: 'combobox'
+          queryMode: 'local'
+          displayField: 'name'
+          valueField: 'key'
+          action: 'groupBy'
+          store:
+            fields: ['key', 'name']
+            data:[
+              {'key':null, 'name':'Без группировки'}
+              {'key':'cityName', 'name':'Город'}
+            ]
         }
       ]
     }

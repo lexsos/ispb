@@ -20,6 +20,9 @@ Ext.define 'ISPBClient.utils.DictionaryGridCtrl',
     this.control this.getGridWidget() + ' button[action=delete]',
       click: this.onDeleteClick
 
+    this.control this.getGridWidget() + ' combobox[action=groupBy]',
+      change: this.onGroupByChange
+
     this.control this.getGridWidget(),
       itemdblclick: this.onItemDblClick
 
@@ -60,3 +63,10 @@ Ext.define 'ISPBClient.utils.DictionaryGridCtrl',
         if btn == 'yes'
           store.remove(record)
           store.sync()
+
+  onGroupByChange: (element, newValue) ->
+    store = element.up('grid').getStore()
+    if newValue
+      store.group(newValue)
+    else
+      store.clearGrouping()

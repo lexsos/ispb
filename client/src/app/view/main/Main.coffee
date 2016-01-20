@@ -1,8 +1,10 @@
 Ext.define 'ISPBClient.view.main.Main',
   extend: 'Ext.Panel'
+
   alias: 'widget.Main'
   header: false
   layout:'border'
+
   items: [
     {
       id: 'widget_container'
@@ -44,6 +46,7 @@ Ext.define 'ISPBClient.view.main.Main',
         align: 'stretch'
       items: [
         {xtype: 'MenuDictionaries'}
+        {xtype: 'MenuAccounting'}
       ]
     }
   ]
