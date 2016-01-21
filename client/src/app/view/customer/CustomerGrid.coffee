@@ -13,8 +13,56 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
     {header: 'Статус', dataIndex: 'name', flex: 1}
   ]
 
+  store:
+    model: 'ISPBClient.model.Customer'
+    autoLoad: true
+    remoteFilter: true
 
   dockedItems: [
+    {
+      xtype: 'toolbar'
+      dock: 'top'
+      items:[
+        {
+          text: 'Обновить'
+          icon: 'static/img/table_refresh.png'
+          action: 'refresh'
+        }
+        '-'
+        {
+          text: 'Добавить'
+          icon:'static/img/add.png'
+          action: 'add'
+        }
+        '-'
+        {
+          text: 'Редактировать'
+          icon:'static/img/edit.png'
+          action: 'edit'
+        }
+        '-'
+        {
+          text: 'Удалить'
+          icon: 'static/img/delete.gif'
+          action: 'delete'
+        }
+      ]
+    }
+
+    {
+      xtype: 'pagingtoolbar',
+      dock: 'bottom',
+      displayInfo: true,
+      beforePageText: 'Страница',
+      afterPageText: 'из {0}',
+      displayMsg: 'Абоненты {0} - {1} из {2}'
+
+      listeners:
+        added: (element) ->
+          store = element.up('grid').getStore()
+          element.bindStore(store)
+    }
+
     {
       xtype: 'toolbar'
       dock: 'top'
@@ -30,6 +78,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
           store:
             fields: ['key', 'name']
             data:[
+              {'key': null, 'name':'Без фильтрации'}
               {'key':'address', 'name':'адресу'}
               {'key':'contractNumber', 'name':'номеру договора'}
               {'key':'', 'name':'баланс меньше'}
@@ -43,6 +92,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
         {
           xtype: 'toolbar'
           hidden: true
+          border: false
           filterType: 'address'
           items: [
             {
@@ -63,6 +113,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
             {
               text: 'Применить'
               icon: 'static/img/filtered.gif'
+              action: 'filterApply'
             }
           ]
         }
@@ -71,21 +122,22 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
         {
           xtype: 'toolbar'
           hidden: true
+          border: false
           filterType: 'contractNumber'
           items: [
             {
               xtype: 'textfield'
               width: 130
+              filterField: 'contractNumberValue'
             }
             '-'
             {
               text: 'Применить'
               icon: 'static/img/filtered.gif'
+              action: 'filterApply'
             }
           ]
         }
-
-
       ]
     }
   ]

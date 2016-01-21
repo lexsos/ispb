@@ -8,14 +8,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class Filter {
+public class RestFilter {
 
-    private List<FilterItem> filterItems;
+    private List<RestFilterItem> filterItems;
 
     private static Gson gson=new Gson();
-    private static Type type = new TypeToken<List<FilterItem>>(){}.getType();
+    private static Type type = new TypeToken<List<RestFilterItem>>(){}.getType();
 
-    public Filter(String jsonData){
+    public RestFilter(String jsonData){
         try {
             filterItems = gson.fromJson(jsonData, type);
         }
@@ -28,7 +28,7 @@ public class Filter {
         return filterItems.size();
     }
 
-    public FilterItem getItem(int i) {
+    public RestFilterItem getItem(int i) {
         return filterItems.get(i);
     }
 }

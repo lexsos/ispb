@@ -1,7 +1,7 @@
 package ispb.base.frontend.rest;
 
 
-public class FilterItem {
+public class RestFilterItem {
 
     private String property;
     private String value;

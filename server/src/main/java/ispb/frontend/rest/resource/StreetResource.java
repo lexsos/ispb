@@ -97,7 +97,7 @@ public class StreetResource extends RestResource {
                                       Map<String, String[]> params,
                                       Application application){
         StreetDictionaryService service = getStreetDicService(application);
-        Filter filter = getFilter(params);
+        RestFilter filter = getFilter(params);
 
         if (filter != null && filter.getCount() == 1){
             String property = filter.getItem(0).getProperty();

@@ -1,7 +1,6 @@
 package ispb.base.frontend.rest;
 
 import ispb.base.Application;
-import ispb.base.db.utils.DaoFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,11 +57,11 @@ public abstract class RestResource implements RestAccessLevelable {
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    protected Filter getFilter(Map<String, String[]> params){
+    protected RestFilter getFilter(Map<String, String[]> params){
         String[] filtersData = params.get("filter");
         if (filtersData == null || filtersData.length < 1)
             return null;
-        return new Filter(filtersData[0]);
+        return new RestFilter(filtersData[0]);
     }
 
 }
