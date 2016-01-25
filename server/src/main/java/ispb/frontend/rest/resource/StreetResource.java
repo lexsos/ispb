@@ -170,8 +170,7 @@ public class StreetResource extends RestResource {
 
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
         if (restItem.propertyEquals("cityId__eq")) {
-            Long value = restItem.asLong();
-            return new DataSetFilterItem("cityId", CmpOperator.EQ, value);
+            return new DataSetFilterItem("cityId", CmpOperator.EQ, restItem.asLong());
         }
         else if (restItem.propertyEquals("name__like")){
             return new DataSetFilterItem("name", CmpOperator.LIKE, restItem.getValue());

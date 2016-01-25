@@ -32,7 +32,7 @@ public class DaoFactoryImpl implements DaoFactory {
     }
 
     public BuildingDataSetDao getBuildingDao(){
-        return new BuildingDataSetDaoImpl(sessions, resourceses);
+        return new BuildingDataSetDaoImpl(sessions, resourceses, whereBuilder, queryBuilder);
     }
 
     public CustomerDataSetDao getCustomerDao(){

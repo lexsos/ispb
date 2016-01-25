@@ -3,10 +3,10 @@ package ispb.frontend.rest.resource;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.BuildingDataSet;
-import ispb.base.frontend.rest.ErrorRestResponse;
-import ispb.base.frontend.rest.RestEntity;
-import ispb.base.frontend.rest.RestResource;
-import ispb.base.frontend.rest.RestResponse;
+import ispb.base.db.filter.CmpOperator;
+import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.filter.DataSetFilterItem;
+import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
@@ -148,7 +148,16 @@ public class BuildingResource extends RestResource {
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
                                       Application application){
-        return new BuildingListRestResponse(getBuildingDicService(application).getAll());
+        BuildingDictionaryService service = getBuildingDicService(application);
+        DataSetFilter dataSetFilter;
+        try {
+            dataSetFilter = getDataSetFilter(params);
+        }
+        catch (Throwable e){
+            return ErrorRestResponse.restFilterError();
+        }
+
+        return new BuildingListRestResponse(service.getList(dataSetFilter));
     }
 
     public RestResponse createEntity(HttpServletRequest request,
@@ -210,5 +219,15 @@ public class BuildingResource extends RestResource {
 
     private BuildingDictionaryService getBuildingDicService(Application application){
         return application.getByType(BuildingDictionaryService.class);
+    }
+
+    protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
+        if (restItem.propertyEquals("streetId__eq")) {
+            return new DataSetFilterItem("streetId", CmpOperator.EQ, restItem.asLong());
+        }
+        else if (restItem.propertyEquals("name__eq")){
+            return new DataSetFilterItem("name", CmpOperator.EQ, restItem.getValue());
+        }
+        return null;
     }
 }

@@ -98,16 +98,37 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
             {
               xtype: 'combobox'
               width: 100
+              displayField: 'name'
+              valueField: 'id'
+              filterField: 'cityIdValue'
+              store:
+                model: 'ISPBClient.model.City'
+                autoLoad: false
+                remoteFilter: true
             }
             '-'
             {
               xtype: 'combobox'
               width: 150
+              displayField: 'name'
+              valueField: 'id'
+              filterField: 'streetIdValue'
+              store:
+                model: 'ISPBClient.model.Street'
+                autoLoad: false
+                remoteFilter: true
             }
             '-'
             {
               xtype: 'combobox'
               width: 60
+              displayField: 'name'
+              valueField: 'id'
+              filterField: 'buildingIdValue'
+              store:
+                model: 'ISPBClient.model.Building'
+                autoLoad: false
+                remoteFilter: true
             }
             '-'
             {
