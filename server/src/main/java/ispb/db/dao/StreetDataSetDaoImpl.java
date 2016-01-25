@@ -1,11 +1,10 @@
 package ispb.db.dao;
 
-import java.util.Iterator;
 import java.util.List;
 
 import ispb.base.db.filter.*;
+import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import ispb.base.db.dao.StreetDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
@@ -17,11 +16,13 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
 
     private AppResources resources;
     private WhereBuilder whereBuilder;
+    private QueryBuilder queryBuilder;
 
-    public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder){
+    public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
         super(sessions);
         this.resources = resources;
         this.whereBuilder = whereBuilder;
+        this.queryBuilder = queryBuilder;
     }
 
     public long save(StreetDataSet street){
@@ -42,18 +43,10 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
         );
         WhereStatement whereStatement = whereBuilder.buildAnd(fields, filter);
         String tmpl = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/hql_list.tmpl");
-        String hql = tmpl.replaceAll("\\{where_statement\\}", whereStatement.getWhere());
 
         Object result = this.doTransaction(
-                (session, transaction) -> {
-                    Query query = session.createQuery(hql);
-                    for (Iterator<String> i = whereStatement.getParameters().keySet().iterator(); i.hasNext();){
-                        String parameterName = i.next();
-                        Object value = whereStatement.getParameters().get(parameterName);
-                        query.setParameter(parameterName, value);
-                    }
-                    return query.list();
-                }
+                (session, transaction) ->
+                        queryBuilder.getQuery(tmpl, whereStatement, session).list()
         );
         return (List<StreetDataSet>)result;
     }

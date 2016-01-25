@@ -4,6 +4,7 @@ package ispb.db.util;
 import ispb.base.db.dao.*;
 import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.utils.DaoFactory;
+import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;
 import ispb.db.dao.*;
 import org.hibernate.SessionFactory;
@@ -13,11 +14,13 @@ public class DaoFactoryImpl implements DaoFactory {
     private SessionFactory sessions;
     private AppResources resourceses;
     private WhereBuilder whereBuilder;
+    private QueryBuilder queryBuilder;
 
-    public DaoFactoryImpl(SessionFactory sessions, AppResources resourceses, WhereBuilder whereBuilder){
+    public DaoFactoryImpl(SessionFactory sessions, AppResources resourceses, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
         this.sessions = sessions;
         this.resourceses = resourceses;
         this.whereBuilder = whereBuilder;
+        this.queryBuilder = queryBuilder;
     }
 
     public CityDataSetDao getCityDao(){
@@ -25,7 +28,7 @@ public class DaoFactoryImpl implements DaoFactory {
     }
 
     public StreetDataSetDao getStreetDao(){
-        return new StreetDataSetDaoImpl(sessions, resourceses, whereBuilder);
+        return new StreetDataSetDaoImpl(sessions, resourceses, whereBuilder, queryBuilder);
     }
 
     public BuildingDataSetDao getBuildingDao(){

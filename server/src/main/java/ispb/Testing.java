@@ -14,6 +14,7 @@ import ispb.base.db.filter.FieldDescriptor;
 import ispb.base.db.filter.FieldSetDescriptor;
 import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.utils.DaoFactory;
+import ispb.base.db.utils.QueryBuilder;
 import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.frontend.HttpServer;
 import ispb.base.frontend.utils.AccessLevel;
@@ -25,6 +26,7 @@ import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.db.dao.CustomerSummeryViewDaoImpl;
+import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.WhereBuilderImpl;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
@@ -85,8 +87,9 @@ public class Testing
 
 
         WhereBuilder whereBuilder = new WhereBuilderImpl();
+        QueryBuilder queryBuilder = new QueryBuilderImpl();
 
-        DBService dbSrv = new DBServiceImpl(conf, resources, logService, whereBuilder);
+        DBService dbSrv = new DBServiceImpl(conf, resources, logService, whereBuilder, queryBuilder);
         dbSrv.clearDB();
         dbSrv.migrate();
         DaoFactory daoFactory = dbSrv.getDaoFactory();
