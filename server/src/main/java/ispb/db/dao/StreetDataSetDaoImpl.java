@@ -52,21 +52,14 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     }
 
     public List<StreetDataSet> getAll(){
-        String hql = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/getAll.hql");
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        session.createQuery(hql).list()
-        );
-        return (List<StreetDataSet>)result;
+        DataSetFilter filter = new DataSetFilter();
+        return getList(filter);
     }
 
     public List<StreetDataSet> getByCity(CityDataSet city){
-        String hql = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/getByCity.hql");
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        session.createQuery(hql).setParameter("city", city).list()
-        );
-        return (List<StreetDataSet>)result;
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("cityId", CmpOperator.EQ, city.getId());
+        return getList(filter);
     }
 
     public StreetDataSet getById(long id){
@@ -74,12 +67,10 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     }
 
     public StreetDataSet getByName(CityDataSet city, String name){
-        String hql = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/getByCityByStreeName.hql");
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        session.createQuery(hql).setParameter("city", city).setParameter("name", name).list()
-        );
-        List<StreetDataSet> list = (List<StreetDataSet>)result;
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("cityId", CmpOperator.EQ, city.getId());
+        filter.add("name", CmpOperator.EQ, name);
+        List<StreetDataSet> list = getList(filter);
         if (list.isEmpty())
             return null;
         return list.get(0);
