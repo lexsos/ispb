@@ -6,6 +6,7 @@ public class ResponseCodes {
     public static final int UNAUTHORIZED = 401;
     public static final int NOT_FOUND = 404;
     public static final int METHOD_NOT_ALLOWED = 405;
+    public static final int REST_FILTER_ERROR = 493;
     public static final int LOW_CURRENT_ACCESS_LEVEL = 494;
     public static final int ENTITY_ALREADY_EXIST = 495;
     public static final int DATA_FORMAT_INCOMPATIBLE = 496;

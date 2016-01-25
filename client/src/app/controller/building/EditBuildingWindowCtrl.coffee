@@ -19,7 +19,7 @@ Ext.define 'ISPBClient.controller.building.EditBuildingWindowCtrl',
     streetCombo = element.up('form').down('combobox[name=streetId]')
     streetStore = streetCombo.getStore()
     streetStore.clearFilter(true)
-    streetStore.filter("cityId", newValue)
+    streetStore.filter("cityId__eq", newValue)
     streetCombo.clearValue()
 
   validateForm: (form) ->

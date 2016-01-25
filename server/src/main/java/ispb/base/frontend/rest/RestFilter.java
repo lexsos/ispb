@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class RestFilter {
+public class RestFilter implements Iterable {
 
     private List<RestFilterItem> filterItems;
 
@@ -24,11 +25,16 @@ public class RestFilter {
         }
     }
 
-    public int getCount() {
+    public RestFilter(){
+        filterItems = new LinkedList();
+    }
+
+    public Iterator<RestFilterItem> iterator() {
+        return filterItems.iterator();
+    }
+
+    public int size() {
         return filterItems.size();
     }
 
-    public RestFilterItem getItem(int i) {
-        return filterItems.get(i);
-    }
 }

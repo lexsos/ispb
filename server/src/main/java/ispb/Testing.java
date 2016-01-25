@@ -7,12 +7,14 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import ispb.base.Application;
-import ispb.base.db.dao.BuildingDataSetDao;
-import ispb.base.db.dao.CityDataSetDao;
-import ispb.base.db.dao.CustomerDataSetDao;
-import ispb.base.db.dao.StreetDataSetDao;
+import ispb.base.db.dao.*;
 import ispb.base.db.dataset.*;
+import ispb.base.db.filter.CmpOperator;
+import ispb.base.db.filter.FieldDescriptor;
+import ispb.base.db.filter.FieldSetDescriptor;
+import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.utils.DaoFactory;
+import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.frontend.HttpServer;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.resources.AppResources;
@@ -22,6 +24,8 @@ import ispb.base.service.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
+import ispb.db.dao.CustomerSummeryViewDaoImpl;
+import ispb.db.util.WhereBuilderImpl;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
@@ -80,7 +84,9 @@ public class Testing
         application.addByType(LogService.class, logService);
 
 
-        DBService dbSrv = new DBServiceImpl(conf, resources, logService);
+        WhereBuilder whereBuilder = new WhereBuilderImpl();
+
+        DBService dbSrv = new DBServiceImpl(conf, resources, logService, whereBuilder);
         dbSrv.clearDB();
         dbSrv.migrate();
         DaoFactory daoFactory = dbSrv.getDaoFactory();
@@ -203,6 +209,10 @@ public class Testing
 
         StreetDictionaryService streetDictionaryService = new StreetDictionaryServiceImpl(daoFactory);
         application.addByType(StreetDictionaryService.class, streetDictionaryService);
+
+
+        CustomerSummeryViewDao cusSum = daoFactory.getCustomerSummeryViewDao();
+        List<CustomerSummeryView> cusList = cusSum.getList();
 
         application.getByType(LogService.class).info("Starting http server");
 

@@ -72,4 +72,8 @@ public class ErrorRestResponse extends RestResponse {
     public static ErrorRestResponse lowAccessLevel(){
         return new ErrorRestResponse("Current user has to low access level.", ResponseCodes.LOW_CURRENT_ACCESS_LEVEL);
     }
+
+    public static ErrorRestResponse restFilterError(){
+        return new ErrorRestResponse("Can't parse REST filter parameter.", ResponseCodes.REST_FILTER_ERROR);
+    }
 }

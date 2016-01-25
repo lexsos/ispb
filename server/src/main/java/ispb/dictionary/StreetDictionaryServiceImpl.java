@@ -5,6 +5,7 @@ import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dao.StreetDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.dataset.StreetDataSet;
+import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
@@ -94,5 +95,10 @@ public class StreetDictionaryServiceImpl implements StreetDictionaryService {
             return false;
 
         return true;
+    }
+
+    public List<StreetDataSet> getList(DataSetFilter filter){
+        StreetDataSetDao streetDao = daoFactory.getStreetDao();
+        return streetDao.getList(filter);
     }
 }

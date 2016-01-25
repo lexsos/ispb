@@ -1,6 +1,7 @@
 package ispb.db;
 
 import ispb.base.Application;
+import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
@@ -22,11 +23,13 @@ public class DBServiceImpl implements DBService {
     private Config config = null;
     private AppResources appResources = null;
     private LogService logService = null;
+    private WhereBuilder whereBuilder;
 
-    public DBServiceImpl(Config config, AppResources appResources, LogService logService){
+    public DBServiceImpl(Config config, AppResources appResources, LogService logService, WhereBuilder whereBuilder){
         this.config = config;
         this.appResources = appResources;
         this.logService = logService;
+        this.whereBuilder = whereBuilder;
     }
 
     public void clearDB(){
@@ -50,7 +53,7 @@ public class DBServiceImpl implements DBService {
 
     public DaoFactory getDaoFactory(){
         if (daoFactory == null)
-            daoFactory = new DaoFactoryImpl(getSessionFactory(), appResources);
+            daoFactory = new DaoFactoryImpl(getSessionFactory(), appResources, whereBuilder);
         return daoFactory;
     }
 

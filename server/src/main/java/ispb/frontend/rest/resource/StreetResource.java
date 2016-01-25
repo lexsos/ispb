@@ -2,6 +2,9 @@ package ispb.frontend.rest.resource;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.StreetDataSet;
+import ispb.base.db.filter.CmpOperator;
+import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.filter.DataSetFilterItem;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -11,10 +14,7 @@ import ispb.base.service.exception.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class StreetResource extends RestResource {
 
@@ -97,16 +97,15 @@ public class StreetResource extends RestResource {
                                       Map<String, String[]> params,
                                       Application application){
         StreetDictionaryService service = getStreetDicService(application);
-        RestFilter filter = getFilter(params);
-
-        if (filter != null && filter.getCount() == 1){
-            String property = filter.getItem(0).getProperty();
-            String value = filter.getItem(0).getValue();
-            if (property.equals("cityId"))
-                return new StreetListRestResponse(service.getByCity(Long.parseLong(value)));
+        DataSetFilter dataSetFilter;
+        try {
+            dataSetFilter = getDataSetFilter(params);
+        }
+        catch (Throwable e){
+            return ErrorRestResponse.restFilterError();
         }
 
-        return new StreetListRestResponse(service.getAll());
+        return new StreetListRestResponse(service.getList(dataSetFilter));
     }
 
     public RestResponse createEntity(HttpServletRequest request,
@@ -167,5 +166,20 @@ public class StreetResource extends RestResource {
 
     private StreetDictionaryService getStreetDicService(Application application){
         return application.getByType(StreetDictionaryService.class);
+    }
+
+    protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
+        if (restItem.propertyEquals("cityId__eq")) {
+            Long value = restItem.asLong();
+            return new DataSetFilterItem("cityId", CmpOperator.EQ, value);
+        }
+        else if (restItem.propertyEquals("name__like")){
+            return new DataSetFilterItem("name", CmpOperator.LIKE, restItem.getValue());
+        }
+        else if (restItem.propertyEquals("name__eq")){
+            return new DataSetFilterItem("name", CmpOperator.EQ, restItem.getValue());
+        }
+
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package ispb;
 
 
 import ispb.base.Application;
+import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.frontend.HttpServer;
 import ispb.base.resources.AppResources;
@@ -13,6 +14,7 @@ import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.db.DBServiceImpl;
+import ispb.db.util.WhereBuilderImpl;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
@@ -41,7 +43,9 @@ public class Server {
         LogService logService  = new LogServiceImpl(conf);
         application.addByType(LogService.class, logService);
 
-        DBService dbService = new DBServiceImpl(conf, resources, logService);
+        WhereBuilder whereBuilder = new WhereBuilderImpl();
+
+        DBService dbService = new DBServiceImpl(conf, resources, logService, whereBuilder);
         dbService.migrate();
 
         DaoFactory daoFactory = dbService.getDaoFactory();

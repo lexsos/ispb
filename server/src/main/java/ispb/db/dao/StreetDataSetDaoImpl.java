@@ -1,8 +1,11 @@
 package ispb.db.dao;
 
+import java.util.Iterator;
 import java.util.List;
 
+import ispb.base.db.filter.*;
 import ispb.base.resources.AppResources;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import ispb.base.db.dao.StreetDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
@@ -13,10 +16,12 @@ import ispb.db.util.BaseDao;
 public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
 
     private AppResources resources;
+    private WhereBuilder whereBuilder;
 
-    public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources){
+    public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder){
         super(sessions);
         this.resources = resources;
+        this.whereBuilder = whereBuilder;
     }
 
     public long save(StreetDataSet street){
@@ -25,6 +30,32 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
 
     public void delete(StreetDataSet street){
         this.markAsDeleted(street);
+    }
+
+    public List<StreetDataSet> getList(DataSetFilter filter){
+
+        filter.add(new DataSetFilterItem("deleteAt", CmpOperator.IS_NULL, null));
+        FieldSetDescriptor fields = resources.getJsonAsObject(
+                this.getClass(),
+                "StreetDataSetDaoImpl/fieldSetDescriptor.json",
+                FieldSetDescriptor.class
+        );
+        WhereStatement whereStatement = whereBuilder.buildAnd(fields, filter);
+        String tmpl = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/hql_list.tmpl");
+        String hql = tmpl.replaceAll("\\{where_statement\\}", whereStatement.getWhere());
+
+        Object result = this.doTransaction(
+                (session, transaction) -> {
+                    Query query = session.createQuery(hql);
+                    for (Iterator<String> i = whereStatement.getParameters().keySet().iterator(); i.hasNext();){
+                        String parameterName = i.next();
+                        Object value = whereStatement.getParameters().get(parameterName);
+                        query.setParameter(parameterName, value);
+                    }
+                    return query.list();
+                }
+        );
+        return (List<StreetDataSet>)result;
     }
 
     public List<StreetDataSet> getAll(){

@@ -9,4 +9,5 @@ public interface DaoFactory {
     BuildingDataSetDao getBuildingDao();
     CustomerDataSetDao getCustomerDao();
     UserDataSetDao getUserDao();
+    CustomerSummeryViewDao getCustomerSummeryViewDao();
 }

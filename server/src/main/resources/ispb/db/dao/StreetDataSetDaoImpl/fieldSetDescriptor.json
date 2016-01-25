@@ -1,0 +1,22 @@
+{
+  "fieldDescriptors": {
+
+    "name":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"street.name",
+      "valueTypeName":"java.lang.String"
+    },
+
+    "cityId": {
+      "validOperators":["EQ"],
+      "hqlFieldName":"street.city.id",
+      "valueTypeName":"java.lang.Long"
+    },
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName":"street.deleteAt"
+    }
+
+  }
+}

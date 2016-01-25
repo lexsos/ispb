@@ -1,0 +1,6 @@
+from StreetDataSet as street
+    left join fetch street.city
+{where_statement}
+order by
+    street.city.name,
+    street.name
