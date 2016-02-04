@@ -35,7 +35,7 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
 
     public List<StreetDataSet> getList(DataSetFilter filter){
 
-        filter.add(new DataSetFilterItem("deleteAt", CmpOperator.IS_NULL, null));
+        filter.add("deleteAt", CmpOperator.IS_NULL, null);
         FieldSetDescriptor fields = resources.getJsonAsObject(
                 this.getClass(),
                 "StreetDataSetDaoImpl/fieldSetDescriptor.json",

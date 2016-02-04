@@ -1,6 +1,8 @@
 package ispb.base.db.filter;
 
 
+import java.util.Objects;
+
 public class DataSetFilterItem {
     private String fieldName;
     private CmpOperator operator;
@@ -34,5 +36,29 @@ public class DataSetFilterItem {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public int hashCode(){
+        if (fieldName != null)
+            return fieldName.hashCode();
+        return 0;
+    }
+
+    public boolean equals(Object other){
+        if (this == other)
+            return true;
+        if (other == null)
+            return false;
+        if(this.getClass() != other.getClass())
+            return false;
+
+        DataSetFilterItem otherObj = (DataSetFilterItem)other;
+        if (!Objects.equals(this.getFieldName(), otherObj.getFieldName()))
+            return false;
+        if (this.getOperator() != otherObj.getOperator())
+            return false;
+        if (!Objects.equals(this.getValue(), otherObj.getValue()))
+            return false;
+        return true;
     }
 }

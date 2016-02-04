@@ -36,7 +36,7 @@ public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDa
     }
 
     public List<BuildingDataSet> getList(DataSetFilter filter){
-        filter.add(new DataSetFilterItem("deleteAt", CmpOperator.IS_NULL, null));
+        filter.add("deleteAt", CmpOperator.IS_NULL, null);
         FieldSetDescriptor fields = resources.getJsonAsObject(
                 this.getClass(),
                 "BuildingDataSetDaoImpl/fieldSetDescriptor.json",

@@ -4,6 +4,7 @@ package ispb.base.db.filter;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class DataSetFilter implements Iterable {
 
@@ -14,11 +15,12 @@ public class DataSetFilter implements Iterable {
     }
 
     public void add(DataSetFilterItem item){
-        filterItems.add(item);
+        if (!filterItems.contains(item))
+            filterItems.add(item);
     }
 
     public void add(String fieldName, CmpOperator operator, Object value){
-        filterItems.add(new DataSetFilterItem(fieldName, operator, value));
+        add(new DataSetFilterItem(fieldName, operator, value));
     }
 
     public Iterator<DataSetFilterItem> iterator(){
