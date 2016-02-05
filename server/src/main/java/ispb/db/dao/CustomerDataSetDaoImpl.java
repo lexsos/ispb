@@ -14,11 +14,8 @@ import java.util.List;
 
 public class CustomerDataSetDaoImpl extends BaseDao implements CustomerDataSetDao {
 
-    private AppResources resources;
-
-    public CustomerDataSetDaoImpl(SessionFactory sessions, AppResources resources){
+    public CustomerDataSetDaoImpl(SessionFactory sessions){
         super(sessions);
-        this.resources = resources;
     }
 
     public long save(CustomerDataSet customer){
@@ -31,41 +28,5 @@ public class CustomerDataSetDaoImpl extends BaseDao implements CustomerDataSetDa
 
     public CustomerDataSet getById(long id){
         return (CustomerDataSet)this.getEntityById(CustomerDataSet.class, id);
-    }
-
-    public List<CustomerDataSet> getAll(){
-        String hql = resources.getAsString(this.getClass(), "CustomerDataSetDaoImpl/getAll.hql");
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        session.createQuery(hql).list()
-        );
-        return (List<CustomerDataSet>)result;
-    }
-
-    public List<CustomerDataSet> getByCity(CityDataSet city){
-        String hql = resources.getAsString(this.getClass(), "CustomerDataSetDaoImpl/getByCity.hql");
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        session.createQuery(hql).setParameter("city", city).list()
-        );
-        return (List<CustomerDataSet>)result;
-    }
-
-    public List<CustomerDataSet> getByStreet(StreetDataSet street){
-        String hql = resources.getAsString(this.getClass(), "CustomerDataSetDaoImpl/getByStreet.hql");
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        session.createQuery(hql).setParameter("street", street).list()
-        );
-        return (List<CustomerDataSet>)result;
-    }
-
-    public List<CustomerDataSet> getByBuilding(BuildingDataSet building){
-        String hql = resources.getAsString(this.getClass(), "CustomerDataSetDaoImpl/getByBuilding.hql");
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        session.createQuery(hql).setParameter("building", building).list()
-        );
-        return (List<CustomerDataSet>)result;
     }
 }

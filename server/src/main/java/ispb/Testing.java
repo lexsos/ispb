@@ -9,10 +9,7 @@ import com.google.gson.Gson;
 import ispb.base.Application;
 import ispb.base.db.dao.*;
 import ispb.base.db.dataset.*;
-import ispb.base.db.filter.CmpOperator;
-import ispb.base.db.filter.FieldDescriptor;
-import ispb.base.db.filter.FieldSetDescriptor;
-import ispb.base.db.filter.WhereBuilder;
+import ispb.base.db.filter.*;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.db.view.CustomerSummeryView;
@@ -171,11 +168,6 @@ public class Testing
         customer.setPhone("+7(921)12345678");
         customerDao.save(customer);
 
-        System.out.println( customerDao.getAll() );
-        System.out.println( customerDao.getByCity(c) );
-        System.out.println( customerDao.getByStreet(st) );
-        System.out.println( customerDao.getByBuilding(b) );
-
         System.out.println(conf.getAsStr("db.host"));
         System.out.println(conf.getAsStr("db.port"));
         System.out.println(conf.getAsStr("db.base"));
@@ -215,8 +207,15 @@ public class Testing
 
 
         CustomerSummeryViewDao cusSum = daoFactory.getCustomerSummeryViewDao();
-        List<CustomerSummeryView> cusList = cusSum.getList();
+        DataSetFilter filter = new DataSetFilter();
+        System.out.println( cusSum.getList(filter) );
+        System.out.println( cusSum.getCount(filter) );
 
+        filter.add("contractNumber", CmpOperator.EQ, "c0000111");
+        System.out.println( cusSum.getList(filter) );
+        System.out.println( cusSum.getCount(filter) );
+
+        
         application.getByType(LogService.class).info("Starting http server");
 
         HttpServer server = new HttpServerImpl(conf);

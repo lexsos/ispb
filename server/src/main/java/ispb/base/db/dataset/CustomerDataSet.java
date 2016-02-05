@@ -1,7 +1,6 @@
 package ispb.base.db.dataset;
 
 
-import com.google.gson.Gson;
 import ispb.base.db.utils.BaseDataSet;
 import ispb.base.db.utils.CreatedTimestampable;
 import ispb.base.db.utils.DeletedMarkable;

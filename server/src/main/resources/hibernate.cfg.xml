@@ -23,7 +23,7 @@
         <mapping class="ispb.base.db.dataset.BuildingDataSet"/>
         <mapping class="ispb.base.db.dataset.CustomerDataSet"/>
         <mapping class="ispb.base.db.dataset.UserDataSet"/>
-
+        <mapping class="ispb.base.db.view.CustomerSummeryView"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -62,3 +62,7 @@ alter table customer add constraint FK__customer_building__to__building foreign 
 create unique index index_customer__contract_number__delete_at ON customer (contract_number) WHERE delete_at IS NULL;
 
 create unique index index_users__login__delete_at ON users (login) WHERE delete_at IS NULL;
+
+
+CREATE OR REPLACE VIEW customer_view AS
+    SELECT id AS id, id AS customer_id FROM customer;

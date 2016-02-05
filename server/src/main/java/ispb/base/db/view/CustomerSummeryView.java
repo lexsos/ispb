@@ -2,16 +2,21 @@ package ispb.base.db.view;
 
 
 import ispb.base.db.dataset.CustomerDataSet;
+import ispb.base.db.utils.BaseDataSet;
+import ispb.base.db.utils.Identifiable;
 
-public class CustomerSummeryView {
+import javax.persistence.*;
 
+@Entity
+@Table(name = "customer_view")
+public class CustomerSummeryView extends BaseDataSet implements Identifiable {
+
+    @Id
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private CustomerDataSet customer;
-    private double balance;
-
-    public CustomerSummeryView(CustomerDataSet customer, double balance){
-        this.setCustomer(customer);
-        this.setBalance(balance);
-    }
 
     public CustomerDataSet getCustomer() {
         return customer;
@@ -21,11 +26,13 @@ public class CustomerSummeryView {
         this.customer = customer;
     }
 
-    public double getBalance() {
-        return balance;
+    @Override
+    public long getId() {
+        return id;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 }

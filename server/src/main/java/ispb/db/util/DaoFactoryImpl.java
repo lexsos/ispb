@@ -36,12 +36,12 @@ public class DaoFactoryImpl implements DaoFactory {
     }
 
     public CustomerDataSetDao getCustomerDao(){
-        return new CustomerDataSetDaoImpl(sessions, resourceses);
+        return new CustomerDataSetDaoImpl(sessions);
     }
 
     public UserDataSetDao getUserDao(){ return new UserDataSetDaoImpl(sessions, resourceses); }
 
     public CustomerSummeryViewDao getCustomerSummeryViewDao(){
-        return new CustomerSummeryViewDaoImpl(sessions);
+        return new CustomerSummeryViewDaoImpl(sessions, resourceses, whereBuilder, queryBuilder);
     }
 }

@@ -1,0 +1,40 @@
+{
+  "fieldDescriptors": {
+
+    "contractNumber":{
+      "validOperators":["EQ"],
+      "hqlFieldName":"customerView.customer.contractNumber",
+      "valueTypeName":"java.lang.String"
+    },
+
+    "name":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"customerView.customer.name",
+      "valueTypeName":"java.lang.String"
+    },
+
+    "surname":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"customerView.customer.surname",
+      "valueTypeName":"java.lang.String"
+    },
+
+    "buildingId": {
+      "validOperators":["EQ"],
+      "hqlFieldName":"customerView.customer.building.id",
+      "valueTypeName":"java.lang.Long"
+    },
+
+    "streetId": {
+      "validOperators":["EQ"],
+      "hqlFieldName":"customerView.customer.building.street.id",
+      "valueTypeName":"java.lang.Long"
+    },
+
+    "cityId": {
+      "validOperators":["EQ"],
+      "hqlFieldName":"customerView.customer.building.street.city.id",
+      "valueTypeName":"java.lang.Long"
+    }
+  }
+}
