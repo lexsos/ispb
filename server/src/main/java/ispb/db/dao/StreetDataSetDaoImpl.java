@@ -17,12 +17,17 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     private AppResources resources;
     private WhereBuilder whereBuilder;
     private QueryBuilder queryBuilder;
+    private FieldSetDescriptor fieldsDescriptor;
+    private String hqlListTmpl;
 
     public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
         super(sessions);
         this.resources = resources;
         this.whereBuilder = whereBuilder;
         this.queryBuilder = queryBuilder;
+
+        hqlListTmpl = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/hql_list.tmpl");
+        fieldsDescriptor = loadFieldDescriptor(resources, "StreetDataSetDaoImpl/fieldSetDescriptor.json");
     }
 
     public long save(StreetDataSet street){
@@ -34,19 +39,10 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     }
 
     public List<StreetDataSet> getList(DataSetFilter filter){
-
-        filter.add("deleteAt", CmpOperator.IS_NULL, null);
-        FieldSetDescriptor fields = resources.getJsonAsObject(
-                this.getClass(),
-                "StreetDataSetDaoImpl/fieldSetDescriptor.json",
-                FieldSetDescriptor.class
-        );
-        WhereStatement whereStatement = whereBuilder.buildAnd(fields, filter);
-        String tmpl = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/hql_list.tmpl");
-
+        WhereStatement whereStatement = whereBuilder.buildAnd(fieldsDescriptor, filter, deleteAtFilter);
         Object result = this.doTransaction(
                 (session, transaction) ->
-                        queryBuilder.getQuery(tmpl, whereStatement, session).list()
+                        queryBuilder.getQuery(hqlListTmpl, whereStatement, session).list()
         );
         return (List<StreetDataSet>)result;
     }

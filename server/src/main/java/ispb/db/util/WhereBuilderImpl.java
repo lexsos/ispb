@@ -77,4 +77,11 @@ public class WhereBuilderImpl implements WhereBuilder {
         where.setWhere(hql.toString());
         return where;
     }
+
+    public WhereStatement buildAnd(FieldSetDescriptor descriptors, DataSetFilter filter1, DataSetFilter filter2){
+        List<DataSetFilter> filters = new LinkedList<>();
+        filters.add(filter1);
+        filters.add(filter2);
+        return buildAnd(descriptors, new DataSetFilter(filters));
+    }
 }

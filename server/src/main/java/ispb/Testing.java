@@ -215,7 +215,7 @@ public class Testing
         System.out.println( cusSum.getList(filter) );
         System.out.println( cusSum.getCount(filter) );
 
-        
+
         application.getByType(LogService.class).info("Starting http server");
 
         HttpServer server = new HttpServerImpl(conf);

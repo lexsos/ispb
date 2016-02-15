@@ -16,15 +16,18 @@ import java.util.List;
 
 public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDao {
 
-    private AppResources resources;
     private WhereBuilder whereBuilder;
     private QueryBuilder queryBuilder;
+    private FieldSetDescriptor fieldsDescriptor;
+    private String hqlListTmpl;
 
     public BuildingDataSetDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
         super(sessions);
-        this.resources = resources;
         this.whereBuilder = whereBuilder;
         this.queryBuilder = queryBuilder;
+
+        fieldsDescriptor = loadFieldDescriptor(resources, "BuildingDataSetDaoImpl/fieldSetDescriptor.json");
+        hqlListTmpl = resources.getAsString(this.getClass(), "BuildingDataSetDaoImpl/hql_list.tmpl");
     }
 
     public long save(BuildingDataSet building){
@@ -36,18 +39,10 @@ public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDa
     }
 
     public List<BuildingDataSet> getList(DataSetFilter filter){
-        filter.add("deleteAt", CmpOperator.IS_NULL, null);
-        FieldSetDescriptor fields = resources.getJsonAsObject(
-                this.getClass(),
-                "BuildingDataSetDaoImpl/fieldSetDescriptor.json",
-                FieldSetDescriptor.class
-        );
-        WhereStatement whereStatement = whereBuilder.buildAnd(fields, filter);
-        String tmpl = resources.getAsString(this.getClass(), "BuildingDataSetDaoImpl/hql_list.tmpl");
-
+        WhereStatement whereStatement = whereBuilder.buildAnd(fieldsDescriptor, filter, deleteAtFilter);
         Object result = this.doTransaction(
                 (session, transaction) ->
-                        queryBuilder.getQuery(tmpl, whereStatement, session).list()
+                        queryBuilder.getQuery(hqlListTmpl, whereStatement, session).list()
         );
         return (List<BuildingDataSet>)result;
     }

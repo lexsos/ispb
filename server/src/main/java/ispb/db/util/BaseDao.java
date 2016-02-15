@@ -2,10 +2,14 @@ package ispb.db.util;
 
 import java.util.Date;
 
+import ispb.base.db.filter.CmpOperator;
+import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.filter.FieldSetDescriptor;
 import ispb.base.db.utils.CreatedTimestampable;
 import ispb.base.db.utils.DaoTransaction;
 import ispb.base.db.utils.DeletedMarkable;
 import ispb.base.db.utils.Identifiable;
+import ispb.base.resources.AppResources;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,9 +18,11 @@ import org.hibernate.Transaction;
 public class BaseDao {
 
     private SessionFactory sessions;
+    protected DataSetFilter deleteAtFilter = new DataSetFilter();
 
     public BaseDao(SessionFactory sessions){
         this.sessions = sessions;
+        deleteAtFilter.add("deleteAt", CmpOperator.IS_NULL, null);
     }
 
     protected SessionFactory getSessions(){
@@ -75,5 +81,9 @@ public class BaseDao {
         return this.doTransaction(
                 (session, transaction) -> session.get(type, id)
         );
+    }
+
+    protected FieldSetDescriptor loadFieldDescriptor(AppResources resources, String resourceName){
+        return resources.getJsonAsObject(this.getClass(), resourceName, FieldSetDescriptor.class);
     }
 }

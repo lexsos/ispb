@@ -14,45 +14,36 @@ import java.util.List;
 
 public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSummeryViewDao {
 
-    private AppResources resources;
     private WhereBuilder whereBuilder;
     private QueryBuilder queryBuilder;
+    private String hqlListTmpl;
+    private String hqlCountTmpl;
+    private FieldSetDescriptor fieldsDescriptor;
 
     public CustomerSummeryViewDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
         super(sessions);
-        this.resources = resources;
         this.whereBuilder = whereBuilder;
         this.queryBuilder = queryBuilder;
+
+        hqlListTmpl = resources.getAsString(this.getClass(), "CustomerSummeryViewDaoImpl/tmpl_list.hql");
+        hqlCountTmpl = resources.getAsString(this.getClass(), "CustomerSummeryViewDaoImpl/tmpl_count.hql");
+        fieldsDescriptor = loadFieldDescriptor(resources, "CustomerSummeryViewDaoImpl/fieldSetDescriptor.json");
     }
 
     public List<CustomerSummeryView> getList(DataSetFilter filter){
-        FieldSetDescriptor fields = resources.getJsonAsObject(
-                this.getClass(),
-                "CustomerSummeryViewDaoImpl/fieldSetDescriptor.json",
-                FieldSetDescriptor.class
-        );
-        WhereStatement whereStatement = whereBuilder.buildAnd(fields, filter);
-        String tmpl = resources.getAsString(this.getClass(), "CustomerSummeryViewDaoImpl/tmpl_list.hql");
-
+        WhereStatement whereStatement = whereBuilder.buildAnd(fieldsDescriptor, filter);
         Object result = this.doTransaction(
                 (session, transaction) ->
-                        queryBuilder.getQuery(tmpl, whereStatement, session).list()
+                        queryBuilder.getQuery(hqlListTmpl, whereStatement, session).list()
         );
         return (List<CustomerSummeryView>)result;
     }
 
     public long getCount(DataSetFilter filter){
-        FieldSetDescriptor fields = resources.getJsonAsObject(
-                this.getClass(),
-                "CustomerSummeryViewDaoImpl/fieldSetDescriptor.json",
-                FieldSetDescriptor.class
-        );
-        WhereStatement whereStatement = whereBuilder.buildAnd(fields, filter);
-        String tmpl = resources.getAsString(this.getClass(), "CustomerSummeryViewDaoImpl/tmpl_count.hql");
-
+        WhereStatement whereStatement = whereBuilder.buildAnd(fieldsDescriptor, filter);
         Object result = this.doTransaction(
                 (session, transaction) ->
-                        queryBuilder.getQuery(tmpl, whereStatement, session).uniqueResult()
+                        queryBuilder.getQuery(hqlCountTmpl, whereStatement, session).uniqueResult()
         );
         return (Long)result;
     }

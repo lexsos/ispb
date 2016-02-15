@@ -14,6 +14,13 @@ public class DataSetFilter implements Iterable {
         filterItems = new LinkedList();
     }
 
+    public DataSetFilter(List<DataSetFilter> filters) {
+        filterItems = new LinkedList();
+        for(Iterator<DataSetFilter> i=filters.iterator();i.hasNext();)
+            for(Iterator<DataSetFilterItem> j = i.next().iterator();j.hasNext();)
+                add(j.next());
+    }
+
     public void add(DataSetFilterItem item){
         if (!filterItems.contains(item))
             filterItems.add(item);
