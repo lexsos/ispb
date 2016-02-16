@@ -1,14 +1,11 @@
 package ispb.base.frontend.rest;
 
-import ispb.base.Application;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.filter.DataSetFilterItem;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.sort.DataSetSortItem;
 import ispb.base.db.field.SortDirection;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -16,52 +13,27 @@ public abstract class RestResource implements RestAccessLevelable {
 
     public abstract Class<RestEntity> getEntityType();
 
-    public RestResponse getEntity(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  long id,
-                                  Map<String, String[]> params,
-                                  Application application){
+    public RestResponse getEntity(RestContext restContext){
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    public RestResponse getEntityList(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  Map<String, String[]> params,
-                                  Application application,
-                                  DataSetFilter dataSetFilter,
-                                  DataSetSort dataSetSort){
+    public RestResponse getEntityList(RestContext restContext){
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    public RestResponse createEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     RestEntity entity,
-                                     Map<String, String[]> params,
-                                     Application application){
+    public RestResponse createEntity(RestContext restContext){
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    public RestResponse updateEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     RestEntity entity,
-                                     Map<String, String[]> params,
-                                     Application application){
+    public RestResponse updateEntity(RestContext restContext){
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    public RestResponse deleteEntityList(HttpServletRequest request,
-                                         HttpServletResponse response,
-                                         Map<String, String[]> params,
-                                         Application application){
+    public RestResponse deleteEntityList(RestContext restContext){
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    public RestResponse deleteEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     Map<String, String[]> params,
-                                     Application application){
+    public RestResponse deleteEntity(RestContext restContext){
         return ErrorRestResponse.methodNotAllowed();
     }
 

@@ -80,4 +80,8 @@ public class ErrorRestResponse extends RestResponse {
     public static ErrorRestResponse restSortError(){
         return new ErrorRestResponse("Can't parse REST sort parameter.", ResponseCodes.REST_SORT_ERROR);
     }
+
+    public static ErrorRestResponse restPaginationError(){
+        return new ErrorRestResponse("Can't parse REST pagination parameters.", ResponseCodes.REST_PAGINATION_ERROR);
+    }
 }

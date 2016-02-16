@@ -3,14 +3,11 @@ package ispb.frontend.rest;
 import ispb.base.db.dataset.UserDataSet;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
+import ispb.base.db.utils.Pagination;
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
-import ispb.base.frontend.rest.ErrorRestResponse;
-import ispb.base.frontend.rest.RestEntity;
-import ispb.base.frontend.rest.RestResource;
-import ispb.base.frontend.rest.RestResponse;
+import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
-import ispb.base.service.LogService;
 import ispb.frontend.utils.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -35,6 +32,17 @@ public class RestServlet extends BaseServlet {
                                      HttpServletResponse response,
                                      RestResponse restResponse) throws IOException{
         writeJson(response, restResponse.toJson());
+    }
+
+    protected Pagination getPagination(Map<String, String[]> parameterMap){
+        Pagination pagination = new Pagination();
+        if (parameterMap.containsKey("start") && parameterMap.containsKey("limit")){
+            long start = Long.parseLong(parameterMap.get("start")[0]);
+            long limit = Long.parseLong(parameterMap.get("limit")[0]);
+            pagination.setStart(start);
+            pagination.setLimit(limit);
+        }
+        return pagination;
     }
 
     protected void service(HttpServletRequest request,
@@ -109,20 +117,41 @@ public class RestServlet extends BaseServlet {
             return;
         }
 
+        Pagination pagination;
+        try {
+            pagination = getPagination(parameterMap);
+        }
+        catch (Throwable e){
+            writeRestResponse(request, response, ErrorRestResponse.restPaginationError());
+            return;
+        }
+
+        RestContext restContext = new RestContext();
+        restContext.setRequest(request);
+        restContext.setResponse(response);
+        restContext.setParams(parameterMap);
+        restContext.setApplication(getApplication());
+        restContext.setDataSetFilter(dataSetFilter);
+        restContext.setDataSetSort(dataSetSort);
+        restContext.setPagination(pagination);
+        if (id != null)
+            restContext.setId(id);
+
         RestResponse restResponse = ErrorRestResponse.methodNotAllowed();
         try {
             if (Objects.equals(method, "GET") && id == null)
-                restResponse = resource.getEntityList(request, response, parameterMap, getApplication(), dataSetFilter, dataSetSort);
+                restResponse = resource.getEntityList(restContext);
             else if (Objects.equals(method, "GET") && id != null)
-                restResponse = resource.getEntity(request, response, id, parameterMap, getApplication());
+                restResponse = resource.getEntity(restContext);
             else if (Objects.equals(method, "DELETE") && id == null)
-                restResponse = resource.deleteEntityList(request, response, parameterMap, getApplication());
+                restResponse = resource.deleteEntityList(restContext);
             else if (Objects.equals(method, "DELETE") && id != null)
-                restResponse = resource.deleteEntity(request, response, id, parameterMap, getApplication());
+                restResponse = resource.deleteEntity(restContext);
             else if (Objects.equals(method, "POST") && id == null)
                 try {
                     RestEntity entity = prepareJsonRequest(request, response, resource.getEntityType());
-                    restResponse = resource.createEntity(request, response, entity, parameterMap, getApplication());
+                    restContext.setEntity(entity);
+                    restResponse = resource.createEntity(restContext);
                 } catch (ReadJsonError e) {
                     restResponse = ErrorRestResponse.jsonError();
                 } catch (IncompatibleDataStruct e) {
@@ -131,7 +160,8 @@ public class RestServlet extends BaseServlet {
             else if (Objects.equals(method, "PUT") && id != null)
                 try {
                     RestEntity entity = prepareJsonRequest(request, response, resource.getEntityType());
-                    restResponse = resource.updateEntity(request, response, id, entity, parameterMap, getApplication());
+                    restContext.setEntity(entity);
+                    restResponse = resource.updateEntity(restContext);
                 } catch (ReadJsonError e) {
                     restResponse = ErrorRestResponse.jsonError();
                 } catch (IncompatibleDataStruct e) {

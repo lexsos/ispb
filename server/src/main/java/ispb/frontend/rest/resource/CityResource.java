@@ -5,10 +5,7 @@ import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
-import ispb.base.frontend.rest.ErrorRestResponse;
-import ispb.base.frontend.rest.RestEntity;
-import ispb.base.frontend.rest.RestResource;
-import ispb.base.frontend.rest.RestResponse;
+import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
@@ -87,34 +84,21 @@ public class CityResource extends RestResource {
         return CityEntity.class;
     }
 
-    public RestResponse getEntity(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  long id,
-                                  Map<String, String[]> params,
-                                  Application application){
-        CityDataSet city = getCityDicService(application).getById(id);
+    public RestResponse getEntity(RestContext restContext){
+        CityDataSet city = getCityDicService(restContext).getById(restContext.getId());
         if (city == null)
             return ErrorRestResponse.notFound();
         return new CityListRestResponse(city);
     }
 
-    public RestResponse getEntityList(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      Map<String, String[]> params,
-                                      Application application,
-                                      DataSetFilter dataSetFilter,
-                                      DataSetSort dataSetSort){
-        return new CityListRestResponse(getCityDicService(application).getAll());
+    public RestResponse getEntityList(RestContext restContext){
+        return new CityListRestResponse(getCityDicService(restContext).getAll());
     }
 
-    public RestResponse createEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     RestEntity obj,
-                                     Map<String, String[]> params,
-                                     Application application){
-        CityEntity entity = (CityEntity)obj;
+    public RestResponse createEntity(RestContext restContext){
+        CityEntity entity = (CityEntity)restContext.getEntity();
         try {
-            CityDataSet city = getCityDicService(application).create(entity.getName());
+            CityDataSet city = getCityDicService(restContext).create(entity.getName());
             return new CityListRestResponse(city);
         }
         catch (AlreadyExistException e){
@@ -122,15 +106,10 @@ public class CityResource extends RestResource {
         }
     }
 
-    public RestResponse updateEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     RestEntity obj,
-                                     Map<String, String[]> params,
-                                     Application application){
-        CityEntity entity = (CityEntity)obj;
+    public RestResponse updateEntity(RestContext restContext){
+        CityEntity entity = (CityEntity)restContext.getEntity();
         try {
-            CityDataSet city = getCityDicService(application).update(id, entity.getName());
+            CityDataSet city = getCityDicService(restContext).update(restContext.getId(), entity.getName());
             return new CityListRestResponse(city);
         }
         catch (AlreadyExistException e){
@@ -141,13 +120,9 @@ public class CityResource extends RestResource {
         }
     }
 
-    public RestResponse deleteEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     Map<String, String[]> params,
-                                     Application application){
+    public RestResponse deleteEntity(RestContext restContext){
         try {
-            getCityDicService(application).delete(id);
+            getCityDicService(restContext).delete(restContext.getId());
             return new RestResponse();
         }
         catch (NotFoundException e){
@@ -155,7 +130,7 @@ public class CityResource extends RestResource {
         }
     }
 
-    private CityDictionaryService getCityDicService(Application application){
-        return application.getByType(CityDictionaryService.class);
+    private CityDictionaryService getCityDicService(RestContext restContext){
+        return restContext.getApplication().getByType(CityDictionaryService.class);
     }
 }

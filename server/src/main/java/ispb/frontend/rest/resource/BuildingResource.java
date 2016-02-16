@@ -145,23 +145,16 @@ public class BuildingResource extends RestResource {
     }
 
 
-    public RestResponse getEntityList(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      Map<String, String[]> params,
-                                      Application application,
-                                      DataSetFilter dataSetFilter,
-                                      DataSetSort dataSetSort){
-        BuildingDictionaryService service = getBuildingDicService(application);
-        return new BuildingListRestResponse(service.getList(dataSetFilter, dataSetSort));
+    public RestResponse getEntityList(RestContext restContext){
+        BuildingDictionaryService service = getBuildingDicService(restContext);
+        DataSetFilter filter = restContext.getDataSetFilter();
+        DataSetSort sort = restContext.getDataSetSort();
+        return new BuildingListRestResponse(service.getList(filter, sort));
     }
 
-    public RestResponse createEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     RestEntity obj,
-                                     Map<String, String[]> params,
-                                     Application application){
-        BuildingEntity entity = (BuildingEntity)obj;
-        BuildingDictionaryService service = getBuildingDicService(application);
+    public RestResponse createEntity(RestContext restContext){
+        BuildingEntity entity = (BuildingEntity)restContext.getEntity();
+        BuildingDictionaryService service = getBuildingDicService(restContext);
         try {
             BuildingDataSet building = service.create(entity.getStreetId(), entity.getName());
             return new BuildingListRestResponse(building);
@@ -174,16 +167,11 @@ public class BuildingResource extends RestResource {
         }
     }
 
-    public RestResponse updateEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     RestEntity obj,
-                                     Map<String, String[]> params,
-                                     Application application){
-        BuildingEntity entity = (BuildingEntity)obj;
-        BuildingDictionaryService service = getBuildingDicService(application);
+    public RestResponse updateEntity(RestContext restContext){
+        BuildingEntity entity = (BuildingEntity)restContext.getEntity();
+        BuildingDictionaryService service = getBuildingDicService(restContext);
         try {
-            BuildingDataSet building = service.update(id, entity.getStreetId(), entity.getName());
+            BuildingDataSet building = service.update(restContext.getId(), entity.getStreetId(), entity.getName());
             return new BuildingListRestResponse(building);
         }
         catch (AlreadyExistException e){
@@ -197,14 +185,10 @@ public class BuildingResource extends RestResource {
         }
     }
 
-    public RestResponse deleteEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     Map<String, String[]> params,
-                                     Application application){
-        BuildingDictionaryService service = getBuildingDicService(application);
+    public RestResponse deleteEntity(RestContext restContext){
+        BuildingDictionaryService service = getBuildingDicService(restContext);
         try {
-            service.delete(id);
+            service.delete(restContext.getId());
             return new RestResponse();
         }
         catch (NotFoundException e){
@@ -212,8 +196,8 @@ public class BuildingResource extends RestResource {
         }
     }
 
-    private BuildingDictionaryService getBuildingDicService(Application application){
-        return application.getByType(BuildingDictionaryService.class);
+    private BuildingDictionaryService getBuildingDicService(RestContext restContext){
+        return restContext.getApplication().getByType(BuildingDictionaryService.class);
     }
 
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){

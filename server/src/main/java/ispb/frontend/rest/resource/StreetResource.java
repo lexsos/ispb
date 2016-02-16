@@ -93,23 +93,14 @@ public class StreetResource extends RestResource {
         return StreetEntity.class;
     }
 
-    public RestResponse getEntityList(HttpServletRequest request,
-                                      HttpServletResponse response,
-                                      Map<String, String[]> params,
-                                      Application application,
-                                      DataSetFilter dataSetFilter,
-                                      DataSetSort dataSetSort){
-        StreetDictionaryService service = getStreetDicService(application);
-        return new StreetListRestResponse(service.getList(dataSetFilter));
+    public RestResponse getEntityList(RestContext restContext){
+        StreetDictionaryService service = getStreetDicService(restContext);
+        return new StreetListRestResponse(service.getList(restContext.getDataSetFilter()));
     }
 
-    public RestResponse createEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     RestEntity obj,
-                                     Map<String, String[]> params,
-                                     Application application){
-        StreetEntity entity = (StreetEntity)obj;
-        StreetDictionaryService service = getStreetDicService(application);
+    public RestResponse createEntity(RestContext restContext){
+        StreetEntity entity = (StreetEntity)restContext.getEntity();
+        StreetDictionaryService service = getStreetDicService(restContext);
         try {
             StreetDataSet street = service.create(entity.getCityId(), entity.getName());
             return new StreetListRestResponse(street);
@@ -122,16 +113,11 @@ public class StreetResource extends RestResource {
         }
     }
 
-    public RestResponse updateEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     RestEntity obj,
-                                     Map<String, String[]> params,
-                                     Application application){
-        StreetEntity entity = (StreetEntity)obj;
-        StreetDictionaryService service = getStreetDicService(application);
+    public RestResponse updateEntity(RestContext restContext){
+        StreetEntity entity = (StreetEntity)restContext.getEntity();
+        StreetDictionaryService service = getStreetDicService(restContext);
         try {
-            StreetDataSet street = service.update(id, entity.getCityId(), entity.getName());
+            StreetDataSet street = service.update(restContext.getId(), entity.getCityId(), entity.getName());
             return new StreetListRestResponse(street);
         }
         catch (AlreadyExistException e){
@@ -145,13 +131,9 @@ public class StreetResource extends RestResource {
         }
     }
 
-    public RestResponse deleteEntity(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     long id,
-                                     Map<String, String[]> params,
-                                     Application application){
+    public RestResponse deleteEntity(RestContext restContext){
         try {
-            getStreetDicService(application).delete(id);
+            getStreetDicService(restContext).delete(restContext.getId());
             return new RestResponse();
         }
         catch (NotFoundException e){
@@ -159,8 +141,8 @@ public class StreetResource extends RestResource {
         }
     }
 
-    private StreetDictionaryService getStreetDicService(Application application){
-        return application.getByType(StreetDictionaryService.class);
+    private StreetDictionaryService getStreetDicService(RestContext restContext){
+        return restContext.getApplication().getByType(StreetDictionaryService.class);
     }
 
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
