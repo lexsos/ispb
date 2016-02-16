@@ -13,13 +13,11 @@ public class DaoFactoryImpl implements DaoFactory {
 
     private SessionFactory sessions;
     private AppResources resourceses;
-    private WhereBuilder whereBuilder;
     private QueryBuilder queryBuilder;
 
-    public DaoFactoryImpl(SessionFactory sessions, AppResources resourceses, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
+    public DaoFactoryImpl(SessionFactory sessions, AppResources resourceses, QueryBuilder queryBuilder){
         this.sessions = sessions;
         this.resourceses = resourceses;
-        this.whereBuilder = whereBuilder;
         this.queryBuilder = queryBuilder;
     }
 
@@ -28,11 +26,11 @@ public class DaoFactoryImpl implements DaoFactory {
     }
 
     public StreetDataSetDao getStreetDao(){
-        return new StreetDataSetDaoImpl(sessions, resourceses, whereBuilder, queryBuilder);
+        return new StreetDataSetDaoImpl(sessions, resourceses, queryBuilder);
     }
 
     public BuildingDataSetDao getBuildingDao(){
-        return new BuildingDataSetDaoImpl(sessions, resourceses, whereBuilder, queryBuilder);
+        return new BuildingDataSetDaoImpl(sessions, resourceses, queryBuilder);
     }
 
     public CustomerDataSetDao getCustomerDao(){
@@ -42,6 +40,6 @@ public class DaoFactoryImpl implements DaoFactory {
     public UserDataSetDao getUserDao(){ return new UserDataSetDaoImpl(sessions, resourceses); }
 
     public CustomerSummeryViewDao getCustomerSummeryViewDao(){
-        return new CustomerSummeryViewDaoImpl(sessions, resourceses, whereBuilder, queryBuilder);
+        return new CustomerSummeryViewDaoImpl(sessions, resourceses, queryBuilder);
     }
 }

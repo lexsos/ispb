@@ -2,17 +2,17 @@ package ispb;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import ispb.base.Application;
 import ispb.base.db.dao.*;
 import ispb.base.db.dataset.*;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.*;
+import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
-import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.frontend.HttpServer;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.resources.AppResources;
@@ -22,8 +22,8 @@ import ispb.base.service.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
-import ispb.db.dao.CustomerSummeryViewDaoImpl;
 import ispb.db.util.QueryBuilderImpl;
+import ispb.db.util.SortBuilderImpl;
 import ispb.db.util.WhereBuilderImpl;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
@@ -84,9 +84,10 @@ public class Testing
 
 
         WhereBuilder whereBuilder = new WhereBuilderImpl();
-        QueryBuilder queryBuilder = new QueryBuilderImpl();
+        SortBuilder sortBuilder = new SortBuilderImpl();
+        QueryBuilder queryBuilder = new QueryBuilderImpl(whereBuilder, sortBuilder);
 
-        DBService dbSrv = new DBServiceImpl(conf, resources, logService, whereBuilder, queryBuilder);
+        DBService dbSrv = new DBServiceImpl(conf, resources, logService, queryBuilder);
         dbSrv.clearDB();
         dbSrv.migrate();
         DaoFactory daoFactory = dbSrv.getDaoFactory();

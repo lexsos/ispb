@@ -1,5 +1,7 @@
 package ispb.db.util;
 
+import ispb.base.db.field.FieldDescriptor;
+import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.*;
 
 import java.util.*;
@@ -78,10 +80,4 @@ public class WhereBuilderImpl implements WhereBuilder {
         return where;
     }
 
-    public WhereStatement buildAnd(FieldSetDescriptor descriptors, DataSetFilter filter1, DataSetFilter filter2){
-        List<DataSetFilter> filters = new LinkedList<>();
-        filters.add(filter1);
-        filters.add(filter2);
-        return buildAnd(descriptors, new DataSetFilter(filters));
-    }
 }

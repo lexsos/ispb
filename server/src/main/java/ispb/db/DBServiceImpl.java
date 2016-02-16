@@ -24,15 +24,13 @@ public class DBServiceImpl implements DBService {
     private Config config = null;
     private AppResources appResources = null;
     private LogService logService = null;
-    private WhereBuilder whereBuilder;
     private QueryBuilder queryBuilder;
 
 
-    public DBServiceImpl(Config config, AppResources appResources, LogService logService, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
+    public DBServiceImpl(Config config, AppResources appResources, LogService logService, QueryBuilder queryBuilder){
         this.config = config;
         this.appResources = appResources;
         this.logService = logService;
-        this.whereBuilder = whereBuilder;
         this.queryBuilder = queryBuilder;
     }
 
@@ -57,7 +55,7 @@ public class DBServiceImpl implements DBService {
 
     public DaoFactory getDaoFactory(){
         if (daoFactory == null)
-            daoFactory = new DaoFactoryImpl(getSessionFactory(), appResources, whereBuilder, queryBuilder);
+            daoFactory = new DaoFactoryImpl(getSessionFactory(), appResources, queryBuilder);
         return daoFactory;
     }
 

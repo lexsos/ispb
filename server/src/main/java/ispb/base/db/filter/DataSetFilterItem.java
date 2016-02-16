@@ -1,6 +1,8 @@
 package ispb.base.db.filter;
 
 
+import ispb.base.db.field.CmpOperator;
+
 import java.util.Objects;
 
 public class DataSetFilterItem {

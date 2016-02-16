@@ -1,6 +1,8 @@
 package ispb.frontend.rest;
 
 import ispb.base.db.dataset.UserDataSet;
+import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rest.ErrorRestResponse;
@@ -88,10 +90,29 @@ public class RestServlet extends BaseServlet {
         }
 
         Map<String, String[]> parameterMap = request.getParameterMap();
+
+        DataSetFilter dataSetFilter;
+        try {
+            dataSetFilter = resource.getDataSetFilter(parameterMap);
+        }
+        catch (Throwable e){
+            writeRestResponse(request, response, ErrorRestResponse.restFilterError());
+            return;
+        }
+
+        DataSetSort dataSetSort;
+        try {
+            dataSetSort = resource.getDataSetSort(parameterMap);
+        }
+        catch (Throwable e){
+            writeRestResponse(request, response, ErrorRestResponse.restSortError());
+            return;
+        }
+
         RestResponse restResponse = ErrorRestResponse.methodNotAllowed();
         try {
             if (Objects.equals(method, "GET") && id == null)
-                restResponse = resource.getEntityList(request, response, parameterMap, getApplication());
+                restResponse = resource.getEntityList(request, response, parameterMap, getApplication(), dataSetFilter, dataSetSort);
             else if (Objects.equals(method, "GET") && id != null)
                 restResponse = resource.getEntity(request, response, id, parameterMap, getApplication());
             else if (Objects.equals(method, "DELETE") && id == null)

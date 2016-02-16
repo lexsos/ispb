@@ -3,6 +3,8 @@ package ispb.frontend.rest.resource;
 import ispb.base.Application;
 import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
+import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.frontend.rest.ErrorRestResponse;
 import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
@@ -99,7 +101,9 @@ public class CityResource extends RestResource {
     public RestResponse getEntityList(HttpServletRequest request,
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
-                                      Application application){
+                                      Application application,
+                                      DataSetFilter dataSetFilter,
+                                      DataSetSort dataSetSort){
         return new CityListRestResponse(getCityDicService(application).getAll());
     }
 

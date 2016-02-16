@@ -2,9 +2,10 @@ package ispb.frontend.rest.resource;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.StreetDataSet;
-import ispb.base.db.filter.CmpOperator;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.filter.DataSetFilterItem;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -95,16 +96,10 @@ public class StreetResource extends RestResource {
     public RestResponse getEntityList(HttpServletRequest request,
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
-                                      Application application){
+                                      Application application,
+                                      DataSetFilter dataSetFilter,
+                                      DataSetSort dataSetSort){
         StreetDictionaryService service = getStreetDicService(application);
-        DataSetFilter dataSetFilter;
-        try {
-            dataSetFilter = getDataSetFilter(params);
-        }
-        catch (Throwable e){
-            return ErrorRestResponse.restFilterError();
-        }
-
         return new StreetListRestResponse(service.getList(dataSetFilter));
     }
 

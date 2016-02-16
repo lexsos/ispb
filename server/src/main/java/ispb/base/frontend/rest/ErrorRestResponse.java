@@ -76,4 +76,8 @@ public class ErrorRestResponse extends RestResponse {
     public static ErrorRestResponse restFilterError(){
         return new ErrorRestResponse("Can't parse REST filter parameter.", ResponseCodes.REST_FILTER_ERROR);
     }
+
+    public static ErrorRestResponse restSortError(){
+        return new ErrorRestResponse("Can't parse REST sort parameter.", ResponseCodes.REST_SORT_ERROR);
+    }
 }

@@ -3,9 +3,10 @@ package ispb.frontend.rest.resource;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.BuildingDataSet;
-import ispb.base.db.filter.CmpOperator;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.filter.DataSetFilterItem;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.BuildingDictionaryService;
@@ -147,17 +148,11 @@ public class BuildingResource extends RestResource {
     public RestResponse getEntityList(HttpServletRequest request,
                                       HttpServletResponse response,
                                       Map<String, String[]> params,
-                                      Application application){
+                                      Application application,
+                                      DataSetFilter dataSetFilter,
+                                      DataSetSort dataSetSort){
         BuildingDictionaryService service = getBuildingDicService(application);
-        DataSetFilter dataSetFilter;
-        try {
-            dataSetFilter = getDataSetFilter(params);
-        }
-        catch (Throwable e){
-            return ErrorRestResponse.restFilterError();
-        }
-
-        return new BuildingListRestResponse(service.getList(dataSetFilter));
+        return new BuildingListRestResponse(service.getList(dataSetFilter, dataSetSort));
     }
 
     public RestResponse createEntity(HttpServletRequest request,

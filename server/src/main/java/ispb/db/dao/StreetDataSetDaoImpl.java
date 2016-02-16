@@ -2,7 +2,10 @@ package ispb.db.dao;
 
 import java.util.List;
 
+import ispb.base.db.field.CmpOperator;
+import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.*;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;
 import org.hibernate.SessionFactory;
@@ -14,16 +17,12 @@ import ispb.db.util.BaseDao;
 
 public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
 
-    private AppResources resources;
-    private WhereBuilder whereBuilder;
     private QueryBuilder queryBuilder;
     private FieldSetDescriptor fieldsDescriptor;
     private String hqlListTmpl;
 
-    public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
+    public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
-        this.resources = resources;
-        this.whereBuilder = whereBuilder;
         this.queryBuilder = queryBuilder;
 
         hqlListTmpl = resources.getAsString(this.getClass(), "StreetDataSetDaoImpl/hql_list.tmpl");
@@ -39,10 +38,12 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     }
 
     public List<StreetDataSet> getList(DataSetFilter filter){
-        WhereStatement whereStatement = whereBuilder.buildAnd(fieldsDescriptor, filter, deleteAtFilter);
+        DataSetFilter newFilter = filter.getCopy();
+        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
+        DataSetSort sort = new DataSetSort();
         Object result = this.doTransaction(
                 (session, transaction) ->
-                        queryBuilder.getQuery(hqlListTmpl, whereStatement, session).list()
+                        queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, newFilter, sort).list()
         );
         return (List<StreetDataSet>)result;
     }

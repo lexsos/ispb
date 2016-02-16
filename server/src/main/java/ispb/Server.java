@@ -3,6 +3,7 @@ package ispb;
 
 import ispb.base.Application;
 import ispb.base.db.filter.WhereBuilder;
+import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.frontend.HttpServer;
@@ -16,6 +17,7 @@ import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.db.DBServiceImpl;
 import ispb.db.util.QueryBuilderImpl;
+import ispb.db.util.SortBuilderImpl;
 import ispb.db.util.WhereBuilderImpl;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
@@ -46,9 +48,10 @@ public class Server {
         application.addByType(LogService.class, logService);
 
         WhereBuilder whereBuilder = new WhereBuilderImpl();
-        QueryBuilder queryBuilder = new QueryBuilderImpl();
+        SortBuilder sortBuilder = new SortBuilderImpl();
+        QueryBuilder queryBuilder = new QueryBuilderImpl(whereBuilder, sortBuilder);
 
-        DBService dbService = new DBServiceImpl(conf, resources, logService, whereBuilder, queryBuilder);
+        DBService dbService = new DBServiceImpl(conf, resources, logService, queryBuilder);
         dbService.migrate();
 
         DaoFactory daoFactory = dbService.getDaoFactory();

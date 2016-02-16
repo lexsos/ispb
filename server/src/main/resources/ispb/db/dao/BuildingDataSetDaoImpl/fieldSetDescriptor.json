@@ -4,7 +4,8 @@
     "name":{
       "validOperators":["EQ", "LIKE"],
       "hqlFieldName":"building.name",
-      "valueTypeName":"java.lang.String"
+      "valueTypeName":"java.lang.String",
+      "sortable": true
     },
 
     "streetId": {
@@ -24,5 +25,7 @@
       "hqlFieldName":"building.deleteAt"
     }
 
-  }
+  },
+
+  "defaultSort": "building.street.city.name, building.street.name, building.name"
 }

@@ -1,4 +1,4 @@
-package ispb.base.db.filter;
+package ispb.base.db.field;
 
 
 public enum CmpOperator {

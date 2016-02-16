@@ -1,7 +1,8 @@
-package ispb.base.db.filter;
+package ispb.base.db.field;
 
 
 import com.google.gson.annotations.Expose;
+import ispb.base.db.filter.DataSetFilterItem;
 
 import java.util.Set;
 
@@ -10,6 +11,7 @@ public class FieldDescriptor {
     private Set<CmpOperator> validOperators;
     private String hqlFieldName;
     private String valueTypeName;
+    private boolean sortable;
 
     @Expose
     private Class valueType;
@@ -64,5 +66,13 @@ public class FieldDescriptor {
         }
 
         return valueType.isInstance(item.getValue());
+    }
+
+    public boolean isSortable() {
+        return sortable;
+    }
+
+    public void setSortable(boolean sortable) {
+        this.sortable = sortable;
     }
 }

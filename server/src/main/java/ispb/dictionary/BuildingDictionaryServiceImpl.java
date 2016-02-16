@@ -5,6 +5,7 @@ import ispb.base.db.dao.StreetDataSetDao;
 import ispb.base.db.dataset.BuildingDataSet;
 import ispb.base.db.dataset.StreetDataSet;
 import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
@@ -26,8 +27,8 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
         return daoFactory.getBuildingDao().getAll();
     }
 
-    public List<BuildingDataSet> getList(DataSetFilter filter){
-        return daoFactory.getBuildingDao().getList(filter);
+    public List<BuildingDataSet> getList(DataSetFilter filter, DataSetSort sort){
+        return daoFactory.getBuildingDao().getList(filter, sort);
     }
 
     public BuildingDataSet create(long streetId, String buildingName)

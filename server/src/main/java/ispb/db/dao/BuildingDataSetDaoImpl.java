@@ -5,7 +5,10 @@ import ispb.base.db.dao.BuildingDataSetDao;
 import ispb.base.db.dataset.BuildingDataSet;
 import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.dataset.StreetDataSet;
+import ispb.base.db.field.CmpOperator;
+import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.*;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;
 import ispb.db.util.BaseDao;
@@ -16,14 +19,12 @@ import java.util.List;
 
 public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDao {
 
-    private WhereBuilder whereBuilder;
     private QueryBuilder queryBuilder;
     private FieldSetDescriptor fieldsDescriptor;
     private String hqlListTmpl;
 
-    public BuildingDataSetDaoImpl(SessionFactory sessions, AppResources resources, WhereBuilder whereBuilder, QueryBuilder queryBuilder){
+    public BuildingDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
-        this.whereBuilder = whereBuilder;
         this.queryBuilder = queryBuilder;
 
         fieldsDescriptor = loadFieldDescriptor(resources, "BuildingDataSetDaoImpl/fieldSetDescriptor.json");
@@ -38,13 +39,18 @@ public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDa
         this.markAsDeleted(building);
     }
 
-    public List<BuildingDataSet> getList(DataSetFilter filter){
-        WhereStatement whereStatement = whereBuilder.buildAnd(fieldsDescriptor, filter, deleteAtFilter);
+    public List<BuildingDataSet> getList(DataSetFilter filter, DataSetSort sort){
+        DataSetFilter newFilter = filter.getCopy();
+        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
         Object result = this.doTransaction(
                 (session, transaction) ->
-                        queryBuilder.getQuery(hqlListTmpl, whereStatement, session).list()
+                        queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, newFilter, sort).list()
         );
         return (List<BuildingDataSet>)result;
+    }
+
+    public List<BuildingDataSet> getList(DataSetFilter filter){
+        return getList(filter, new DataSetSort());
     }
 
     public List<BuildingDataSet> getAll(){

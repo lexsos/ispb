@@ -1,10 +1,11 @@
 package ispb.base.db.filter;
 
 
+import ispb.base.db.field.CmpOperator;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public class DataSetFilter implements Iterable {
 
@@ -14,11 +15,8 @@ public class DataSetFilter implements Iterable {
         filterItems = new LinkedList();
     }
 
-    public DataSetFilter(List<DataSetFilter> filters) {
-        filterItems = new LinkedList();
-        for(Iterator<DataSetFilter> i=filters.iterator();i.hasNext();)
-            for(Iterator<DataSetFilterItem> j = i.next().iterator();j.hasNext();)
-                add(j.next());
+    private DataSetFilter(List<DataSetFilterItem> filterItems){
+        this.filterItems = filterItems;
     }
 
     public void add(DataSetFilterItem item){
@@ -32,5 +30,10 @@ public class DataSetFilter implements Iterable {
 
     public Iterator<DataSetFilterItem> iterator(){
         return filterItems.iterator();
+    }
+
+    public DataSetFilter getCopy(){
+        DataSetFilter copy = new DataSetFilter(new LinkedList<>(filterItems));
+        return copy;
     }
 }
