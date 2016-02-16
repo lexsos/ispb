@@ -2,10 +2,11 @@ package ispb.base.db.filter;
 
 
 import ispb.base.db.field.CmpOperator;
+import ispb.base.db.field.FieldItem;
 
 import java.util.Objects;
 
-public class DataSetFilterItem {
+public class DataSetFilterItem  implements FieldItem {
     private String fieldName;
     private CmpOperator operator;
     private Object value;

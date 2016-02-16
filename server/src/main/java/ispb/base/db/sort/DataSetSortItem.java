@@ -1,9 +1,10 @@
 package ispb.base.db.sort;
 
 
+import ispb.base.db.field.FieldItem;
 import ispb.base.db.field.SortDirection;
 
-public class DataSetSortItem {
+public class DataSetSortItem implements FieldItem {
 
     private String fieldName;
     private SortDirection direction;
