@@ -37,8 +37,8 @@ public class RestServlet extends BaseServlet {
     protected Pagination getPagination(Map<String, String[]> parameterMap){
         Pagination pagination = new Pagination();
         if (parameterMap.containsKey("start") && parameterMap.containsKey("limit")){
-            long start = Long.parseLong(parameterMap.get("start")[0]);
-            long limit = Long.parseLong(parameterMap.get("limit")[0]);
+            int start = Integer.parseInt(parameterMap.get("start")[0]);
+            int limit = Integer.parseInt(parameterMap.get("limit")[0]);
             pagination.setStart(start);
             pagination.setLimit(limit);
         }

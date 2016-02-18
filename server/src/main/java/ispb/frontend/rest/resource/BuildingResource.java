@@ -1,7 +1,5 @@
 package ispb.frontend.rest.resource;
 
-
-import ispb.base.Application;
 import ispb.base.db.dataset.BuildingDataSet;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
@@ -14,12 +12,9 @@ import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.DicElementNotFoundException;
 import ispb.base.service.exception.NotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class BuildingResource extends RestResource {
 

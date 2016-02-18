@@ -1,4 +1,4 @@
-package ispb.base.service;
+package ispb.base.service.account;
 
 import ispb.base.db.dataset.UserDataSet;
 

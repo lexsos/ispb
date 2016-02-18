@@ -5,7 +5,7 @@ import ispb.base.db.dataset.UserDataSet;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
-import ispb.base.service.UserAccountService;
+import ispb.base.service.account.UserAccountService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

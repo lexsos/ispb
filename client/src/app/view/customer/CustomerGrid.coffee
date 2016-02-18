@@ -4,8 +4,8 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
 
   columns: [
     {xtype: 'rownumberer'}
-    {header: 'Договор', dataIndex: 'name', flex: 1}
-    {header: 'ФИО', dataIndex: 'name', flex: 1}
+    {header: 'Договор', dataIndex: 'contractNumber', flex: 1}
+    {header: 'ФИО', dataIndex: 'fullName', flex: 1}
     {header: 'Адрес', dataIndex: 'name', flex: 1}
     {header: 'Телефон', dataIndex: 'name', flex: 1}
     {header: 'Тариф', dataIndex: 'name', flex: 1}
@@ -17,6 +17,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
     model: 'ISPBClient.model.Customer'
     autoLoad: true
     remoteFilter: true
+    remoteSort: true
 
   dockedItems: [
     {

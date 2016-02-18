@@ -39,6 +39,9 @@ public class WhereBuilderImpl implements WhereBuilder {
 
     public WhereStatement buildAnd(FieldSetDescriptor descriptors, DataSetFilter filter){
 
+        if (filter == null)
+            return new WhereStatement();
+
         List<String> conditions = new LinkedList<>();
         WhereStatement where = new WhereStatement();
         int count = 0;

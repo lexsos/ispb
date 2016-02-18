@@ -2,9 +2,10 @@
   "fieldDescriptors": {
 
     "contractNumber":{
-      "validOperators":["EQ"],
+      "validOperators":["EQ", "LIKE"],
       "hqlFieldName":"customerView.customer.contractNumber",
-      "valueTypeName":"java.lang.String"
+      "valueTypeName":"java.lang.String",
+      "sortable": true
     },
 
     "name":{
@@ -35,6 +36,15 @@
       "validOperators":["EQ"],
       "hqlFieldName":"customerView.customer.building.street.city.id",
       "valueTypeName":"java.lang.Long"
+    },
+
+    "fullName": {
+      "sortable": true,
+      "hqlSortFieldAsc": "customerView.customer.surname, customerView.customer.name, customerView.customer.patronymic",
+      "hqlSortFieldDesc": "customerView.customer.surname DESC, customerView.customer.name DESC, customerView.customer.patronymic DESC"
     }
-  }
+
+  },
+
+  "defaultSort": "customerView.customer.contractNumber"
 }

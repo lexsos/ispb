@@ -1,6 +1,7 @@
 package ispb;
 
 
+import ispb.account.CustomerAccountServiceImpl;
 import ispb.base.Application;
 import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.sort.SortBuilder;
@@ -11,7 +12,8 @@ import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
 import ispb.base.service.DBService;
 import ispb.base.service.LogService;
-import ispb.base.service.UserAccountService;
+import ispb.base.service.account.CustomerAccountService;
+import ispb.base.service.account.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -26,7 +28,7 @@ import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
-import ispb.users.UserAccountServiceImpl;
+import ispb.account.UserAccountServiceImpl;
 
 
 public class Server {
@@ -68,6 +70,9 @@ public class Server {
 
         BuildingDictionaryService buildingDictionaryService = new BuildingDictionaryServiceImpl(daoFactory);
         application.addByType(BuildingDictionaryService.class, buildingDictionaryService);
+
+        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory);
+        application.addByType(CustomerAccountService.class, customerAccountService);
 
         logService.info("Starting http server");
         HttpServer server = new HttpServerImpl(conf);

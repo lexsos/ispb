@@ -14,6 +14,10 @@ import java.util.List;
 public class SortBuilderImpl implements SortBuilder {
 
     public String buildSort(FieldSetDescriptor descriptor, DataSetSort sort){
+
+        if (sort == null)
+            return "";
+
         StringBuilder sortStatement = new StringBuilder();
         sortStatement.append("order by ");
 
@@ -22,10 +26,12 @@ public class SortBuilderImpl implements SortBuilder {
         for (Iterator<DataSetSortItem> i = sort.iterator(); i.hasNext();){
             DataSetSortItem item = i.next();
             FieldDescriptor fieldDescriptor = descriptor.getFieldDescriptor(item);
+            if (fieldDescriptor == null)
+                continue;
             if (fieldDescriptor.isSortable() && item.getDirection() == SortDirection.ASC)
-                orderBy.add(fieldDescriptor.getHqlFieldName());
+                orderBy.add(fieldDescriptor.getHqlSortAsc());
             if (fieldDescriptor.isSortable() && item.getDirection() == SortDirection.DESC)
-                orderBy.add(fieldDescriptor.getHqlFieldName() + " DESC");
+                orderBy.add(fieldDescriptor.getHqlSortDesc());
         }
 
         if (orderBy.isEmpty() && descriptor.getDefaultSort() == null)

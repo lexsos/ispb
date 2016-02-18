@@ -1,10 +1,9 @@
-package ispb.users;
+package ispb.account;
 
-import ispb.base.Application;
 import ispb.base.db.dao.UserDataSetDao;
 import ispb.base.db.dataset.UserDataSet;
 import ispb.base.db.utils.DaoFactory;
-import ispb.base.service.UserAccountService;
+import ispb.base.service.account.UserAccountService;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.math.BigInteger;

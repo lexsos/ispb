@@ -7,5 +7,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 public interface QueryBuilder {
-    Query getQuery(String tmpl, Session session, FieldSetDescriptor fieldsDescriptor, DataSetFilter filter, DataSetSort sort);
+    Query getQuery(String tmpl,
+                   Session session,
+                   FieldSetDescriptor fieldsDescriptor,
+                   DataSetFilter filter,
+                   DataSetSort sort
+    );
 }

@@ -3,22 +3,26 @@ package ispb.base.db.utils;
 
 public class Pagination {
 
-    private long start;
-    private long limit;
+    private int start;
+    private int limit;
 
-    public long getStart() {
+    public int getStart() {
         return start;
     }
 
-    public void setStart(long start) {
+    public void setStart(int start) {
         this.start = start;
     }
 
-    public long getLimit() {
+    public int getLimit() {
         return limit;
     }
 
-    public void setLimit(long limit) {
+    public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    public boolean isValid(){
+        return start >= 0 && limit >= 1;
     }
 }

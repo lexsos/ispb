@@ -5,20 +5,24 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import ispb.account.CustomerAccountServiceImpl;
 import ispb.base.Application;
 import ispb.base.db.dao.*;
 import ispb.base.db.dataset.*;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.*;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
+import ispb.base.db.utils.Pagination;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.frontend.HttpServer;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;
-import ispb.base.service.UserAccountService;
+import ispb.base.service.account.CustomerAccountService;
+import ispb.base.service.account.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -32,7 +36,7 @@ import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
-import ispb.users.UserAccountServiceImpl;
+import ispb.account.UserAccountServiceImpl;
 import org.apache.commons.codec.digest.DigestUtils;
 import ispb.base.service.DBService;
 import ispb.db.DBServiceImpl;
@@ -169,6 +173,15 @@ public class Testing
         customer.setPhone("+7(921)12345678");
         customerDao.save(customer);
 
+        for (int i=0; i<100; i++){
+            customer = new CustomerDataSet();
+            customer.setName("alex" + i);
+            customer.setBuilding(b);
+            customer.setContractNumber("num" + i);
+            customer.setPhone("+7(921)12345679");
+            customerDao.save(customer);
+        }
+
         System.out.println(conf.getAsStr("db.host"));
         System.out.println(conf.getAsStr("db.port"));
         System.out.println(conf.getAsStr("db.base"));
@@ -206,14 +219,18 @@ public class Testing
         StreetDictionaryService streetDictionaryService = new StreetDictionaryServiceImpl(daoFactory);
         application.addByType(StreetDictionaryService.class, streetDictionaryService);
 
+        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory);
+        application.addByType(CustomerAccountService.class, customerAccountService);
 
         CustomerSummeryViewDao cusSum = daoFactory.getCustomerSummeryViewDao();
         DataSetFilter filter = new DataSetFilter();
-        System.out.println( cusSum.getList(filter) );
+        DataSetSort sort = new DataSetSort();
+        Pagination pagination = new Pagination();
+        System.out.println( cusSum.getList(filter, sort, pagination) );
         System.out.println( cusSum.getCount(filter) );
 
         filter.add("contractNumber", CmpOperator.EQ, "c0000111");
-        System.out.println( cusSum.getList(filter) );
+        System.out.println( cusSum.getList(filter, sort, pagination) );
         System.out.println( cusSum.getCount(filter) );
 
 

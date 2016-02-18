@@ -12,35 +12,28 @@ public class FieldDescriptor {
     private String hqlFieldName;
     private String valueTypeName;
     private boolean sortable;
+    private String hqlSortFieldAsc;
+    private String hqlSortFieldDesc;
 
     @Expose
     private Class valueType;
 
-    public Set<CmpOperator> getValidOperators() {
-        return validOperators;
-    }
 
-    public void setValidOperators(Set<CmpOperator> validOperators) {
-        this.validOperators = validOperators;
-    }
-
-    public String getHqlFieldName() {
+    public String getHqlSortAsc(){
+        if (getHqlSortFieldAsc() != null)
+            return getHqlSortFieldAsc();
         return hqlFieldName;
     }
 
-    public void setHqlFieldName(String hqlFieldName) {
-        this.hqlFieldName = hqlFieldName;
-    }
-
-    public String getValueTypeName() {
-        return valueTypeName;
-    }
-
-    public void setValueTypeName(String valueTypeName) {
-        this.valueTypeName = valueTypeName;
+    public String getHqlSortDesc(){
+        if (getHqlSortFieldDesc() != null)
+            return getHqlSortFieldDesc();
+        return hqlFieldName + " DESC";
     }
 
     public boolean isValidOperator(CmpOperator operator){
+        if (validOperators == null)
+            return false;
         return validOperators.contains(operator);
     }
 
@@ -68,11 +61,53 @@ public class FieldDescriptor {
         return valueType.isInstance(item.getValue());
     }
 
+
+
+    public Set<CmpOperator> getValidOperators() {
+        return validOperators;
+    }
+
+    public void setValidOperators(Set<CmpOperator> validOperators) {
+        this.validOperators = validOperators;
+    }
+
+    public String getHqlFieldName() {
+        return hqlFieldName;
+    }
+
+    public void setHqlFieldName(String hqlFieldName) {
+        this.hqlFieldName = hqlFieldName;
+    }
+
+    public String getValueTypeName() {
+        return valueTypeName;
+    }
+
+    public void setValueTypeName(String valueTypeName) {
+        this.valueTypeName = valueTypeName;
+    }
+
     public boolean isSortable() {
         return sortable;
     }
 
     public void setSortable(boolean sortable) {
         this.sortable = sortable;
+    }
+
+    public String getHqlSortFieldAsc() {
+        return hqlSortFieldAsc;
+    }
+
+    public void setHqlSortFieldAsc(String hqlSortFieldAsc) {
+        this.hqlSortFieldAsc = hqlSortFieldAsc;
+    }
+
+    public String getHqlSortFieldDesc() {
+        return hqlSortFieldDesc;
+    }
+
+    public void setHqlSortFieldDesc(String hqlSortFieldDesc) {
+        this.hqlSortFieldDesc = hqlSortFieldDesc;
     }
 }

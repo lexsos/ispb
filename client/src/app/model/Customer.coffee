@@ -11,12 +11,14 @@ Ext.define 'ISPBClient.model.Customer',
     { name: 'comment', type: 'string' }
     { name: 'contractNumber', type: 'string' }
     { name: 'createAt', type: 'date', dateFormat: 'Y-m-d H:i:s' }
-
     { name: 'buildingId', type: 'int' }
     { name: 'room', type: 'string' }
+
     { name: 'buildingName', type: 'string' }
     { name: 'streetName', type: 'string' }
     { name: 'cityName', type: 'string' }
+    { name: 'fullName', type: 'string' }
+
   ]
 
   proxy:

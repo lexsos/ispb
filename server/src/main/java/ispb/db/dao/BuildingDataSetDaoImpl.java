@@ -50,7 +50,7 @@ public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDa
     }
 
     public List<BuildingDataSet> getList(DataSetFilter filter){
-        return getList(filter, new DataSetSort());
+        return getList(filter, null);
     }
 
     public List<BuildingDataSet> getAll(){

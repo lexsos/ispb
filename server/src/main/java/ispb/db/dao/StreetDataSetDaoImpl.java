@@ -40,10 +40,9 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     public List<StreetDataSet> getList(DataSetFilter filter){
         DataSetFilter newFilter = filter.getCopy();
         newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
-        DataSetSort sort = new DataSetSort();
         Object result = this.doTransaction(
                 (session, transaction) ->
-                        queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, newFilter, sort).list()
+                        queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, newFilter, null).list()
         );
         return (List<StreetDataSet>)result;
     }
