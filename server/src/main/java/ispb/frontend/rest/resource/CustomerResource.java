@@ -28,10 +28,10 @@ public class CustomerResource extends RestResource {
         private long buildingId;
         private String room;
 
-        private String buildingName;
-        private String streetName;
-        private String cityName;
-        private String fullName;
+        private long streetId;
+        private long cityId;
+        private String qualifiedName;
+        private String qualifiedAddress;
 
         public boolean verify(){
             if (name != null && surname != null && patronymic != null && passport != null && phone != null &&
@@ -53,116 +53,27 @@ public class CustomerResource extends RestResource {
             buildingId = customer.getCustomer().getBuilding().getId();
             room = customer.getCustomer().getRoom();
 
-            buildingName = customer.getCustomer().getBuilding().getName();
-            streetName = customer.getCustomer().getBuilding().getStreet().getName();
-            cityName = customer.getCustomer().getBuilding().getStreet().getCity().getName();
+            streetId = customer.getCustomer().getBuilding().getStreet().getId();
+            cityId = customer.getCustomer().getBuilding().getStreet().getCity().getId();
 
-            StringBuilder fullName = new StringBuilder();
-            fullName.append(surname);
-            fullName.append(" ");
-            fullName.append(name);
-            fullName.append(" ");
-            fullName.append(patronymic);
-            this.fullName = fullName.toString();
+            StringBuilder qualifiedName = new StringBuilder();
+            qualifiedName.append(surname);
+            qualifiedName.append(" ");
+            qualifiedName.append(name);
+            qualifiedName.append(" ");
+            qualifiedName.append(patronymic);
+            this.qualifiedName = qualifiedName.toString();
+
+            StringBuilder qualifiedAddress = new StringBuilder();
+            qualifiedAddress.append(customer.getCustomer().getBuilding().getStreet().getCity().getName());
+            qualifiedAddress.append(", ");
+            qualifiedAddress.append(customer.getCustomer().getBuilding().getStreet().getName());
+            qualifiedAddress.append(", ");
+            qualifiedAddress.append(customer.getCustomer().getBuilding().getName());
+            this.qualifiedAddress = qualifiedAddress.toString();
         }
 
         public CustomerEntity(){
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getSurname() {
-            return surname;
-        }
-
-        public void setSurname(String surname) {
-            this.surname = surname;
-        }
-
-        public String getPatronymic() {
-            return patronymic;
-        }
-
-        public void setPatronymic(String patronymic) {
-            this.patronymic = patronymic;
-        }
-
-        public String getPassport() {
-            return passport;
-        }
-
-        public void setPassport(String passport) {
-            this.passport = passport;
-        }
-
-        public String getPhone() {
-            return phone;
-        }
-
-        public void setPhone(String phone) {
-            this.phone = phone;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-
-        public void setComment(String comment) {
-            this.comment = comment;
-        }
-
-        public String getContractNumber() {
-            return contractNumber;
-        }
-
-        public void setContractNumber(String contractNumber) {
-            this.contractNumber = contractNumber;
-        }
-
-        public long getBuildingId() {
-            return buildingId;
-        }
-
-        public void setBuildingId(long buildingId) {
-            this.buildingId = buildingId;
-        }
-
-        public String getRoom() {
-            return room;
-        }
-
-        public void setRoom(String room) {
-            this.room = room;
-        }
-
-        public String getBuildingName() {
-            return buildingName;
-        }
-
-        public void setBuildingName(String buildingName) {
-            this.buildingName = buildingName;
-        }
-
-        public String getStreetName() {
-            return streetName;
-        }
-
-        public void setStreetName(String streetName) {
-            this.streetName = streetName;
-        }
-
-        public String getCityName() {
-            return cityName;
-        }
-
-        public void setCityName(String cityName) {
-            this.cityName = cityName;
         }
     }
 
@@ -212,7 +123,9 @@ public class CustomerResource extends RestResource {
         DataSetSort sort = restContext.getDataSetSort();
         Pagination pagination = restContext.getPagination();
 
-        return new CustomerSummeryListRestResponse(service.getList(filter, sort, pagination), service.getCount(filter));
+        long totalCount = service.getCount(filter);
+        List<CustomerSummeryView> customers = service.getList(filter, sort, pagination);
+        return new CustomerSummeryListRestResponse(customers, totalCount);
     }
 
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){

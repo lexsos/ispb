@@ -17,6 +17,7 @@ Ext.application
     'building.EditBuildingWindowCtrl',
 
     'customer.CustomerGridCtrl',
+    'customer.EditCustomerWindowCtrl',
   ]
 
   launch: ->

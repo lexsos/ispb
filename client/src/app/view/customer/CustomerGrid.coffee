@@ -5,12 +5,9 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
   columns: [
     {xtype: 'rownumberer'}
     {header: 'Договор', dataIndex: 'contractNumber', flex: 1}
-    {header: 'ФИО', dataIndex: 'fullName', flex: 1}
-    {header: 'Адрес', dataIndex: 'name', flex: 1}
-    {header: 'Телефон', dataIndex: 'name', flex: 1}
-    {header: 'Тариф', dataIndex: 'name', flex: 1}
-    {header: 'Баланс', dataIndex: 'name', flex: 1}
-    {header: 'Статус', dataIndex: 'name', flex: 1}
+    {header: 'ФИО', dataIndex: 'qualifiedName', flex: 1}
+    {header: 'Адрес', dataIndex: 'qualifiedAddress', flex: 1}
+    {header: 'Телефон', dataIndex: 'phone', flex: 1}
   ]
 
   store:
@@ -40,12 +37,6 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
           text: 'Редактировать'
           icon:'static/img/edit.png'
           action: 'edit'
-        }
-        '-'
-        {
-          text: 'Удалить'
-          icon: 'static/img/delete.gif'
-          action: 'delete'
         }
       ]
     }
@@ -82,10 +73,6 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
               {'key': null, 'name':'Без фильтрации'}
               {'key':'address', 'name':'адресу'}
               {'key':'contractNumber', 'name':'номеру договора'}
-              {'key':'', 'name':'баланс меньше'}
-              {'key':'', 'name':'баланс больше'}
-              {'key':'status', 'name':'статусу'}
-              {'key':'', 'name':'тарифу'}
             ]
         }
 

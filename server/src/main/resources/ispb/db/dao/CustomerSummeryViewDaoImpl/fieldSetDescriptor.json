@@ -38,10 +38,16 @@
       "valueTypeName":"java.lang.Long"
     },
 
-    "fullName": {
+    "qualifiedName": {
       "sortable": true,
       "hqlSortFieldAsc": "customerView.customer.surname, customerView.customer.name, customerView.customer.patronymic",
       "hqlSortFieldDesc": "customerView.customer.surname DESC, customerView.customer.name DESC, customerView.customer.patronymic DESC"
+    },
+
+    "qualifiedAddress": {
+      "sortable": true,
+      "hqlSortFieldAsc": "customerView.customer.building.street.city.name, customerView.customer.building.street.name, customerView.customer.building.name",
+      "hqlSortFieldDesc": "customerView.customer.building.street.city.name DESC, customerView.customer.building.street.name DESC, customerView.customer.building.name DESC"
     }
 
   },

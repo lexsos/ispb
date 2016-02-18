@@ -1,5 +1,5 @@
 Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
-  extend: 'ISPBClient.utils.DictionaryGridCtrl'
+  extend: 'Ext.app.Controller'
 
   views: ['customer.CustomerGrid']
   models: ['Customer']
@@ -7,6 +7,12 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
   init: ->
 
     this.control
+      'CustomerGrid button[action=refresh]':
+        click: this.onRefreshClick
+
+      'CustomerGrid button[action=edit]':
+        click: this.onEditClick
+
       'CustomerGrid combobox[action=filterBy]':
         change: this.onFilterByChange
 
@@ -21,6 +27,23 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
 
       'CustomerGrid toolbar[filterType=address] button[action=filterApply]':
         click: this.onFilerByAddress
+
+  getSelectedRecord: (control) ->
+    grid = control.up('grid')
+    s = grid.getSelectionModel().getSelection()
+    if s.length > 0
+      return s[0]
+    return null
+
+  onRefreshClick: (element)->
+    element.up('grid').getStore().load()
+
+  onEditClick: (element) ->
+    record = this.getSelectedRecord(element)
+    if record
+      view = Ext.widget('editCustomerWindow')
+      view.down('form').loadRecord(record)
+      view.setStore(element.up('grid').getStore())
 
   onFilterByChange: (element, newValue) ->
     parent = element.up('toolbar')
