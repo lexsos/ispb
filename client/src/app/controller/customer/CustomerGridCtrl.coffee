@@ -60,7 +60,7 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
     value = element.up('grid').down('toolbar[filterType=contractNumber] textfield[filterField=contractNumberValue]').getValue()
     if value
       store.clearFilter(true)
-      store.filter("contractNumber__like", value)
+      store.filter("contractNumber__like", value + '%')
 
   onCitySelect: (element, newValue) ->
     streetCombo = element.up('toolbar').down('combobox[filterField=streetIdValue]')
