@@ -1,5 +1,6 @@
 package ispb.frontend.rest.resource;
 
+import ispb.base.db.container.CustomerContainer;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.filter.DataSetFilterItem;
@@ -9,6 +10,9 @@ import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.CustomerAccountService;
+import ispb.base.service.exception.AlreadyExistException;
+import ispb.base.service.exception.DicElementNotFoundException;
+import ispb.base.service.exception.NotFoundException;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -16,7 +20,7 @@ import java.util.List;
 
 public class CustomerResource extends RestResource {
 
-    private static class CustomerEntity extends RestEntity {
+    private static class CustomerEntity extends RestEntity implements CustomerContainer {
 
         private String name;
         private String surname;
@@ -34,8 +38,8 @@ public class CustomerResource extends RestResource {
         private String qualifiedAddress;
 
         public boolean verify(){
-            if (name != null && surname != null && patronymic != null && passport != null && phone != null &&
-                    comment != null && contractNumber != null && buildingId > 0 && room != null)
+            if (getName() != null && getSurname() != null && getPatronymic() != null && getPassport() != null && getPhone() != null &&
+                    getComment() != null && getContractNumber() != null && getBuildingId() > 0 && getRoom() != null)
                 return true;
             return false;
         }
@@ -43,25 +47,25 @@ public class CustomerResource extends RestResource {
         public CustomerEntity(CustomerSummeryView customer){
 
             setId(customer.getId());
-            name = customer.getCustomer().getName();
-            surname = customer.getCustomer().getSurname();
-            patronymic = customer.getCustomer().getPatronymic();
-            passport = customer.getCustomer().getPassport();
-            phone = customer.getCustomer().getPhone();
-            comment = customer.getCustomer().getComment();
-            contractNumber = customer.getCustomer().getContractNumber();
-            buildingId = customer.getCustomer().getBuilding().getId();
-            room = customer.getCustomer().getRoom();
+            setName(customer.getCustomer().getName());
+            setSurname(customer.getCustomer().getSurname());
+            setPatronymic(customer.getCustomer().getPatronymic());
+            setPassport(customer.getCustomer().getPassport());
+            setPhone(customer.getCustomer().getPhone());
+            setComment(customer.getCustomer().getComment());
+            setContractNumber(customer.getCustomer().getContractNumber());
+            setBuildingId(customer.getCustomer().getBuilding().getId());
+            setRoom(customer.getCustomer().getRoom());
 
             streetId = customer.getCustomer().getBuilding().getStreet().getId();
             cityId = customer.getCustomer().getBuilding().getStreet().getCity().getId();
 
             StringBuilder qualifiedName = new StringBuilder();
-            qualifiedName.append(surname);
+            qualifiedName.append(getSurname());
             qualifiedName.append(" ");
-            qualifiedName.append(name);
+            qualifiedName.append(getName());
             qualifiedName.append(" ");
-            qualifiedName.append(patronymic);
+            qualifiedName.append(getPatronymic());
             this.qualifiedName = qualifiedName.toString();
 
             StringBuilder qualifiedAddress = new StringBuilder();
@@ -74,6 +78,87 @@ public class CustomerResource extends RestResource {
         }
 
         public CustomerEntity(){
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getSurname() {
+            return surname;
+        }
+
+        public void setSurname(String surname) {
+            this.surname = surname;
+        }
+
+        @Override
+        public String getPatronymic() {
+            return patronymic;
+        }
+
+        public void setPatronymic(String patronymic) {
+            this.patronymic = patronymic;
+        }
+
+        @Override
+        public String getPassport() {
+            return passport;
+        }
+
+        public void setPassport(String passport) {
+            this.passport = passport;
+        }
+
+        @Override
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        @Override
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+
+        @Override
+        public String getContractNumber() {
+            return contractNumber;
+        }
+
+        public void setContractNumber(String contractNumber) {
+            this.contractNumber = contractNumber;
+        }
+
+        @Override
+        public long getBuildingId() {
+            return buildingId;
+        }
+
+        public void setBuildingId(long buildingId) {
+            this.buildingId = buildingId;
+        }
+
+        @Override
+        public String getRoom() {
+            return room;
+        }
+
+        public void setRoom(String room) {
+            this.room = room;
         }
     }
 
@@ -124,8 +209,26 @@ public class CustomerResource extends RestResource {
         Pagination pagination = restContext.getPagination();
 
         long totalCount = service.getCount(filter);
-        List<CustomerSummeryView> customers = service.getList(filter, sort, pagination);
+        List<CustomerSummeryView> customers = service.getSummeryList(filter, sort, pagination);
         return new CustomerSummeryListRestResponse(customers, totalCount);
+    }
+
+    public RestResponse updateEntity(RestContext restContext){
+        CustomerAccountService service = getCustomerService(restContext);
+        CustomerEntity entity = (CustomerEntity)restContext.getEntity();
+        try {
+            CustomerSummeryView customer = service.updateSummery(entity);
+            return new CustomerSummeryListRestResponse(customer);
+        }
+        catch (AlreadyExistException e){
+            return ErrorRestResponse.alreadyExist();
+        }
+        catch (DicElementNotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
     }
 
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){

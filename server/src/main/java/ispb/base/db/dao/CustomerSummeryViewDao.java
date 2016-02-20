@@ -11,4 +11,5 @@ public interface CustomerSummeryViewDao {
 
     List<CustomerSummeryView> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getCount(DataSetFilter filter);
+    CustomerSummeryView getById(long id);
 }

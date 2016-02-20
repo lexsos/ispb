@@ -36,7 +36,7 @@ public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSumme
         Object result = this.doTransaction(
                 (session, transaction) -> {
                     Query query = queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, filter, sort);
-                    if (pagination.isValid()){
+                    if (pagination != null && pagination.isValid()){
                         query.setFirstResult(pagination.getStart());
                         query.setMaxResults(pagination.getLimit());
                     }
@@ -52,5 +52,9 @@ public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSumme
                         queryBuilder.getQuery(hqlCountTmpl, session, fieldsDescriptor, filter, null).uniqueResult()
         );
         return (Long)result;
+    }
+
+    public CustomerSummeryView getById(long id){
+        return (CustomerSummeryView)this.getEntityById(CustomerSummeryView.class, id);
     }
 }

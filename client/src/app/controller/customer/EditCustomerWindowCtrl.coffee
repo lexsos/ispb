@@ -19,6 +19,36 @@ Ext.define 'ISPBClient.controller.customer.EditCustomerWindowCtrl',
         change: this.onStreetChange
 
   validateForm: (form) ->
+    contractNumberField = form.findField("contractNumber")
+    nameField = form.findField("name")
+    cityIdField = form.findField("cityId")
+    streetIdField = form.findField("streetId")
+    buildingIdField = form.findField("buildingId")
+
+    if contractNumberField.getValue() == ""
+      contractNumberField.markInvalid('Укажите номер договора')
+      return false
+
+    if nameField.getValue() == ""
+      nameField.markInvalid('Укажите имя абонента')
+      return false
+
+    if cityIdField.getValue() == null
+      cityIdField.markInvalid('Укажите город')
+      return false
+
+    if streetIdField.getValue() == null
+      streetIdField.markInvalid('Укажите улицу')
+      return false
+
+    if buildingIdField.getValue() == null
+      buildingIdField.markInvalid('Укажите здание')
+      return false
+
+    if contractNumberField.isDirty() and ISPBClient.utils.RpcProcedure.contractNumberExist(contractNumberField.getValue())
+      contractNumberField.markInvalid('Указанный номер договора уже существует')
+      return false
+
     return true
 
   onCancelClick: (element) ->
