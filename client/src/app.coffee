@@ -18,6 +18,7 @@ Ext.application
 
     'customer.CustomerGridCtrl',
     'customer.EditCustomerWindowCtrl',
+    'customer.AddCustomerWindowCtrl',
   ]
 
   launch: ->

@@ -231,6 +231,21 @@ public class CustomerResource extends RestResource {
         }
     }
 
+    public RestResponse createEntity(RestContext restContext){
+        CustomerAccountService service = getCustomerService(restContext);
+        CustomerEntity entity = (CustomerEntity)restContext.getEntity();
+        try {
+            CustomerSummeryView customer = service.createSummery(entity);
+            return new  CustomerSummeryListRestResponse(customer);
+        }
+        catch (AlreadyExistException e){
+            return ErrorRestResponse.alreadyExist();
+        }
+        catch (DicElementNotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+    }
+
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
         if (restItem.propertyEquals("cityId__eq"))
             return new DataSetFilterItem("cityId", CmpOperator.EQ, restItem.asLong());

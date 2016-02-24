@@ -21,6 +21,8 @@ public interface CustomerAccountService {
 
     CustomerSummeryView updateSummery(CustomerContainer container)
             throws AlreadyExistException, DicElementNotFoundException, NotFoundException;
+    CustomerSummeryView createSummery(CustomerContainer container)
+            throws AlreadyExistException, DicElementNotFoundException;
 
     boolean contractNumberExist(String contractNumber);
 }

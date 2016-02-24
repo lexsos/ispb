@@ -85,6 +85,34 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         return getSummeryById(customer.getId());
     }
 
+    public CustomerSummeryView createSummery(CustomerContainer container)
+            throws AlreadyExistException, DicElementNotFoundException{
+
+        CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
+        BuildingDataSetDao buildingDao = daoFactory.getBuildingDao();
+
+        BuildingDataSet building = buildingDao.getById(container.getBuildingId());
+        if (building == null)
+            throw new DicElementNotFoundException();
+
+        if ( contractNumberExist(container.getContractNumber()) )
+            throw new AlreadyExistException();
+
+        CustomerDataSet customer = new CustomerDataSet();
+        customer.setName(container.getName());
+        customer.setSurname(container.getSurname());
+        customer.setPatronymic(container.getPatronymic());
+        customer.setPassport(container.getPassport());
+        customer.setPhone(container.getPhone());
+        customer.setComment(container.getComment());
+        customer.setContractNumber(container.getContractNumber());
+        customer.setBuilding(building);
+        customer.setRoom(container.getRoom());
+        long customerId = customerDao.save(customer);
+
+        return getSummeryById(customerId);
+    }
+
     public boolean contractNumberExist(String contractNumber){
         return getSummeryByContractNumber(contractNumber) != null;
     }

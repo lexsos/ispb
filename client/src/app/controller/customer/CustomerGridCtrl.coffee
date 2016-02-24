@@ -13,6 +13,9 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       'CustomerGrid button[action=edit]':
         click: this.onEditClick
 
+      'CustomerGrid button[action=add]':
+        click: this.onAddClick
+
       'CustomerGrid combobox[action=filterBy]':
         change: this.onFilterByChange
 
@@ -44,6 +47,10 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       view = Ext.widget('editCustomerWindow')
       view.down('form').loadRecord(record)
       view.setStore(element.up('grid').getStore())
+
+  onAddClick: (element) ->
+    view = Ext.widget('addCustomerWindow')
+    view.setStore(element.up('grid').getStore())
 
   onFilterByChange: (element, newValue) ->
     parent = element.up('toolbar')

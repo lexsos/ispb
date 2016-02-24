@@ -38,6 +38,11 @@
       "valueTypeName":"java.lang.Long"
     },
 
+    "phone": {
+      "sortable": true,
+      "hqlFieldName": "customerView.customer.phone"
+    },
+
     "qualifiedName": {
       "sortable": true,
       "hqlSortFieldAsc": "customerView.customer.surname, customerView.customer.name, customerView.customer.patronymic",
@@ -49,7 +54,6 @@
       "hqlSortFieldAsc": "customerView.customer.building.street.city.name, customerView.customer.building.street.name, customerView.customer.building.name",
       "hqlSortFieldDesc": "customerView.customer.building.street.city.name DESC, customerView.customer.building.street.name DESC, customerView.customer.building.name DESC"
     }
-
   },
 
   "defaultSort": "customerView.customer.contractNumber"
