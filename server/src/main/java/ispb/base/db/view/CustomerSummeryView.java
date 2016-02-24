@@ -18,6 +18,9 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
     @JoinColumn(nullable = false)
     private CustomerDataSet customer;
 
+    @Column
+    private double balance;
+
     public CustomerDataSet getCustomer() {
         return customer;
     }
@@ -34,5 +37,13 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
     @Override
     public void setId(long id) {
         this.id = id;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }

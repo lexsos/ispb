@@ -23,6 +23,9 @@
         <mapping class="ispb.base.db.dataset.BuildingDataSet"/>
         <mapping class="ispb.base.db.dataset.CustomerDataSet"/>
         <mapping class="ispb.base.db.dataset.UserDataSet"/>
+        <mapping class="ispb.base.db.dataset.PaymentGroupDataSet"/>
+        <mapping class="ispb.base.db.dataset.PaymentDataSet"/>
+
         <mapping class="ispb.base.db.view.CustomerSummeryView"/>
 
     </session-factory>

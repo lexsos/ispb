@@ -50,6 +50,26 @@ create table users (
     primary key (id)
 );
 
+create table payment_group (
+    id  bigserial not null,
+    comment varchar(255) not null,
+    create_at timestamp not null,
+    delete_at timestamp,
+    primary key (id)
+);
+
+create table payment (
+    id  bigserial not null,
+    apply_at timestamp not null,
+    create_at timestamp not null,
+    delete_at timestamp,
+    paymentSum float8 not null DEFAULT 0,
+    processed boolean not null,
+    customer_id int8 not null,
+    group_id int8 not null,
+    primary key (id)
+);
+
 create unique index index_city__name__delete_at ON city (name) WHERE delete_at IS NULL;
 
 alter table street add constraint FK__street_city__to__city foreign key (city_id) references city;
@@ -63,6 +83,12 @@ create unique index index_customer__contract_number__delete_at ON customer (cont
 
 create unique index index_users__login__delete_at ON users (login) WHERE delete_at IS NULL;
 
+alter table payment add constraint FK__payment__to__customer foreign key (customer_id) references customer;
+alter table payment add constraint FK__payment__to__payment_group foreign key (group_id) references payment_group;
 
 CREATE OR REPLACE VIEW customer_view AS
-    SELECT id AS id, id AS customer_id FROM customer;
+    SELECT
+        id AS id,
+        id AS customer_id,
+        coalesce( (SELECT sum(paymentSum) FROM payment WHERE payment.customer_id = customer.id AND payment.processed = TRUE AND payment.delete_at IS NULL), 0) AS balance
+    FROM customer;
