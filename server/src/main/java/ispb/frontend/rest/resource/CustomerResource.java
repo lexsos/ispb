@@ -36,6 +36,7 @@ public class CustomerResource extends RestResource {
         private long cityId;
         private String qualifiedName;
         private String qualifiedAddress;
+        private double balance;
 
         public boolean verify(){
             if (getName() != null && getSurname() != null && getPatronymic() != null && getPassport() != null && getPhone() != null &&
@@ -59,6 +60,7 @@ public class CustomerResource extends RestResource {
 
             streetId = customer.getCustomer().getBuilding().getStreet().getId();
             cityId = customer.getCustomer().getBuilding().getStreet().getCity().getId();
+            balance = customer.getBalance();
 
             StringBuilder qualifiedName = new StringBuilder();
             qualifiedName.append(getSurname());

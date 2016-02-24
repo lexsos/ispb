@@ -8,6 +8,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
     {header: 'ФИО', dataIndex: 'qualifiedName', flex: 1}
     {header: 'Адрес', dataIndex: 'qualifiedAddress', flex: 1}
     {header: 'Телефон', dataIndex: 'phone', flex: 1}
+    {header: 'Баланс', dataIndex: 'balance', flex: 1}
   ]
 
   store:

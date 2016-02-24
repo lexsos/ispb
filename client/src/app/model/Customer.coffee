@@ -15,6 +15,7 @@ Ext.define 'ISPBClient.model.Customer',
 
     { name: 'cityId', type: 'int' }
     { name: 'streetId', type: 'int' }
+    { name: 'balance', type: 'float' }
     { name: 'qualifiedName', type: 'string' }
     { name: 'qualifiedAddress', type: 'string' }
   ]

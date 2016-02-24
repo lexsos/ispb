@@ -43,6 +43,13 @@
       "hqlFieldName": "customerView.customer.phone"
     },
 
+    "balance": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "sortable": true,
+      "hqlFieldName": "customerView.balance",
+      "valueTypeName":"java.lang.Double"
+    },
+
     "qualifiedName": {
       "sortable": true,
       "hqlSortFieldAsc": "customerView.customer.surname, customerView.customer.name, customerView.customer.patronymic",
