@@ -234,6 +234,11 @@ public class Testing
         System.out.println( cusSum.getCount(filter) );
 
 
+        PaymentGroupDataSetDao paymentGroupDao = daoFactory.getPaymentGroupDao();
+        System.out.println(paymentGroupDao.getCount(null));
+        System.out.println(paymentGroupDao.getList(null, null, null));
+
+
         application.getByType(LogService.class).info("Starting http server");
 
         HttpServer server = new HttpServerImpl(conf);

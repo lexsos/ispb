@@ -1,0 +1,18 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "paymentGroup.deleteAt"
+    },
+
+    "createAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.util.Date",
+      "hqlFieldName": "paymentGroup.createAt",
+      "sortable": true
+    }
+  },
+
+  "defaultSort": "paymentGroup.createAt"
+}

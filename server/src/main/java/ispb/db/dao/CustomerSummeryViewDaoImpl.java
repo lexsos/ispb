@@ -10,7 +10,6 @@ import ispb.base.db.utils.QueryBuilder;
 import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.resources.AppResources;
 import ispb.db.util.BaseDao;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -33,25 +32,11 @@ public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSumme
     }
 
     public List<CustomerSummeryView> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
-        Object result = this.doTransaction(
-                (session, transaction) -> {
-                    Query query = queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, filter, sort);
-                    if (pagination != null && pagination.isValid()){
-                        query.setFirstResult(pagination.getStart());
-                        query.setMaxResults(pagination.getLimit());
-                    }
-                    return query.list();
-                }
-        );
-        return (List<CustomerSummeryView>)result;
+        return getQueryAsList(hqlListTmpl, queryBuilder, fieldsDescriptor, filter, sort, pagination);
     }
 
     public long getCount(DataSetFilter filter){
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        queryBuilder.getQuery(hqlCountTmpl, session, fieldsDescriptor, filter, null).uniqueResult()
-        );
-        return (Long)result;
+        return getRowCount(hqlCountTmpl, queryBuilder, fieldsDescriptor, filter);
     }
 
     public CustomerSummeryView getById(long id){

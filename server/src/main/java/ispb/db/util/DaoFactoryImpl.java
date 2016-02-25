@@ -42,4 +42,8 @@ public class DaoFactoryImpl implements DaoFactory {
     public CustomerSummeryViewDao getCustomerSummeryViewDao(){
         return new CustomerSummeryViewDaoImpl(sessions, resourceses, queryBuilder);
     }
+
+    public PaymentGroupDataSetDao getPaymentGroupDao(){
+        return new PaymentGroupDataSetDaoImpl(sessions, resourceses, queryBuilder);
+    }
 }

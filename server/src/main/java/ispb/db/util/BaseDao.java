@@ -1,15 +1,15 @@
 package ispb.db.util;
 
 import java.util.Date;
+import java.util.List;
 
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.field.FieldSetDescriptor;
-import ispb.base.db.utils.CreatedTimestampable;
-import ispb.base.db.utils.DaoTransaction;
-import ispb.base.db.utils.DeletedMarkable;
-import ispb.base.db.utils.Identifiable;
+import ispb.base.db.sort.DataSetSort;
+import ispb.base.db.utils.*;
 import ispb.base.resources.AppResources;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -83,5 +83,47 @@ public class BaseDao {
 
     protected FieldSetDescriptor loadFieldDescriptor(AppResources resources, String resourceName){
         return resources.getJsonAsObject(this.getClass(), resourceName, FieldSetDescriptor.class);
+    }
+
+    protected List getQueryAsList(String hqlListTmpl,
+                                  QueryBuilder queryBuilder,
+                                  FieldSetDescriptor fieldsDescriptor,
+                                  DataSetFilter filter,
+                                  DataSetSort sort,
+                                  Pagination pagination){
+
+        Object result = this.doTransaction(
+                (session, transaction) -> {
+
+                    Query query = queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, filter, sort);
+
+                    if (pagination != null && pagination.isValid()){
+                        query.setFirstResult(pagination.getStart());
+                        query.setMaxResults(pagination.getLimit());
+                    }
+
+                    return query.list();
+                }
+        );
+
+        if (result instanceof List)
+            return (List)result;
+        else
+            return null;
+    }
+
+    protected long getRowCount(String hqlCountTmpl,
+                               QueryBuilder queryBuilder,
+                               FieldSetDescriptor fieldsDescriptor,
+                               DataSetFilter filter){
+
+        Object result = this.doTransaction(
+                (session, transaction) ->
+                        queryBuilder.getQuery(hqlCountTmpl, session, fieldsDescriptor, filter, null).uniqueResult()
+        );
+
+        if (result instanceof Long)
+            return (Long)result;
+        return 0;
     }
 }
