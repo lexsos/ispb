@@ -13,4 +13,5 @@ public interface PaymentGroupDataSetDao {
     void delete(PaymentGroupDataSet paymentGroup);
     List<PaymentGroupDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getCount(DataSetFilter filter);
+    PaymentGroupDataSet getById(long id);
 }

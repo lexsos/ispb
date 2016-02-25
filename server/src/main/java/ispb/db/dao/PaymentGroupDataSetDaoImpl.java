@@ -62,4 +62,8 @@ public class PaymentGroupDataSetDaoImpl extends BaseDao implements PaymentGroupD
 
         return getRowCount(hqlCountTmpl, queryBuilder, fieldsDescriptor, newFilter);
     }
+
+    public PaymentGroupDataSet getById(long id){
+        return (PaymentGroupDataSet)getEntityById(PaymentGroupDataSet.class, id);
+    }
 }

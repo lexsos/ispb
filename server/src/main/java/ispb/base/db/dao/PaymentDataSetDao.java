@@ -13,4 +13,5 @@ public interface PaymentDataSetDao {
     void delete(PaymentDataSet payment);
     List<PaymentDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getCount(DataSetFilter filter);
+    PaymentDataSet getById(long id);
 }

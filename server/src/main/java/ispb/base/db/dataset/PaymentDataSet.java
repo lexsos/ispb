@@ -34,10 +34,10 @@ public class PaymentDataSet extends BaseDataSet implements DeletedMarkable, Iden
     private CustomerDataSet customer;
 
     @Column(nullable = false)
-    private double paymentSum;
+    private double paymentSum = 0;
 
     @Column(nullable = false)
-    private boolean processed;
+    private boolean processed = false;
 
     @Column(name = "apply_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

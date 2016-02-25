@@ -46,4 +46,8 @@ public class DaoFactoryImpl implements DaoFactory {
     public PaymentGroupDataSetDao getPaymentGroupDao(){
         return new PaymentGroupDataSetDaoImpl(sessions, resourceses, queryBuilder);
     }
+
+    public PaymentDataSetDao getPaymentDao(){
+        return new PaymentDataSetDaoImpl(sessions, resourceses, queryBuilder);
+    }
 }

@@ -1,0 +1,37 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "payment.deleteAt"
+    },
+
+    "createAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.util.Date",
+      "hqlFieldName": "payment.createAt",
+      "sortable": true
+    },
+
+    "groupId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "payment.group.id"
+    },
+
+    "customerId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "payment.customer.id"
+    },
+
+    "processed": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Boolean",
+      "hqlFieldName": "payment.processed"
+    }
+
+  },
+
+  "defaultSort": "payment.createAt"
+}

@@ -1,5 +1,6 @@
 package ispb;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -237,6 +238,22 @@ public class Testing
         PaymentGroupDataSetDao paymentGroupDao = daoFactory.getPaymentGroupDao();
         System.out.println(paymentGroupDao.getCount(null));
         System.out.println(paymentGroupDao.getList(null, null, null));
+
+        PaymentGroupDataSet paymentGroup = new PaymentGroupDataSet();
+        paymentGroup.setComment("payment group 1");
+        paymentGroupDao.save(paymentGroup);
+
+        PaymentDataSetDao paymentDao = daoFactory.getPaymentDao();
+        System.out.println(paymentDao.getCount(null));
+        System.out.println(paymentDao.getList(null, null, null));
+
+        PaymentDataSet payment = new PaymentDataSet();
+        payment.setGroup(paymentGroup);
+        payment.setPaymentSum(150);
+        payment.setApplyAt(new Date());
+        payment.setCustomer(customer);
+
+        paymentDao.save(payment);
 
 
         application.getByType(LogService.class).info("Starting http server");

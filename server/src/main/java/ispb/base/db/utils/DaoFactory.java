@@ -11,4 +11,5 @@ public interface DaoFactory {
     UserDataSetDao getUserDao();
     CustomerSummeryViewDao getCustomerSummeryViewDao();
     PaymentGroupDataSetDao getPaymentGroupDao();
+    PaymentDataSetDao getPaymentDao();
 }
