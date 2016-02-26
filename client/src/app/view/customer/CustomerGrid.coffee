@@ -39,6 +39,12 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
           icon:'static/img/edit.png'
           action: 'edit'
         }
+        '-'
+        {
+          text: 'Платежи'
+          icon:'static/img/money.png'
+          action: 'showPayments'
+        }
       ]
     }
 

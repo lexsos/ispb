@@ -16,6 +16,9 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       'CustomerGrid button[action=add]':
         click: this.onAddClick
 
+      'CustomerGrid button[action=showPayments]':
+        click: this.onShowPaymentsClick
+
       'CustomerGrid combobox[action=filterBy]':
         change: this.onFilterByChange
 
@@ -51,6 +54,20 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
   onAddClick: (element) ->
     view = Ext.widget('addCustomerWindow')
     view.setStore(element.up('grid').getStore())
+
+  onShowPaymentsClick: (element) ->
+    record = this.getSelectedRecord(element)
+    if record
+      view = Ext.widget('showPaymentsCustomerWindow')
+
+      contractNumber = record.get('contractNumber')
+      view.down('label[name=contractNumberLabel]').setText('Номер договора: ' + contractNumber)
+
+      qualifiedName = record.get('qualifiedName')
+      view.down('label[name=qualifiedNameLabel]').setText('ФИО абонента: ' + qualifiedName)
+
+      store = view.down('grid').getStore()
+      store.filter("customerId__eq", record.getId())
 
   onFilterByChange: (element, newValue) ->
     parent = element.up('toolbar')

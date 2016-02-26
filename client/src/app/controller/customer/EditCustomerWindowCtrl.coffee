@@ -2,6 +2,7 @@ Ext.define 'ISPBClient.controller.customer.EditCustomerWindowCtrl',
   extend: 'Ext.app.Controller'
 
   views: ['customer.EditCustomerWindow']
+  models: ['Payment']
   requires: ['ISPBClient.utils.RpcProcedure']
 
   init: ->
