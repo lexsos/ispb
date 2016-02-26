@@ -43,7 +43,12 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
         {
           text: 'Платежи'
           icon:'static/img/money.png'
-          action: 'showPayments'
+
+          menu: [
+            {text: 'Показать платежи', action: 'showPayments'}
+            {text: 'Виртуальный платеж'}
+            {text: 'Новый платеж\\списание'}
+          ]
         }
       ]
     }

@@ -16,7 +16,7 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       'CustomerGrid button[action=add]':
         click: this.onAddClick
 
-      'CustomerGrid button[action=showPayments]':
+      'CustomerGrid menuitem[action=showPayments]':
         click: this.onShowPaymentsClick
 
       'CustomerGrid combobox[action=filterBy]':
