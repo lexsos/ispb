@@ -1,20 +1,13 @@
 package ispb.base.frontend.rest;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import ispb.base.frontend.utils.Jsonable;
 import ispb.base.frontend.utils.ResponseCodes;
+import ispb.base.utils.GsonGetter;
 
 public class RestResponse implements Jsonable {
 
-    private static final Gson GSON;
     private boolean success = true;
     private int code = ResponseCodes.OK;
-
-    // TODO: refactoring - make GSON a singleton for all application
-    static {
-        GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    }
 
     public boolean getSuccess() {
         return success;
@@ -33,6 +26,6 @@ public class RestResponse implements Jsonable {
     }
 
     public String toJson(){
-        return GSON.toJson(this);
+        return GsonGetter.get().toJson(this);
     }
 }

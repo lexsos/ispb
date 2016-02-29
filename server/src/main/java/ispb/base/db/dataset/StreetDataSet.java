@@ -1,6 +1,5 @@
 package ispb.base.db.dataset;
 
-import com.google.gson.Gson;
 import javax.persistence.*;
 import java.util.Date;
 

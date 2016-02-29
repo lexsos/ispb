@@ -1,7 +1,6 @@
 package ispb.frontend.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
 import com.google.gson.JsonParseException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,17 +16,12 @@ import ispb.base.frontend.exception.IncompatibleDataStruct;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.utils.Verifiable;
 import ispb.base.service.LogService;
+import ispb.base.utils.GsonGetter;
 
 
 public class BaseServlet extends HttpServlet  {
 
     private Properties typeList;
-    private static final Gson GSON;
-
-    // TODO: refactoring - make GSON a singleton for all application
-    static {
-        GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-    }
 
     protected Application getApplication(){
         return ApplicationImpl.getApplication();
@@ -47,7 +41,7 @@ public class BaseServlet extends HttpServlet  {
     protected <T> T readJsonObject(HttpServletRequest request, Class<T> clazz){
         T jsonObj = null;
         try {
-            jsonObj = GSON.fromJson(request.getReader(), clazz);
+            jsonObj = GsonGetter.get().fromJson(request.getReader(), clazz);
         }
         catch (JsonParseException e){
             getLogService().debug("Can't parse json", e);

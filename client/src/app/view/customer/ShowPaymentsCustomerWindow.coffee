@@ -50,7 +50,6 @@ Ext.define 'ISPBClient.view.customer.ShowPaymentsCustomerWindow',
 
       columns: [
         {xtype: 'rownumberer'}
-        {header: 'Дата создания', dataIndex: 'createAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
         {header: 'Дата проводки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
         {header: 'Коментарий', dataIndex: 'paymentGroupComment', flex: 1}
         {

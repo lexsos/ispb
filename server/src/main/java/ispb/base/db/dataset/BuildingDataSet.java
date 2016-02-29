@@ -2,7 +2,6 @@ package ispb.base.db.dataset;
 
 import java.util.Date;
 import javax.persistence.*;
-import com.google.gson.Gson;
 import ispb.base.db.utils.BaseDataSet;
 import ispb.base.db.utils.DeletedMarkable;
 import ispb.base.db.utils.Identifiable;

@@ -1,7 +1,7 @@
 package ispb.base.frontend.rest;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import ispb.base.utils.GsonGetter;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;
@@ -13,12 +13,11 @@ public class RestSort implements Iterable {
 
     private List<RestSortItem> sortItems;
 
-    private static Gson gson=new Gson();
     private static Type type = new TypeToken<List<RestSortItem>>(){}.getType();
 
     public RestSort(String jsonData){
         try {
-            sortItems = gson.fromJson(jsonData, type);
+            sortItems = GsonGetter.get().fromJson(jsonData, type);
         }
         catch (Throwable e){
             sortItems = new LinkedList();

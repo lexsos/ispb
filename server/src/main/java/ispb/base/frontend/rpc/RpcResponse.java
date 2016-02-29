@@ -1,12 +1,12 @@
 package ispb.base.frontend.rpc;
 
-import com.google.gson.Gson;
+
 import ispb.base.frontend.utils.Jsonable;
 import ispb.base.frontend.utils.ResponseCodes;
+import ispb.base.utils.GsonGetter;
 
 public class RpcResponse implements Jsonable {
 
-    private static final Gson GSON = new Gson();
     private int code = ResponseCodes.OK;
     private Object value = null;
 
@@ -22,7 +22,7 @@ public class RpcResponse implements Jsonable {
     }
 
     public String toJson(){
-        return GSON.toJson(this);
+        return GsonGetter.get().toJson(this);
     }
 
     public int getCode() {

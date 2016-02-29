@@ -29,6 +29,7 @@ import ispb.base.service.account.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
+import ispb.base.utils.GsonGetter;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
 import ispb.db.util.WhereBuilderImpl;
@@ -52,7 +53,7 @@ public class Testing
         private Map<String, String> params = new HashMap<String, String>();
 
         public static JsonTest fromJson(String jsonData){
-            Gson gson = new Gson();
+            Gson gson = GsonGetter.get();
             return gson.fromJson(jsonData, JsonTest.class);
         }
 
@@ -65,7 +66,7 @@ public class Testing
         }
 
         public String toJson() {
-            Gson gson = new Gson();
+            Gson gson = GsonGetter.get();
             return gson.toJson(this);
         }
     }

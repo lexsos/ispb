@@ -1,8 +1,8 @@
 package ispb.resources;
 
 
-import com.google.gson.Gson;
 import ispb.base.resources.AppResources;
+import ispb.base.utils.GsonGetter;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -15,7 +15,6 @@ public class AppResourcesImpl implements AppResources {
     private ConcurrentMap<String, String> stringResourcesCache;
     private ConcurrentMap<String, Object> objectResourcesCache;
     private static AppResources instance = null;
-    private static final Gson GSON = new Gson();
 
     public static AppResources getInstance(){
         if (instance == null)
@@ -71,7 +70,7 @@ public class AppResourcesImpl implements AppResources {
         }
 
         String json = getAsString(forClazz, path);
-        T obj = GSON.fromJson(json, type);
+        T obj = GsonGetter.get().fromJson(json, type);
         objectResourcesCache.put(key, obj);
         return obj;
     }

@@ -11,6 +11,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
     {
       header: 'Баланс'
       dataIndex: 'balance'
+      align: 'right'
       flex: 1
       renderer: (v) ->
         formated = Ext.util.Format.number(v, '0,000.00') + 'р.'
