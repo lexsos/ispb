@@ -53,9 +53,30 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
           icon:'static/img/money.png'
 
           menu: [
-            {text: 'Показать платежи', action: 'showPayments'}
-            {text: 'Виртуальный платеж', action: 'addVirtualPayment'}
-            {text: 'Новый платеж\\списание', action: 'addPayment'}
+            {text: 'Показать платежи', action: 'showPayments', icon:'static/img/grid.png'}
+            {text: 'Виртуальный платеж', action: 'addVirtualPayment', icon:'static/img/money_add.png'}
+            {text: 'Новый платеж\\списание', action: 'addPayment', icon:'static/img/money_add.png'}
+          ]
+        }
+        '-'
+        {
+          text: 'Тариф'
+          icon: 'static/img/details.gif'
+
+          menu: [
+            {text: 'Показать историю', action: 'showTariffHistory', icon: 'static/img/grid.png'}
+            {text: 'Изменить тариф', action: 'changeTariff', icon: 'static/img/article.gif'}
+          ]
+        }
+        '-'
+        {
+          text: 'Активность'
+          icon:'static/img/user.png'
+
+          menu: [
+            {text: 'Показать историю', action: 'showActivity', icon:'static/img/grid.png'}
+            {text: 'Включить', action: 'activateCustomer', icon:'static/img/green-led.gif'}
+            {text: 'Отключить', action: 'deactivateCustomer', icon:'static/img/red-led.gif'}
           ]
         }
       ]
