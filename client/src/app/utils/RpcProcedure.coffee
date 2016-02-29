@@ -42,3 +42,17 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
     contractNumberExist: (contractNumber) ->
       this.call "contract_number_exist",
         contractNumber: contractNumber
+
+    addPayment: (customerId, sum, comment) ->
+      this.call "add_payment",
+        customerId: customerId
+        sum: sum
+        comment: comment
+
+    addVirtualPayment: (customerId, sum, dateUntil, comment) ->
+      this.call "add_virtual_payment",
+        customerId: customerId
+        sum: sum
+        until: dateUntil
+        comment: comment
+

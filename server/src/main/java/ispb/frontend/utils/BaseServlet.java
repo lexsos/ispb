@@ -1,6 +1,7 @@
 package ispb.frontend.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,12 @@ import ispb.base.service.LogService;
 public class BaseServlet extends HttpServlet  {
 
     private Properties typeList;
-    private static final Gson GSON = new Gson();
+    private static final Gson GSON;
+
+    // TODO: refactoring - make GSON a singleton for all application
+    static {
+        GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+    }
 
     protected Application getApplication(){
         return ApplicationImpl.getApplication();

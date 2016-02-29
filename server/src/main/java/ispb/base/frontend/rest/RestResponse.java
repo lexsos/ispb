@@ -11,6 +11,7 @@ public class RestResponse implements Jsonable {
     private boolean success = true;
     private int code = ResponseCodes.OK;
 
+    // TODO: refactoring - make GSON a singleton for all application
     static {
         GSON = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
     }

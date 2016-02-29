@@ -8,7 +8,14 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
     {header: 'ФИО', dataIndex: 'qualifiedName', flex: 1}
     {header: 'Адрес', dataIndex: 'qualifiedAddress', flex: 1}
     {header: 'Телефон', dataIndex: 'phone', flex: 1}
-    {header: 'Баланс', dataIndex: 'balance', flex: 1}
+    {
+      header: 'Баланс'
+      dataIndex: 'balance'
+      flex: 1
+      renderer: (v) ->
+        formated = Ext.util.Format.number(v, '0,000.00') + 'р.'
+        return formated
+    }
   ]
 
   store:
@@ -46,8 +53,8 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
 
           menu: [
             {text: 'Показать платежи', action: 'showPayments'}
-            {text: 'Виртуальный платеж'}
-            {text: 'Новый платеж\\списание'}
+            {text: 'Виртуальный платеж', action: 'addVirtualPayment'}
+            {text: 'Новый платеж\\списание', action: 'addPayment'}
           ]
         }
       ]

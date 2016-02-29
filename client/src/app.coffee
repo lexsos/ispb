@@ -20,6 +20,8 @@ Ext.application
     'customer.EditCustomerWindowCtrl',
     'customer.AddCustomerWindowCtrl',
     'customer.ShowPaymentsCustomerWindowCtrl',
+    'customer.AddCustomerVirtualPaymentWindowCtrl',
+    'customer.AddCustomerPaymentWindowCtrl',
   ]
 
   launch: ->

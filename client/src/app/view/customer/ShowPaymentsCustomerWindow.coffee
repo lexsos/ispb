@@ -50,14 +50,22 @@ Ext.define 'ISPBClient.view.customer.ShowPaymentsCustomerWindow',
 
       columns: [
         {xtype: 'rownumberer'}
-        {header: 'Дата создания', dataIndex: 'createAt', flex: 1, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
-        {header: 'Дата проводки', dataIndex: 'applyAt', flex: 1, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
+        {header: 'Дата создания', dataIndex: 'createAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
+        {header: 'Дата проводки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
         {header: 'Коментарий', dataIndex: 'paymentGroupComment', flex: 1}
-        {header: 'Сумма', dataIndex: 'paymentSum', flex: 1}
+        {
+          header: 'Сумма'
+          dataIndex: 'paymentSum'
+          width: 100
+          align: 'right'
+          renderer: (v) ->
+            formated = Ext.util.Format.number(v, '0,000.00') + 'р.'
+            return formated
+        }
         {
           header: 'Статус'
           dataIndex: 'processed'
-          flex: 1
+          width: 50
           renderer: (v) ->
             if v
               return '<img src="static/img/saved.png">'
