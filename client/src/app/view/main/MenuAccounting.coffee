@@ -10,7 +10,7 @@ Ext.define 'ISPBClient.view.main.MenuAccounting',
       floating: false
       items: [
         {text: 'Абоненты', widget: 'customer.CustomerList'}
-        {text: 'Начисления', widget: ''}
+        {text: 'Начисления', widget: 'payment.PaymentList'}
       ]
     }
   ]

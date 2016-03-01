@@ -1,9 +1,9 @@
-Ext.define 'ISPBClient.view.customer.ShowPaymentsCustomerWindow',
+Ext.define 'ISPBClient.view.payment.ShowPaymentsInGroupWindow',
   extend: 'Ext.window.Window'
-  alias: 'widget.showPaymentsCustomerWindow'
+  alias: 'widget.showPaymentsInGroupWindow'
 
   title: 'Платежи'
-  autoShow: true
+  autoShow: false
 
   height: 600,
   width: 800,
@@ -24,19 +24,22 @@ Ext.define 'ISPBClient.view.customer.ShowPaymentsCustomerWindow',
 
       items: [
         {
-          xtype: 'label'
-          text: 'Номер договора:'
-          margin: '5 0 0 5'
-          name: 'contractNumberLabel'
+          xtype: 'displayfield'
+          fieldLabel: 'Дата создания'
+          name: 'createAtLabel'
+          margin: '5 5 5 5'
+          value: '1'
         }
         {
-          xtype: 'label'
-          text: 'ФИО абонента:'
-          margin: '5 0 5 5'
-          name: 'qualifiedNameLabel'
+          xtype: 'displayfield'
+          fieldLabel: 'Коментарий'
+          name: 'commentLabel'
+          margin: '5 5 5 5'
+          value: '1'
         }
       ]
     }
+
     {
       xtype: 'gridpanel'
       region: 'center'
@@ -50,7 +53,8 @@ Ext.define 'ISPBClient.view.customer.ShowPaymentsCustomerWindow',
       columns: [
         {xtype: 'rownumberer'}
         {header: 'Дата проводки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
-        {header: 'Коментарий', dataIndex: 'paymentGroupComment', flex: 1}
+        {header: 'Номер договора', dataIndex: 'customerContractNumber', flex: 1}
+        {header: 'ФИО абенента', dataIndex: 'customerQualifiedName', flex: 1}
         {
           header: 'Сумма'
           dataIndex: 'paymentSum'
@@ -87,4 +91,5 @@ Ext.define 'ISPBClient.view.customer.ShowPaymentsCustomerWindow',
         }
       ]
     }
+
   ]

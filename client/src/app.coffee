@@ -22,6 +22,9 @@ Ext.application
     'customer.ShowPaymentsCustomerWindowCtrl',
     'customer.AddCustomerVirtualPaymentWindowCtrl',
     'customer.AddCustomerPaymentWindowCtrl',
+
+    'payment.PaymentGridCtrl',
+    'payment.ShowPaymentsInGroupWindowCtrl',
   ]
 
   launch: ->

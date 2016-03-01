@@ -13,6 +13,7 @@ Ext.define 'ISPBClient.controller.main.Main',
         'street.StreetList',
         'building.BuildingList',
         'customer.CustomerList',
+        'payment.PaymentList',
     ]
 
     init: ->
