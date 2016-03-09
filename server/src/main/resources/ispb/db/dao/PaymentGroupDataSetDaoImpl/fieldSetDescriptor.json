@@ -14,5 +14,5 @@
     }
   },
 
-  "defaultSort": "paymentGroup.createAt"
+  "defaultSort": "paymentGroup.createAt DESC"
 }

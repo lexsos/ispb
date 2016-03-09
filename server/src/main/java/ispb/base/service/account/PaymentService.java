@@ -2,6 +2,7 @@ package ispb.base.service.account;
 
 
 import ispb.base.db.dataset.PaymentDataSet;
+import ispb.base.db.dataset.PaymentGroupDataSet;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
@@ -12,8 +13,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface PaymentService {
+
     List<PaymentDataSet> getPayments(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getPaymentCount(DataSetFilter filter);
+
+    List<PaymentGroupDataSet> getPaymentGroups(DataSetFilter filter, DataSetSort sort, Pagination pagination);
+    long getPaymentGroupCount(DataSetFilter filter);
 
     void addVirtualPayment(long customerId, double sum, Date until, String comment)
             throws NotFoundException, IncorrectDateException;

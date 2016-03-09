@@ -48,9 +48,9 @@ public class PaymentResource extends RestResource {
             customerContractNumber = payment.getCustomer().getContractNumber();
 
             StringBuilder customerName = new StringBuilder();
-            customerName.append(payment.getCustomer().getName());
-            customerName.append(" ");
             customerName.append(payment.getCustomer().getSurname());
+            customerName.append(" ");
+            customerName.append(payment.getCustomer().getName());
             customerName.append(" ");
             customerName.append(payment.getCustomer().getPatronymic());
             customerQualifiedName = customerName.toString();
@@ -112,6 +112,9 @@ public class PaymentResource extends RestResource {
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
         if (restItem.propertyEquals("customerId__eq")) {
             return new DataSetFilterItem("customerId", CmpOperator.EQ, restItem.asLong());
+        }
+        else if (restItem.propertyEquals("groupId__eq")) {
+            return new DataSetFilterItem("groupId", CmpOperator.EQ, restItem.asLong());
         }
         return null;
     }

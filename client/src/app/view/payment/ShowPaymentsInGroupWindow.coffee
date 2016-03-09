@@ -11,6 +11,9 @@ Ext.define 'ISPBClient.view.payment.ShowPaymentsInGroupWindow',
 
   maximizable: true
 
+  config:
+    paymentGroup: null
+
   items: [
     {
       xtype: 'panel'
@@ -93,3 +96,10 @@ Ext.define 'ISPBClient.view.payment.ShowPaymentsInGroupWindow',
     }
 
   ]
+
+  listeners:
+    show: (element) ->
+      paymentGroup = element.getPaymentGroup()
+      createDate = Ext.util.Format.date(paymentGroup.get('createAt'), 'Y-m-d H:i:s')
+      element.down('displayfield[name=createAtLabel]').setValue(createDate)
+      element.down('displayfield[name=commentLabel]').setValue(paymentGroup.get('comment'))

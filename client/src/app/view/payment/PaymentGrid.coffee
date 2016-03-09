@@ -4,7 +4,13 @@ Ext.define 'ISPBClient.view.payment.PaymentGrid',
 
   columns: [
     {xtype: 'rownumberer'}
-    {header: 'Дата создания', dataIndex: 'createAt', flex: 1}
+    {
+      header: 'Дата создания',
+      dataIndex: 'createAt',
+      flex: 1
+      renderer: (v) ->
+        return Ext.util.Format.date(v, 'Y-m-d H:i:s')
+    }
     {header: 'Комментарий', dataIndex: 'comment', flex: 1}
   ]
 

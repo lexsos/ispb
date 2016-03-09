@@ -93,4 +93,14 @@ public class PaymentServiceImpl implements PaymentService {
 
         // TODO: send event message about new payment
     }
+
+    public List<PaymentGroupDataSet> getPaymentGroups(DataSetFilter filter, DataSetSort sort, Pagination pagination){
+        PaymentGroupDataSetDao dao = daoFactory.getPaymentGroupDao();
+        return dao.getList(filter, sort, pagination);
+    }
+
+    public long getPaymentGroupCount(DataSetFilter filter){
+        PaymentGroupDataSetDao dao = daoFactory.getPaymentGroupDao();
+        return dao.getCount(filter);
+    }
 }
