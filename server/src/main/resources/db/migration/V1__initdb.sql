@@ -70,6 +70,30 @@ create table payment (
     primary key (id)
 );
 
+create table tariff (
+    id  bigserial not null,
+    delete_at timestamp,
+    name varchar(255) not null,
+    auto_daily_payment boolean not null,
+    daily_payment float8 not null,
+    off_threshold float8 not null,
+    down_rate float8 not null,
+    up_rate float8 not null,
+    primary key (id)
+);
+
+create table tariff_assignment (
+    id  bigserial not null,
+    create_at timestamp not null,
+    delete_at timestamp,
+    apply_at timestamp not null,
+    processed boolean not null,
+    customer_id int8 not null,
+    tariff_id int8 not null,
+    primary key (id)
+);
+
+
 create unique index index_city__name__delete_at ON city (name) WHERE delete_at IS NULL;
 
 alter table street add constraint FK__street_city__to__city foreign key (city_id) references city;
@@ -86,9 +110,18 @@ create unique index index_users__login__delete_at ON users (login) WHERE delete_
 alter table payment add constraint FK__payment__to__customer foreign key (customer_id) references customer;
 alter table payment add constraint FK__payment__to__payment_group foreign key (group_id) references payment_group;
 
+create unique index index_tariff__name__delete_at ON tariff (name) WHERE delete_at IS NULL;
+
+alter table tariff_assignment add constraint FK__tariff_assignment__to__customer foreign key (customer_id) references customer;
+alter table tariff_assignment add constraint FK__tariff_assignment__to__tariff foreign key (tariff_id) references tariff;
+
+
 CREATE OR REPLACE VIEW customer_view AS
     SELECT
         id AS id,
         id AS customer_id,
-        coalesce( (SELECT sum(paymentSum) FROM payment WHERE payment.customer_id = customer.id AND payment.processed = TRUE AND payment.delete_at IS NULL), 0) AS balance
+        coalesce( (SELECT sum(paymentSum) FROM payment WHERE payment.customer_id = customer.id AND payment.processed = TRUE AND payment.delete_at IS NULL), 0) AS balance,
+        (SELECT tariff_id FROM tariff_assignment WHERE tariff_assignment.processed = TRUE AND tariff_assignment.customer_id = customer.id ORDER BY tariff_assignment.apply_at DESC LIMIT 1) as tariff_id
     FROM customer;
+
+

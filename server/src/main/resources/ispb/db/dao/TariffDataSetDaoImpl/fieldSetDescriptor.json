@@ -1,0 +1,54 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "tariff.deleteAt"
+    },
+
+    "name": {
+      "hqlFieldName": "tariff.name",
+      "sortable": true,
+      "validOperators":["EQ", "LIKE"],
+      "valueTypeName":"java.lang.String"
+    },
+
+    "dailyPayment": {
+      "hqlFieldName": "tariff.dailyPayment",
+      "sortable": true,
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.lang.Double"
+    },
+
+    "autoDailyPayment": {
+      "hqlFieldName": "tariff.autoDailyPayment",
+      "sortable": true,
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Boolean"
+    },
+
+    "upRate": {
+      "hqlFieldName": "tariff.upRate",
+      "sortable": true,
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.lang.Double"
+    },
+
+    "downRate": {
+      "hqlFieldName": "tariff.downRate",
+      "sortable": true,
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.lang.Double"
+    },
+
+    "offThreshold": {
+      "hqlFieldName": "tariff.offThreshold",
+      "sortable": true,
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.lang.Double"
+    }
+
+  },
+
+  "defaultSort": "tariff.name"
+}

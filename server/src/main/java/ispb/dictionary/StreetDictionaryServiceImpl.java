@@ -16,7 +16,7 @@ import java.util.List;
 
 public class StreetDictionaryServiceImpl implements StreetDictionaryService {
 
-    DaoFactory daoFactory;
+    private DaoFactory daoFactory;
 
     public StreetDictionaryServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;

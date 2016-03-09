@@ -25,6 +25,8 @@
         <mapping class="ispb.base.db.dataset.UserDataSet"/>
         <mapping class="ispb.base.db.dataset.PaymentGroupDataSet"/>
         <mapping class="ispb.base.db.dataset.PaymentDataSet"/>
+        <mapping class="ispb.base.db.dataset.TariffDataSet"/>
+        <mapping class="ispb.base.db.dataset.TariffAssignmentDataSet"/>
 
         <mapping class="ispb.base.db.view.CustomerSummeryView"/>
 

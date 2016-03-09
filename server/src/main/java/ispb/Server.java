@@ -19,6 +19,7 @@ import ispb.base.service.account.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
+import ispb.base.service.dictionary.TariffDictionaryService;
 import ispb.db.DBServiceImpl;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
@@ -26,6 +27,7 @@ import ispb.db.util.WhereBuilderImpl;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
+import ispb.dictionary.TariffDictionaryServiceImpl;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
@@ -75,6 +77,9 @@ public class Server {
 
         CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory);
         application.addByType(CustomerAccountService.class, customerAccountService);
+
+        TariffDictionaryService tariffDictionaryService = new TariffDictionaryServiceImpl(daoFactory);
+        application.addByType(TariffDictionaryService.class, tariffDictionaryService);
 
         PaymentService paymentService = new PaymentServiceImpl(daoFactory);
         application.addByType(PaymentService.class, paymentService);

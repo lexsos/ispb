@@ -50,4 +50,8 @@ public class DaoFactoryImpl implements DaoFactory {
     public PaymentDataSetDao getPaymentDao(){
         return new PaymentDataSetDaoImpl(sessions, resourceses, queryBuilder);
     }
+
+    public TariffDataSetDao getTariffDao(){
+        return new TariffDataSetDaoImpl(sessions, resourceses, queryBuilder);
+    }
 }

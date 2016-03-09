@@ -29,6 +29,7 @@ import ispb.base.service.account.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
+import ispb.base.service.dictionary.TariffDictionaryService;
 import ispb.base.utils.GsonGetter;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
@@ -36,6 +37,7 @@ import ispb.db.util.WhereBuilderImpl;
 import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
+import ispb.dictionary.TariffDictionaryServiceImpl;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
@@ -260,6 +262,19 @@ public class Testing
 
         paymentDao.save(payment);
 
+
+        TariffDictionaryService tariffDictionaryService = new TariffDictionaryServiceImpl(daoFactory);
+        application.addByType(TariffDictionaryService.class, tariffDictionaryService);
+
+        TariffDataSet tariff = new TariffDataSet();
+        tariff.setName("5mb");
+        tariff.setDailyPayment(5);
+        tariff.setOffThreshold(-15);
+        tariff.setAutoDailyPayment(true);
+        tariff.setDownRate(5);
+        tariff.setUpRate(5);
+
+        tariffDictionaryService.create(tariff);
 
         application.getByType(LogService.class).info("Starting http server");
 

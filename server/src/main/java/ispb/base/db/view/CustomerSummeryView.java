@@ -2,6 +2,7 @@ package ispb.base.db.view;
 
 
 import ispb.base.db.dataset.CustomerDataSet;
+import ispb.base.db.dataset.TariffDataSet;
 import ispb.base.db.utils.BaseDataSet;
 import ispb.base.db.utils.Identifiable;
 
@@ -20,6 +21,10 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
 
     @Column
     private double balance;
+
+    @ManyToOne
+    @JoinColumn(nullable = true)
+    private TariffDataSet tariff;
 
     public CustomerDataSet getCustomer() {
         return customer;
@@ -45,5 +50,13 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public TariffDataSet getTariff() {
+        return tariff;
+    }
+
+    public void setTariff(TariffDataSet tariff) {
+        this.tariff = tariff;
     }
 }
