@@ -12,6 +12,7 @@ Ext.define 'ISPBClient.view.main.Dictionaries',
                 {text: 'Города', widget: 'city.CityList'}
                 {text: 'Улицы',  widget: 'street.StreetList'}
                 {text: 'Здания', widget: 'building.BuildingList'}
+                {text: 'Тарифы', widget: 'tariff.TariffList'}
             ]
         }
     ]
