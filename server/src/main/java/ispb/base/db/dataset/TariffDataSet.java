@@ -106,18 +106,4 @@ public class TariffDataSet extends BaseDataSet implements DeletedMarkable, Ident
     public void setOffThreshold(double offThreshold) {
         this.offThreshold = offThreshold;
     }
-
-    public void update(TariffContainer container){
-
-        setDeleteAt(container.getDeleteAt());
-
-        setName(container.getName());
-
-        setAutoDailyPayment(container.isAutoDailyPayment());
-        setDailyPayment(container.getDailyPayment());
-        setOffThreshold(container.getOffThreshold());
-
-        setDownRate(container.getDownRate());
-        setUpRate(container.getUpRate());
-    }
 }

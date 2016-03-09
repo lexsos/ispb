@@ -34,7 +34,7 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
 
         TariffDataSetDao dao = daoFactory.getTariffDao();
         TariffDataSet tariff = new TariffDataSet();
-        tariff.update(container);
+        update(tariff, container);
         dao.save(tariff);
         return tariff;
     }
@@ -50,7 +50,7 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
         if (otherTariff != null && otherTariff.getId() != tariff.getId())
             throw new AlreadyExistException();
 
-        tariff.update(container);
+        update(tariff, container);
         dao.save(tariff);
         return tariff;
     }
@@ -69,12 +69,25 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
         return getByName(tariffName) != null;
     }
 
-    public TariffDataSet getByName(String tariffName){
+    private TariffDataSet getByName(String tariffName){
         DataSetFilter filter = new DataSetFilter();
         filter.add("name", CmpOperator.EQ, tariffName);
         List<TariffDataSet> tariffList = getList(filter, null);
         if (tariffList.isEmpty())
             return null;
         return tariffList.get(0);
+    }
+
+    private void update(TariffDataSet tariff, TariffContainer container){
+        tariff.setDeleteAt(container.getDeleteAt());
+
+        tariff.setName(container.getName());
+
+        tariff.setAutoDailyPayment(container.isAutoDailyPayment());
+        tariff.setDailyPayment(container.getDailyPayment());
+        tariff.setOffThreshold(container.getOffThreshold());
+
+        tariff.setDownRate(container.getDownRate());
+        tariff.setUpRate(container.getUpRate());
     }
 }
