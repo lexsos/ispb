@@ -8,7 +8,9 @@ import ispb.base.db.dataset.TariffAssignmentDataSet;
 import ispb.base.db.dataset.TariffDataSet;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
+import ispb.base.db.utils.Pagination;
 import ispb.base.service.account.TariffAssignmentService;
 import ispb.base.service.exception.BadDateException;
 import ispb.base.service.exception.NotFoundException;
@@ -26,11 +28,15 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         this.daoFactory = daoFactory;
     }
 
-    public List<TariffAssignmentDataSet> getHistory(long customerId){
+    public List<TariffAssignmentDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
         TariffAssignmentDataSetDao dao = daoFactory.getTariffAssignmentDao();
+        return dao.getList(filter, sort, pagination);
+    }
+
+    public List<TariffAssignmentDataSet> getHistory(long customerId){
         DataSetFilter filter = new DataSetFilter();
         filter.add("customerId", CmpOperator.EQ, customerId);
-        return dao.getList(filter, null, null);
+        return getList(filter, null, null);
     }
 
     public void assignTariff(long customerId, long tariffId, Date fromDate) throws NotFoundException, BadDateException {
