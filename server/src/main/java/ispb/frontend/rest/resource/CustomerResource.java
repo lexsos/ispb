@@ -37,6 +37,8 @@ public class CustomerResource extends RestResource {
         private String qualifiedName;
         private String qualifiedAddress;
         private double balance;
+        private long tariffId;
+        private String tariffName;
 
         public boolean verify(){
             if (getName() != null && getSurname() != null && getPatronymic() != null && getPassport() != null && getPhone() != null &&
@@ -77,6 +79,11 @@ public class CustomerResource extends RestResource {
             qualifiedAddress.append(", ");
             qualifiedAddress.append(customer.getCustomer().getBuilding().getName());
             this.qualifiedAddress = qualifiedAddress.toString();
+
+            if (customer.getTariff() != null){
+                setTariffId(customer.getTariff().getId());
+                setTariffName(customer.getTariff().getName());
+            }
         }
 
         public CustomerEntity(){
@@ -161,6 +168,22 @@ public class CustomerResource extends RestResource {
 
         public void setRoom(String room) {
             this.room = room;
+        }
+
+        public long getTariffId() {
+            return tariffId;
+        }
+
+        public void setTariffId(long tariffId) {
+            this.tariffId = tariffId;
+        }
+
+        public String getTariffName() {
+            return tariffName;
+        }
+
+        public void setTariffName(String tariffName) {
+            this.tariffName = tariffName;
         }
     }
 

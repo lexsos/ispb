@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import ispb.account.CustomerAccountServiceImpl;
 import ispb.account.PaymentServiceImpl;
+import ispb.account.TariffAssignmentServiceImpl;
 import ispb.base.Application;
 import ispb.base.db.dao.*;
 import ispb.base.db.dataset.*;
@@ -25,6 +26,7 @@ import ispb.base.resources.Config;
 import ispb.base.service.LogService;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.account.PaymentService;
+import ispb.base.service.account.TariffAssignmentService;
 import ispb.base.service.account.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
@@ -275,6 +277,9 @@ public class Testing
         tariff.setUpRate(5);
 
         tariffDictionaryService.create(tariff);
+
+        TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory);
+        application.addByType(TariffAssignmentService.class, tariffAssignmentService);
 
         application.getByType(LogService.class).info("Starting http server");
 

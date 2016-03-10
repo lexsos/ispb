@@ -13,4 +13,5 @@ public interface DaoFactory {
     PaymentGroupDataSetDao getPaymentGroupDao();
     PaymentDataSetDao getPaymentDao();
     TariffDataSetDao getTariffDao();
+    TariffAssignmentDataSetDao getTariffAssignmentDao();
 }

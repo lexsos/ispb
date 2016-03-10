@@ -60,3 +60,9 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
       this.call "tariff_name_exist",
         name: name
 
+    assignTariff: (customerId, tariffId, dateFrom) ->
+      this.call "assign_tariff",
+        customerId: customerId
+        tariffId: tariffId
+        from: dateFrom
+

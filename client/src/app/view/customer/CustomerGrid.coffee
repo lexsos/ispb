@@ -17,6 +17,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
         formated = Ext.util.Format.number(v, '0,000.00') + 'р.'
         return formated
     }
+    {header: 'Тариф', dataIndex: 'tariffName', flex: 1}
   ]
 
   store:

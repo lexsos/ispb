@@ -60,7 +60,14 @@
       "sortable": true,
       "hqlSortFieldAsc": "customerView.customer.building.street.city.name, customerView.customer.building.street.name, customerView.customer.building.name",
       "hqlSortFieldDesc": "customerView.customer.building.street.city.name DESC, customerView.customer.building.street.name DESC, customerView.customer.building.name DESC"
+    },
+
+    "tariffName": {
+      "sortable": true,
+      "hqlFieldName": "customerView.tariff.name"
     }
+
+
   },
 
   "defaultSort": "customerView.customer.contractNumber"

@@ -18,6 +18,8 @@ Ext.define 'ISPBClient.model.Customer',
     { name: 'balance', type: 'float' }
     { name: 'qualifiedName', type: 'string' }
     { name: 'qualifiedAddress', type: 'string' }
+    { name: 'tariffId', type: 'int' }
+    { name: 'tariffName', type: 'string' }
   ]
 
   proxy:

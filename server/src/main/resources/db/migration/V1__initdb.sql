@@ -121,7 +121,7 @@ CREATE OR REPLACE VIEW customer_view AS
         id AS id,
         id AS customer_id,
         coalesce( (SELECT sum(paymentSum) FROM payment WHERE payment.customer_id = customer.id AND payment.processed = TRUE AND payment.delete_at IS NULL), 0) AS balance,
-        (SELECT tariff_id FROM tariff_assignment WHERE tariff_assignment.processed = TRUE AND tariff_assignment.customer_id = customer.id ORDER BY tariff_assignment.apply_at DESC LIMIT 1) as tariff_id
+        (SELECT tariff_id FROM tariff_assignment WHERE tariff_assignment.processed = TRUE AND tariff_assignment.customer_id = customer.id AND tariff_assignment.delete_at IS NULL ORDER BY tariff_assignment.apply_at DESC LIMIT 1) as tariff_id
     FROM customer;
 
 

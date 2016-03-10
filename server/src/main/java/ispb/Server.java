@@ -3,6 +3,7 @@ package ispb;
 
 import ispb.account.CustomerAccountServiceImpl;
 import ispb.account.PaymentServiceImpl;
+import ispb.account.TariffAssignmentServiceImpl;
 import ispb.base.Application;
 import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.sort.SortBuilder;
@@ -15,6 +16,7 @@ import ispb.base.service.DBService;
 import ispb.base.service.LogService;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.account.PaymentService;
+import ispb.base.service.account.TariffAssignmentService;
 import ispb.base.service.account.UserAccountService;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
@@ -83,6 +85,9 @@ public class Server {
 
         PaymentService paymentService = new PaymentServiceImpl(daoFactory);
         application.addByType(PaymentService.class, paymentService);
+
+        TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory);
+        application.addByType(TariffAssignmentService.class, tariffAssignmentService);
 
         logService.info("Starting http server");
         HttpServer server = new HttpServerImpl(conf);

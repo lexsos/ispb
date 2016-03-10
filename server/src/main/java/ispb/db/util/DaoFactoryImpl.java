@@ -2,7 +2,6 @@ package ispb.db.util;
 
 
 import ispb.base.db.dao.*;
-import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;
@@ -53,5 +52,9 @@ public class DaoFactoryImpl implements DaoFactory {
 
     public TariffDataSetDao getTariffDao(){
         return new TariffDataSetDaoImpl(sessions, resourceses, queryBuilder);
+    }
+
+    public TariffAssignmentDataSetDao getTariffAssignmentDao(){
+        return new TariffAssignmentDataSetDaoImpl(sessions, resourceses, queryBuilder);
     }
 }

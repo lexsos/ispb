@@ -75,10 +75,14 @@ public class BaseDao {
         );
     }
 
-    protected Object getEntityById(Class type, long id){
-        return this.doTransaction(
-                (session, transaction) -> session.get(type, id)
+    protected <T> T getEntityById(Class<T> clazz, long id){
+        Object obj = this.doTransaction(
+                (session, transaction) -> session.get(clazz, id)
         );
+
+        if (clazz.isInstance(obj))
+            return (T)obj;
+        return null;
     }
 
     protected FieldSetDescriptor loadFieldDescriptor(AppResources resources, String resourceName){

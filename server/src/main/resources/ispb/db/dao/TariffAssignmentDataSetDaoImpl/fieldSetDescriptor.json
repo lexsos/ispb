@@ -1,0 +1,38 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "tariffAssignment.deleteAt"
+    },
+
+    "applyAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.util.Date",
+      "hqlFieldName": "tariffAssignment.applyAt",
+      "sortable": true
+    },
+
+    "processed": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Boolean",
+      "hqlFieldName": "tariffAssignment.processed",
+      "sortable": true
+    },
+
+    "customerId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "tariffAssignment.customer.id"
+    },
+
+    "tariffId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "tariffAssignment.tariff.id"
+    }
+
+  },
+
+  "defaultSort": "tariffAssignment.applyAt DESC"
+}

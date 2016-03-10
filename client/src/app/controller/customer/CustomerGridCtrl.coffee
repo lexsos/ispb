@@ -25,6 +25,9 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       'CustomerGrid menuitem[action=addPayment]':
         click: this.onAddPaymentClick
 
+      'CustomerGrid menuitem[action=changeTariff]':
+        click: this.onChangeTariffClick
+
       'CustomerGrid combobox[action=filterBy]':
         change: this.onFilterByChange
 
@@ -144,3 +147,9 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       store.clearFilter(true)
       store.filter("cityId__eq", cityCombo.getValue())
 
+  onChangeTariffClick: (element) ->
+    record = this.getSelectedRecord(element)
+    if record
+      view = Ext.widget('assignTariffCustomerWindow')
+      view.setCustomer(record)
+      view.show()
