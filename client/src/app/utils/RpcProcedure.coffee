@@ -56,3 +56,7 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
         until: dateUntil
         comment: comment
 
+    tariffNameExist:  (name) ->
+      this.call "tariff_name_exist",
+        name: name
+
