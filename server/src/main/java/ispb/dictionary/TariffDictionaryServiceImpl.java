@@ -39,9 +39,9 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
         return tariff;
     }
 
-    public TariffDataSet update(TariffContainer container) throws AlreadyExistException, NotFoundException{
+    public TariffDataSet update(long tariffId, TariffContainer container) throws AlreadyExistException, NotFoundException{
         TariffDataSetDao dao = daoFactory.getTariffDao();
-        TariffDataSet tariff = dao.getById(container.getId());
+        TariffDataSet tariff = dao.getById(tariffId);
 
         if (tariff == null)
             throw new NotFoundException();

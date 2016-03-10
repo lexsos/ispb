@@ -14,7 +14,7 @@ public interface TariffDictionaryService {
     List<TariffDataSet> getList(DataSetFilter filter, DataSetSort sort);
 
     TariffDataSet create(TariffContainer container) throws AlreadyExistException;
-    TariffDataSet update(TariffContainer container) throws AlreadyExistException, NotFoundException;
+    TariffDataSet update(long tariffId, TariffContainer container) throws AlreadyExistException, NotFoundException;
 
     void delete(long tariffId) throws NotFoundException;
     boolean exist(String tariffName);

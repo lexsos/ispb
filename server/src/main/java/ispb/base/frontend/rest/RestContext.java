@@ -92,4 +92,10 @@ public class RestContext {
     public void setEntity(RestEntity entity) {
         this.entity = entity;
     }
+
+    public <T> T getEntityByType(Class<T> clazz){
+        if (clazz.isInstance(entity))
+            return (T)entity;
+        return null;
+    }
 }

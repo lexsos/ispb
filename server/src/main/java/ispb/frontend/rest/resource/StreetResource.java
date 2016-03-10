@@ -1,11 +1,8 @@
 package ispb.frontend.rest.resource;
 
-import ispb.base.Application;
 import ispb.base.db.dataset.StreetDataSet;
 import ispb.base.db.field.CmpOperator;
-import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.filter.DataSetFilterItem;
-import ispb.base.db.sort.DataSetSort;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -13,8 +10,6 @@ import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.DicElementNotFoundException;
 import ispb.base.service.exception.NotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 public class StreetResource extends RestResource {
