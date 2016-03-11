@@ -39,6 +39,11 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         return getList(filter, null, null);
     }
 
+    public long getCount(DataSetFilter filter){
+        TariffAssignmentDataSetDao dao = daoFactory.getTariffAssignmentDao();
+        return dao.getCount(filter);
+    }
+
     public void assignTariff(long customerId, long tariffId, Date fromDate) throws NotFoundException, BadDateException {
 
         TariffAssignmentDataSetDao assignmentDao = daoFactory.getTariffAssignmentDao();

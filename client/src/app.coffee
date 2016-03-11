@@ -23,6 +23,7 @@ Ext.application
     'customer.AddCustomerVirtualPaymentWindowCtrl',
     'customer.AddCustomerPaymentWindowCtrl',
     'customer.AssignTariffCustomerWindowCtrl',
+    'customer.ShowAssignTariffCustomerWindowCtrl',
 
     'payment.PaymentGridCtrl',
     'payment.ShowPaymentsInGroupWindowCtrl',

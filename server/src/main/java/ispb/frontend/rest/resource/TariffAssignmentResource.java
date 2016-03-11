@@ -1,13 +1,12 @@
 package ispb.frontend.rest.resource;
 
 import ispb.base.db.dataset.TariffAssignmentDataSet;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.filter.DataSetFilterItem;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
-import ispb.base.frontend.rest.RestContext;
-import ispb.base.frontend.rest.RestEntity;
-import ispb.base.frontend.rest.RestResource;
-import ispb.base.frontend.rest.RestResponse;
+import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.TariffAssignmentService;
 
@@ -58,9 +57,11 @@ public class TariffAssignmentResource extends RestResource {
     private static class TariffListRestResponse extends RestResponse {
 
         private List<TariffAssignmentEntity> tariffAssignmentList;
+        private long total;
 
-        public TariffListRestResponse(List<TariffAssignmentDataSet> assignmentList){
+        public TariffListRestResponse(List<TariffAssignmentDataSet> assignmentList, long total){
             tariffAssignmentList = new LinkedList<>();
+            this.total = total;
             for (Iterator<TariffAssignmentDataSet> i=assignmentList.iterator(); i.hasNext();)
                 tariffAssignmentList.add(new TariffAssignmentEntity(i.next()));
         }
@@ -84,10 +85,18 @@ public class TariffAssignmentResource extends RestResource {
         DataSetSort sort = restContext.getDataSetSort();
         Pagination pagination = restContext.getPagination();
         List<TariffAssignmentDataSet> assignmentList = service.getList(filter, sort, pagination);
-        return new TariffListRestResponse(assignmentList);
+        long total = service.getCount(filter);
+        return new TariffListRestResponse(assignmentList, total);
     }
 
     private TariffAssignmentService getTariffAssignmentService(RestContext restContext){
         return restContext.getApplication().getByType(TariffAssignmentService.class);
+    }
+
+    protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
+        if (restItem.propertyEquals("customerId__eq")) {
+            return new DataSetFilterItem("customerId", CmpOperator.EQ, restItem.asLong());
+        }
+        return null;
     }
 }
