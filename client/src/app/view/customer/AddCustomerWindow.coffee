@@ -130,16 +130,24 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
               border: false
               items: [
                 {
-                  xtype: 'textfield'
-                  name : ''
+                  xtype: 'numberfield'
+                  name : 'balance'
                   fieldLabel: 'Начальный остаток'
                   margin: '5 5 5 5'
+                  value: 0
                 }
                 {
-                  xtype: 'textfield'
-                  name : ''
-                  fieldLabel: 'Единовременный платеж'
+                  xtype: 'combobox'
+                  name : 'tariffId'
+                  fieldLabel: 'Тариф'
                   margin: '5 5 5 5'
+                  displayField: 'name',
+                  valueField: 'id',
+                  typeAhead: true
+                  store:
+                    model: 'ISPBClient.model.Tariff'
+                    autoLoad: true
+                    remoteFilter: true
                 }
               ]
             }

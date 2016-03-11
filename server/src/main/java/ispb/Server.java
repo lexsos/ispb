@@ -22,6 +22,7 @@ import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.base.service.dictionary.TariffDictionaryService;
+import ispb.base.utils.TextMessages;
 import ispb.db.DBServiceImpl;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
@@ -88,6 +89,11 @@ public class Server {
 
         TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory);
         application.addByType(TariffAssignmentService.class, tariffAssignmentService);
+
+        // TODO: refactoring
+        TextMessages msg = resources.getJsonAsObject(TextMessages.class, "TextMessages.json", TextMessages.class);
+        application.addByType(TextMessages.class, msg);
+
 
         logService.info("Starting http server");
         HttpServer server = new HttpServerImpl(conf);

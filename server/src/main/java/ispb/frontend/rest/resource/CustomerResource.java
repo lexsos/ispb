@@ -9,11 +9,14 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
+import ispb.base.service.LogService;
 import ispb.base.service.account.CustomerAccountService;
-import ispb.base.service.exception.AlreadyExistException;
-import ispb.base.service.exception.DicElementNotFoundException;
-import ispb.base.service.exception.NotFoundException;
+import ispb.base.service.account.PaymentService;
+import ispb.base.service.account.TariffAssignmentService;
+import ispb.base.service.exception.*;
+import ispb.base.utils.TextMessages;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -185,6 +188,10 @@ public class CustomerResource extends RestResource {
         public void setTariffName(String tariffName) {
             this.tariffName = tariffName;
         }
+
+        public double getBalance() {
+            return balance;
+        }
     }
 
     private static class CustomerSummeryListRestResponse extends RestResponse {
@@ -257,11 +264,17 @@ public class CustomerResource extends RestResource {
     }
 
     public RestResponse createEntity(RestContext restContext){
-        CustomerAccountService service = getCustomerService(restContext);
+        CustomerAccountService customerService = getCustomerService(restContext);
+        TariffAssignmentService assignmentService = getTariffAssignmentService(restContext);
+        LogService logService = getLogService(restContext);
+        PaymentService paymentService = getPaymentService(restContext);
+        TextMessages msg = getTextMessages(restContext);
+
         CustomerEntity entity = (CustomerEntity)restContext.getEntity();
+        CustomerSummeryView customer;
+
         try {
-            CustomerSummeryView customer = service.createSummery(entity);
-            return new  CustomerSummeryListRestResponse(customer);
+            customer = customerService.createSummery(entity);
         }
         catch (AlreadyExistException e){
             return ErrorRestResponse.alreadyExist();
@@ -269,6 +282,26 @@ public class CustomerResource extends RestResource {
         catch (DicElementNotFoundException e){
             return ErrorRestResponse.notFound();
         }
+
+        try {
+            assignmentService.assignTariff(customer.getId(), entity.getTariffId(), new Date());
+        }
+        catch (NotFoundException e){
+            logService.warn("Entity not found in data base", e);
+        }
+        catch (BadDateException e){
+            logService.warn("Bad date in tariff assignment", e);
+        }
+
+        try {
+            String comment = msg.getInitPaymentName(customer.getCustomer().getContractNumber());
+            paymentService.addPayment(customer.getId(), entity.getBalance(), comment);
+        }
+        catch (NotFoundException e){
+            logService.warn("Entity not found in data base", e);
+        }
+
+        return new  CustomerSummeryListRestResponse(customer);
     }
 
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
@@ -286,5 +319,21 @@ public class CustomerResource extends RestResource {
 
     private CustomerAccountService getCustomerService(RestContext restContext){
         return restContext.getApplication().getByType(CustomerAccountService.class);
+    }
+
+    private TariffAssignmentService getTariffAssignmentService(RestContext restContext){
+        return restContext.getApplication().getByType(TariffAssignmentService.class);
+    }
+
+    private LogService getLogService(RestContext restContext){
+        return restContext.getApplication().getByType(LogService.class);
+    }
+
+    private PaymentService getPaymentService(RestContext restContext){
+        return restContext.getApplication().getByType(PaymentService.class);
+    }
+
+    private TextMessages getTextMessages(RestContext restContext){
+        return restContext.getApplication().getByType(TextMessages.class);
     }
 }

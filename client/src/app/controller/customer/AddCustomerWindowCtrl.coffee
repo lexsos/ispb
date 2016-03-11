@@ -38,35 +38,47 @@ Ext.define 'ISPBClient.controller.customer.AddCustomerWindowCtrl',
     if oldValue
       buildingCombo.clearValue()
 
-  validateForm: (form) ->
+  validateForm: (form, tabPanel) ->
     contractNumberField = form.findField("contractNumber")
     nameField = form.findField("name")
     cityIdField = form.findField("cityId")
     streetIdField = form.findField("streetId")
     buildingIdField = form.findField("buildingId")
+    tariffIdField = form.findField("tariffId")
 
     if contractNumberField.getValue() == ""
       contractNumberField.markInvalid('Укажите номер договора')
+      tabPanel.setActiveTab(0)
       return false
 
     if ISPBClient.utils.RpcProcedure.contractNumberExist(contractNumberField.getValue())
       contractNumberField.markInvalid('Указанный номер договора уже существует')
+      tabPanel.setActiveTab(0)
       return false
 
     if nameField.getValue() == ""
       nameField.markInvalid('Укажите имя абонента')
+      tabPanel.setActiveTab(0)
       return false
 
     if cityIdField.getValue() == null
       cityIdField.markInvalid('Укажите город')
+      tabPanel.setActiveTab(0)
       return false
 
     if streetIdField.getValue() == null
       streetIdField.markInvalid('Укажите улицу')
+      tabPanel.setActiveTab(0)
       return false
 
     if buildingIdField.getValue() == null
       buildingIdField.markInvalid('Укажите здание')
+      tabPanel.setActiveTab(0)
+      return false
+
+    if tariffIdField.getValue() == null
+      tariffIdField.markInvalid('Укажите тариф')
+      tabPanel.setActiveTab(1)
       return false
 
     return true
@@ -76,8 +88,9 @@ Ext.define 'ISPBClient.controller.customer.AddCustomerWindowCtrl',
     form   = window.down('form').getForm()
     store =  window.getStore()
     values = form.getValues()
+    tabPanel = window.down('form tabpanel')
 
-    if !this.validateForm(form)
+    if !this.validateForm(form, tabPanel)
       return
 
     record = Ext.create('ISPBClient.model.Customer')
