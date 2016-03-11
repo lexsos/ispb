@@ -3,6 +3,7 @@ package ispb.base.db.view;
 
 import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.db.dataset.TariffDataSet;
+import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.db.utils.BaseDataSet;
 import ispb.base.db.utils.Identifiable;
 
@@ -25,6 +26,10 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
     @ManyToOne
     @JoinColumn(nullable = true)
     private TariffDataSet tariff;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CustomerStatus status;
 
     public CustomerDataSet getCustomer() {
         return customer;

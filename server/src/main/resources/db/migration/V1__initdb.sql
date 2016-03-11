@@ -93,6 +93,19 @@ create table tariff_assignment (
     primary key (id)
 );
 
+create table customer_status (
+    id  bigserial not null,
+    create_at timestamp not null,
+    delete_at timestamp,
+    apply_at timestamp not null,
+    processed boolean not null,
+    status varchar(255) not null,
+    cause varchar(255) not null,
+    customer_id int8 not null,
+    primary key (id)
+);
+
+
 
 create unique index index_city__name__delete_at ON city (name) WHERE delete_at IS NULL;
 
@@ -115,13 +128,15 @@ create unique index index_tariff__name__delete_at ON tariff (name) WHERE delete_
 alter table tariff_assignment add constraint FK__tariff_assignment__to__customer foreign key (customer_id) references customer;
 alter table tariff_assignment add constraint FK__tariff_assignment__to__tariff foreign key (tariff_id) references tariff;
 
+alter table customer_status add constraint FK__customer_status__to__customer foreign key (customer_id) references customer;
 
 CREATE OR REPLACE VIEW customer_view AS
     SELECT
         id AS id,
         id AS customer_id,
         coalesce( (SELECT sum(paymentSum) FROM payment WHERE payment.customer_id = customer.id AND payment.processed = TRUE AND payment.delete_at IS NULL), 0) AS balance,
-        (SELECT tariff_id FROM tariff_assignment WHERE tariff_assignment.processed = TRUE AND tariff_assignment.customer_id = customer.id AND tariff_assignment.delete_at IS NULL ORDER BY tariff_assignment.apply_at DESC LIMIT 1) as tariff_id
+        (SELECT tariff_id FROM tariff_assignment WHERE tariff_assignment.processed = TRUE AND tariff_assignment.customer_id = customer.id AND tariff_assignment.delete_at IS NULL ORDER BY tariff_assignment.apply_at DESC LIMIT 1) as tariff_id,
+        (SELECT status FROM customer_status WHERE customer_status.delete_at IS NULL AND customer_status.customer_id = customer.id AND customer_status.processed = TRUE ORDER BY customer_status.apply_at DESC LIMIT 1) as status
     FROM customer;
 
 
