@@ -51,6 +51,7 @@ public class Server {
         application.addByType(Config.class, conf);
 
         AppResources resources = AppResourcesImpl.getInstance();
+        resources.loadSingletons(application);
         application.addByType(AppResources.class, resources);
 
         LogService logService  = new LogServiceImpl(conf);
@@ -89,11 +90,6 @@ public class Server {
 
         TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory);
         application.addByType(TariffAssignmentService.class, tariffAssignmentService);
-
-        // TODO: refactoring
-        TextMessages msg = resources.getJsonAsObject(TextMessages.class, "TextMessages.json", TextMessages.class);
-        application.addByType(TextMessages.class, msg);
-
 
         logService.info("Starting http server");
         HttpServer server = new HttpServerImpl(conf);

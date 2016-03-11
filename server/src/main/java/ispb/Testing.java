@@ -89,6 +89,7 @@ public class Testing
         Config conf = new ConfigImpl( args[0] );
         application.addByType(Config.class, conf);
         AppResources resources = AppResourcesImpl.getInstance();
+        resources.loadSingletons(application);
         application.addByType(AppResources.class, resources);
 
         LogService logService = new LogServiceImpl(conf);

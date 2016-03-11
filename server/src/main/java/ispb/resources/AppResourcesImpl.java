@@ -1,14 +1,18 @@
 package ispb.resources;
 
 
+import ispb.base.Application;
 import ispb.base.resources.AppResources;
 import ispb.base.utils.GsonGetter;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
 
 public class AppResourcesImpl implements AppResources {
 
@@ -73,5 +77,32 @@ public class AppResourcesImpl implements AppResources {
         T obj = GsonGetter.get().fromJson(json, type);
         objectResourcesCache.put(key, obj);
         return obj;
+    }
+
+    public void loadSingletons(Application application){
+
+        Properties singletons = new Properties();
+        InputStream in = getClass().getResourceAsStream("singletons.properties");
+
+        try {
+            singletons.load(in);
+        }
+        catch (IOException e){
+            System.out.print("Error occurs while reading singletons.properties: " + e.getMessage());
+        }
+
+        for (Iterator i=singletons.keySet().iterator(); i.hasNext(); ){
+            String typeName = i.next().toString();
+            String fileName = singletons.getProperty(typeName);
+            try {
+                Class type = Class.forName(typeName);
+                Object obj = getJsonAsObject(AppResourcesImpl.class, fileName, type);
+                application.addByType(type, obj);
+
+            }
+            catch (Throwable e){
+                System.out.print("Error occurs while load type: " + e.getMessage());
+            }
+        }
     }
 }
