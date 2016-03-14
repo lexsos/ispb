@@ -57,4 +57,8 @@ public class DaoFactoryImpl implements DaoFactory {
     public TariffAssignmentDataSetDao getTariffAssignmentDao(){
         return new TariffAssignmentDataSetDaoImpl(sessions, resourceses, queryBuilder);
     }
+
+    public CustomerStatusDataSetDao getCustomerStatusDao(){
+        return new CustomerStatusDataSetDaoImpl(sessions, resourceses, queryBuilder);
+    }
 }

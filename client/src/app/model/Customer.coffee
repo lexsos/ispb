@@ -20,6 +20,7 @@ Ext.define 'ISPBClient.model.Customer',
     { name: 'qualifiedAddress', type: 'string' }
     { name: 'tariffId', type: 'int' }
     { name: 'tariffName', type: 'string' }
+    { name: 'status', type: 'string' }
   ]
 
   proxy:

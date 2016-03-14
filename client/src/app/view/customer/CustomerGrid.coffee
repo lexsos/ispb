@@ -18,6 +18,17 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
         return formated
     }
     {header: 'Тариф', dataIndex: 'tariffName', flex: 1}
+    {
+      header: 'Статус'
+      dataIndex: 'status'
+      width: 60
+      renderer: (v) ->
+        if v == 'ACTIVE'
+          return '<img src="static/img/green-led.gif">'
+        else if v == 'INACTIVE'
+          return '<img src="static/img/red-led.gif">'
+        return ''
+    }
   ]
 
   store:

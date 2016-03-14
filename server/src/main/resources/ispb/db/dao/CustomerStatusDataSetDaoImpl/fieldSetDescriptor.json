@@ -1,0 +1,53 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "сustomerStatus.deleteAt"
+    },
+
+    "createAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.util.Date",
+      "hqlFieldName": "сustomerStatus.createAt",
+      "sortable": true
+    },
+
+    "applyAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.util.Date",
+      "hqlFieldName": "сustomerStatus.applyAt",
+      "sortable": true
+    },
+
+    "processed": {
+      "validOperators":["EQ"],
+      "sortable": true,
+      "valueTypeName": "java.lang.Boolean",
+      "hqlFieldName": "сustomerStatus.processed"
+    },
+
+    "status": {
+      "validOperators":["EQ"],
+      "sortable": true,
+      "hqlFieldName": "сustomerStatus.status",
+      "valueTypeName": "ispb.base.db.fieldtype.CustomerStatus"
+    },
+
+    "cause": {
+      "validOperators":["EQ"],
+      "sortable": true,
+      "hqlFieldName": "сustomerStatus.cause",
+      "valueTypeName": "ispb.base.db.fieldtype.CustomerStatusCause"
+    },
+
+    "customerId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "сustomerStatus.customer.id"
+    }
+
+  },
+
+  "defaultSort": "сustomerStatus.applyAt DESC"
+}

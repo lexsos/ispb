@@ -2,6 +2,8 @@ package ispb.frontend.rest.resource;
 
 import ispb.base.db.container.CustomerContainer;
 import ispb.base.db.field.CmpOperator;
+import ispb.base.db.fieldtype.CustomerStatus;
+import ispb.base.db.fieldtype.CustomerStatusCause;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.filter.DataSetFilterItem;
 import ispb.base.db.sort.DataSetSort;
@@ -34,6 +36,7 @@ public class CustomerResource extends RestResource {
         private String contractNumber;
         private long buildingId;
         private String room;
+        private CustomerStatus status;
 
         private long streetId;
         private long cityId;
@@ -45,7 +48,7 @@ public class CustomerResource extends RestResource {
 
         public boolean verify(){
             if (getName() != null && getSurname() != null && getPatronymic() != null && getPassport() != null && getPhone() != null &&
-                    getComment() != null && getContractNumber() != null && getBuildingId() > 0 && getRoom() != null)
+                    getComment() != null && getContractNumber() != null && getBuildingId() > 0 && getRoom() != null && getStatus() != null)
                 return true;
             return false;
         }
@@ -66,6 +69,7 @@ public class CustomerResource extends RestResource {
             streetId = customer.getCustomer().getBuilding().getStreet().getId();
             cityId = customer.getCustomer().getBuilding().getStreet().getCity().getId();
             balance = customer.getBalance();
+            status = customer.getStatus();
 
             StringBuilder qualifiedName = new StringBuilder();
             qualifiedName.append(getSurname());
@@ -192,6 +196,10 @@ public class CustomerResource extends RestResource {
         public double getBalance() {
             return balance;
         }
+
+        public CustomerStatus getStatus() {
+            return status;
+        }
     }
 
     private static class CustomerSummeryListRestResponse extends RestResponse {
@@ -273,6 +281,8 @@ public class CustomerResource extends RestResource {
         CustomerEntity entity = (CustomerEntity)restContext.getEntity();
         CustomerSummeryView customer;
 
+        Date now =  new Date();
+
         try {
             customer = customerService.createSummery(entity);
         }
@@ -284,7 +294,7 @@ public class CustomerResource extends RestResource {
         }
 
         try {
-            assignmentService.assignTariff(customer.getId(), entity.getTariffId(), new Date());
+            assignmentService.assignTariff(customer.getId(), entity.getTariffId(), now);
         }
         catch (NotFoundException e){
             logService.warn("Entity not found in data base", e);
@@ -296,6 +306,13 @@ public class CustomerResource extends RestResource {
         try {
             String comment = msg.getInitPaymentName(customer.getCustomer().getContractNumber());
             paymentService.addPayment(customer.getId(), entity.getBalance(), comment);
+        }
+        catch (NotFoundException e){
+            logService.warn("Entity not found in data base", e);
+        }
+
+        try {
+            customerService.setStatus(customer.getId(), entity.getStatus(), CustomerStatusCause.MANAGER, now);
         }
         catch (NotFoundException e){
             logService.warn("Entity not found in data base", e);

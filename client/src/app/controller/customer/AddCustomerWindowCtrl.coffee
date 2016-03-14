@@ -45,6 +45,7 @@ Ext.define 'ISPBClient.controller.customer.AddCustomerWindowCtrl',
     streetIdField = form.findField("streetId")
     buildingIdField = form.findField("buildingId")
     tariffIdField = form.findField("tariffId")
+    statusField = form.findField("status")
 
     if contractNumberField.getValue() == ""
       contractNumberField.markInvalid('Укажите номер договора')
@@ -78,6 +79,11 @@ Ext.define 'ISPBClient.controller.customer.AddCustomerWindowCtrl',
 
     if tariffIdField.getValue() == null
       tariffIdField.markInvalid('Укажите тариф')
+      tabPanel.setActiveTab(1)
+      return false
+
+    if statusField.getValue() == null
+      statusField.markInvalid('Укажите статус')
       tabPanel.setActiveTab(1)
       return false
 

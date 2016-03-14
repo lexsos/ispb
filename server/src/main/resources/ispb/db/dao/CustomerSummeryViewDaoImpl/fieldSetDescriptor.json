@@ -65,8 +65,14 @@
     "tariffName": {
       "sortable": true,
       "hqlFieldName": "customerView.tariff.name"
-    }
+    },
 
+    "status": {
+      "sortable": true,
+      "hqlFieldName": "customerView.status",
+      "validOperators":["EQ"],
+      "valueTypeName": "ispb.base.db.fieldtype.CustomerStatus"
+    }
 
   },
 

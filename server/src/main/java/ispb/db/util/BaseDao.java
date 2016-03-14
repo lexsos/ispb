@@ -130,4 +130,37 @@ public class BaseDao {
             return (Long)result;
         return 0;
     }
+
+    // TODO: refactoring to use this method in dao implementation
+    protected <T> List<T> getListWithoutDeleted(Class<T> clazz,
+                                                DataSetFilter filter,
+                                                DataSetSort sort,
+                                                Pagination pagination,
+                                                QueryBuilder queryBuilder,
+                                                FieldSetDescriptor fieldsDescriptor,
+                                                String hqlListTmpl){
+        DataSetFilter newFilter;
+        if (filter == null)
+            newFilter = new  DataSetFilter();
+        else
+            newFilter = filter.getCopy();
+        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
+
+        return getQueryAsList(hqlListTmpl, queryBuilder, fieldsDescriptor, newFilter, sort, pagination);
+    }
+
+    // TODO: refactoring to use this method in dao implementation
+    protected long getCountWithoutDeleted(DataSetFilter filter,
+                                          QueryBuilder queryBuilder,
+                                          FieldSetDescriptor fieldsDescriptor,
+                                          String hqlCountTmpl){
+        DataSetFilter newFilter;
+        if (filter == null)
+            newFilter = new  DataSetFilter();
+        else
+            newFilter = filter.getCopy();
+        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
+
+        return getRowCount(hqlCountTmpl, queryBuilder, fieldsDescriptor, newFilter);
+    }
 }

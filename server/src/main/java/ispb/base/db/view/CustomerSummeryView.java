@@ -64,4 +64,12 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
     public void setTariff(TariffDataSet tariff) {
         this.tariff = tariff;
     }
+
+    public CustomerStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CustomerStatus status) {
+        this.status = status;
+    }
 }

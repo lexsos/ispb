@@ -149,6 +149,23 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                     autoLoad: true
                     remoteFilter: true
                 }
+                {
+                  xtype: 'combobox'
+                  name : 'status'
+                  fieldLabel: 'Статус'
+                  margin: '5 5 5 5'
+                  displayField: 'name'
+                  valueField: 'key'
+                  typeAhead: true
+                  value: 'ACTIVE'
+
+                  store:
+                    fields: ['key', 'name']
+                    data : [
+                      {'key': 'ACTIVE', name: 'Активен'}
+                      {'key': 'INACTIVE', name: 'Отключен'}
+                    ]
+                }
               ]
             }
           ]

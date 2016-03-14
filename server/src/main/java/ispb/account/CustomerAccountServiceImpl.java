@@ -3,10 +3,14 @@ package ispb.account;
 import ispb.base.db.container.CustomerContainer;
 import ispb.base.db.dao.BuildingDataSetDao;
 import ispb.base.db.dao.CustomerDataSetDao;
+import ispb.base.db.dao.CustomerStatusDataSetDao;
 import ispb.base.db.dao.CustomerSummeryViewDao;
 import ispb.base.db.dataset.BuildingDataSet;
 import ispb.base.db.dataset.CustomerDataSet;
+import ispb.base.db.dataset.CustomerStatusDataSet;
 import ispb.base.db.field.CmpOperator;
+import ispb.base.db.fieldtype.CustomerStatus;
+import ispb.base.db.fieldtype.CustomerStatusCause;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
@@ -17,6 +21,7 @@ import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.DicElementNotFoundException;
 import ispb.base.service.exception.NotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 public class CustomerAccountServiceImpl implements CustomerAccountService {
@@ -115,5 +120,24 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
 
     public boolean contractNumberExist(String contractNumber){
         return getSummeryByContractNumber(contractNumber) != null;
+    }
+
+    public void setStatus(long customerId, CustomerStatus status, CustomerStatusCause cause, Date from)
+            throws NotFoundException{
+        CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
+        CustomerStatusDataSetDao statusDao = daoFactory.getCustomerStatusDao();
+
+        CustomerDataSet customer = customerDao.getById(customerId);
+        if (customer == null)
+            throw new NotFoundException();
+
+        CustomerStatusDataSet statusDataSet = new CustomerStatusDataSet();
+        statusDataSet.setCustomer(customer);
+        statusDataSet.setStatus(status);
+        statusDataSet.setCause(cause);
+        statusDataSet.setApplyAt(from);
+        statusDao.save(statusDataSet);
+
+        // TODO: send message about new customer status
     }
 }
