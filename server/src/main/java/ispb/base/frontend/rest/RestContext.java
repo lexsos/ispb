@@ -93,6 +93,7 @@ public class RestContext {
         this.entity = entity;
     }
 
+    // TODO: refactoring to use this method instead getEntity
     public <T> T getEntityByType(Class<T> clazz){
         if (clazz.isInstance(entity))
             return (T)entity;

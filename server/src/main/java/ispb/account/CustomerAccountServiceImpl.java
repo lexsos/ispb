@@ -122,7 +122,7 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         return getSummeryByContractNumber(contractNumber) != null;
     }
 
-    public void setStatus(long customerId, CustomerStatus status, CustomerStatusCause cause, Date from)
+    public CustomerStatusDataSet setStatus(long customerId, CustomerStatus status, CustomerStatusCause cause, Date from)
             throws NotFoundException{
         CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
         CustomerStatusDataSetDao statusDao = daoFactory.getCustomerStatusDao();
@@ -139,5 +139,21 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         statusDao.save(statusDataSet);
 
         // TODO: send message about new customer status
+
+        return statusDataSet;
+    }
+
+    public CustomerStatusDataSet managerSetStatus(long customerId, CustomerStatus status) throws NotFoundException{
+        return setStatus(customerId, status, CustomerStatusCause.MANAGER, new Date());
+    }
+
+    public List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
+        CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
+        return dao.getList(filter, sort, pagination);
+    }
+
+    public long getStatusCount(DataSetFilter filter){
+        CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
+        return dao.getCount(filter);
     }
 }

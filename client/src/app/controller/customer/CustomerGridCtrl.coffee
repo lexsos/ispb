@@ -3,6 +3,7 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
 
   views: ['customer.CustomerGrid']
   models: ['Customer']
+  requires: ['ISPBClient.utils.RpcProcedure']
 
   init: ->
 
@@ -30,6 +31,15 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
 
       'CustomerGrid menuitem[action=showTariffHistory]':
         click: this.onShowTariffHistoryClick
+
+      'CustomerGrid menuitem[action=showStatusHistory]':
+        click: this.onShowStatusHistoryClick
+
+      'CustomerGrid menuitem[action=activateCustomer]':
+        click: this.onActivateCustomerClick
+
+      'CustomerGrid menuitem[action=deactivateCustomer]':
+        click: this.onDeactivateCustomerClick
 
       'CustomerGrid combobox[action=filterBy]':
         change: this.onFilterByChange
@@ -166,3 +176,35 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
 
       store = view.down('grid').getStore()
       store.filter("customerId__eq", record.getId())
+
+  onShowStatusHistoryClick: (element) ->
+    record = this.getSelectedRecord(element)
+    if record
+      view = Ext.widget('showCustomerStatusWindow')
+      view.setCustomer(record)
+      view.show()
+
+      store = view.down('grid').getStore()
+      store.filter("customerId__eq", record.getId())
+
+  setCustomerStatus: (customerId, status) ->
+    if !ISPBClient.utils.RpcProcedure.setCustomerStatus(customerId, status)
+      Ext.MessageBox.alert 'Ошибка', 'Не удалось изменить статус!'
+
+  onActivateCustomerClick: (element) ->
+    record = this.getSelectedRecord(element)
+    if record
+      contractNumber = record.get('contractNumber')
+      customerId = record.get('id')
+      Ext.MessageBox.confirm 'Активация', 'Вы действительно желатие активировать абонента с номером договора ' + contractNumber, (btn) =>
+        if btn == 'yes'
+          this.setCustomerStatus(customerId, 'ACTIVE')
+
+  onDeactivateCustomerClick: (element) ->
+    record = this.getSelectedRecord(element)
+    if record
+      contractNumber = record.get('contractNumber')
+      customerId = record.get('id')
+      Ext.MessageBox.confirm 'Отключение', 'Вы действительно желатие отключить абонента с номером договора ' + contractNumber, (btn) =>
+        if btn == 'yes'
+          this.setCustomerStatus(customerId, 'INACTIVE')

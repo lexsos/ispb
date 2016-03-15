@@ -66,3 +66,7 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
         tariffId: tariffId
         from: dateFrom
 
+    setCustomerStatus: (customerId, status) ->
+      this.call "set_customer_status",
+        customerId: customerId
+        status: status

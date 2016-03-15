@@ -24,6 +24,7 @@ Ext.application
     'customer.AddCustomerPaymentWindowCtrl',
     'customer.AssignTariffCustomerWindowCtrl',
     'customer.ShowAssignTariffCustomerWindowCtrl',
+    'customer.ShowCustomerStatusWindowCtrl',
 
     'payment.PaymentGridCtrl',
     'payment.ShowPaymentsInGroupWindowCtrl',

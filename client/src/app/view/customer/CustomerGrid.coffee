@@ -86,7 +86,7 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
           icon:'static/img/user.png'
 
           menu: [
-            {text: 'Показать историю', action: 'showActivity', icon:'static/img/grid.png'}
+            {text: 'Показать историю', action: 'showStatusHistory', icon:'static/img/grid.png'}
             {text: 'Включить', action: 'activateCustomer', icon:'static/img/green-led.gif'}
             {text: 'Отключить', action: 'deactivateCustomer', icon:'static/img/red-led.gif'}
           ]
