@@ -1,5 +1,6 @@
 package ispb.account;
 
+import ispb.base.Application;
 import ispb.base.db.container.CustomerContainer;
 import ispb.base.db.dao.BuildingDataSetDao;
 import ispb.base.db.dao.CustomerDataSetDao;
@@ -16,20 +17,27 @@ import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.Pagination;
 import ispb.base.db.view.CustomerSummeryView;
+import ispb.base.eventsys.EventMessage;
+import ispb.base.eventsys.EventSystem;
+import ispb.base.eventsys.message.CheckCustomerStatusMsg;
+import ispb.base.eventsys.message.CustomerStatusAppliedMsg;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.DicElementNotFoundException;
 import ispb.base.service.exception.NotFoundException;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class CustomerAccountServiceImpl implements CustomerAccountService {
 
     private DaoFactory daoFactory;
+    private Application application;
 
-    public CustomerAccountServiceImpl(DaoFactory daoFactory){
+    public CustomerAccountServiceImpl(DaoFactory daoFactory, Application application){
         this.daoFactory = daoFactory;
+        this.application = application;
     }
 
     public List<CustomerSummeryView> getSummeryList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
@@ -138,7 +146,8 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         statusDataSet.setApplyAt(from);
         statusDao.save(statusDataSet);
 
-        // TODO: send message about new customer status
+        // send message about new status
+        sendMsg(new CheckCustomerStatusMsg());
 
         return statusDataSet;
     }
@@ -156,4 +165,35 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
         return dao.getCount(filter);
     }
+
+    private List<CustomerStatusDataSet> getStatusListForApply(Date until){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("applyAt", CmpOperator.LT_EQ, until);
+        filter.add("processed", CmpOperator.EQ, false);
+        return getStatusList(filter, null, null);
+    }
+
+    private void sendMsg(EventMessage message){
+        EventSystem eventSystem = application.getByType(EventSystem.class);
+        if (eventSystem != null)
+            eventSystem.pushMessage(message);
+    }
+
+    public void applyNewStatuses(){
+        // TODO: make batch processing
+        CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
+        List<CustomerStatusDataSet> newStatuses = getStatusListForApply(new Date());
+        CustomerStatusAppliedMsg msg = new CustomerStatusAppliedMsg();
+
+        for (Iterator<CustomerStatusDataSet> i = newStatuses.iterator(); i.hasNext(); ){
+            CustomerStatusDataSet status = i.next();
+            status.setProcessed(true);
+            dao.save(status);
+            msg.addCustomerId(status.getCustomer());
+        }
+
+        // send message about new status applied
+        sendMsg(msg);
+    }
+
 }

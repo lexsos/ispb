@@ -5,7 +5,6 @@ import ispb.frontend.rest.RestServlet;
 import ispb.frontend.rpc.RpcServlet;
 import org.eclipse.jetty.server.Server;
 
-import ispb.base.Application;
 import ispb.base.frontend.HttpServer;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -40,6 +39,10 @@ public class HttpServerImpl implements HttpServer {
     public void join() throws InterruptedException {
         if (server != null)
             server.join();
+    }
+
+    public void stop() throws Exception{
+        server.stop();
     }
 
     private void createServer(){

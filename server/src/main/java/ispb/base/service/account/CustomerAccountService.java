@@ -36,4 +36,6 @@ public interface CustomerAccountService {
 
     List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getStatusCount(DataSetFilter filter);
+
+    void applyNewStatuses();
 }

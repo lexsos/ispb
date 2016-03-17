@@ -1,5 +1,6 @@
 package ispb.account;
 
+import ispb.base.Application;
 import ispb.base.db.dao.CustomerDataSetDao;
 import ispb.base.db.dao.TariffAssignmentDataSetDao;
 import ispb.base.db.dao.TariffDataSetDao;
@@ -11,6 +12,10 @@ import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.Pagination;
+import ispb.base.eventsys.EventMessage;
+import ispb.base.eventsys.EventSystem;
+import ispb.base.eventsys.message.CheckTariffAssignmentMsg;
+import ispb.base.eventsys.message.TariffAppliedMsg;
 import ispb.base.service.account.TariffAssignmentService;
 import ispb.base.service.exception.BadDateException;
 import ispb.base.service.exception.NotFoundException;
@@ -23,9 +28,11 @@ import java.util.List;
 public class TariffAssignmentServiceImpl implements TariffAssignmentService {
 
     private DaoFactory daoFactory;
+    private Application application;
 
-    public TariffAssignmentServiceImpl(DaoFactory daoFactory){
+    public TariffAssignmentServiceImpl(DaoFactory daoFactory, Application application){
         this.daoFactory = daoFactory;
+        this.application = application;
     }
 
     public List<TariffAssignmentDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
@@ -70,7 +77,31 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         assignment.setTariff(tariff);
         assignmentDao.save(assignment);
 
-        // TODO: Need send message about new tariff assignment ?
+        // send message about new tariff assignment
+        sendMsg(new CheckTariffAssignmentMsg());
+    }
+
+    public void applyNewAssignment(){
+        //TODO: make batch processing
+        List<TariffAssignmentDataSet> assignments = getListForApply(new Date());
+        TariffAssignmentDataSetDao dao = daoFactory.getTariffAssignmentDao();
+        TariffAppliedMsg msg = new TariffAppliedMsg();
+
+        for (TariffAssignmentDataSet assignment : assignments) {
+            assignment.setProcessed(true);
+            dao.save(assignment);
+            msg.addCustomer(assignment.getCustomer());
+        }
+
+        // send message about applied tariff assignment
+        sendMsg(msg);
+    }
+
+    private List<TariffAssignmentDataSet> getListForApply(Date until){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("applyAt", CmpOperator.LT_EQ, until);
+        filter.add("processed", CmpOperator.EQ, false);
+        return getList(filter, null, null);
     }
 
     private void deleteOtherAssignment(Date day, long customerId){
@@ -104,5 +135,11 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         start.set(Calendar.MINUTE, 59);
         start.set(Calendar.SECOND, 59);
         return start.getTime();
+    }
+
+    private void sendMsg(EventMessage message){
+        EventSystem eventSystem = application.getByType(EventSystem.class);
+        if (eventSystem != null)
+            eventSystem.pushMessage(message);
     }
 }

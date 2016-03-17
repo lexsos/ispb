@@ -9,6 +9,9 @@ import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
+import ispb.base.eventsys.EventSystem;
+import ispb.base.eventsys.message.CheckCustomerStatusMsg;
+import ispb.base.eventsys.message.CheckTariffAssignmentMsg;
 import ispb.base.frontend.HttpServer;
 import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
@@ -22,7 +25,6 @@ import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
 import ispb.base.service.dictionary.TariffDictionaryService;
-import ispb.base.utils.TextMessages;
 import ispb.db.DBServiceImpl;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
@@ -31,6 +33,9 @@ import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
 import ispb.dictionary.TariffDictionaryServiceImpl;
+import ispb.eventsys.EventSystemImpl;
+import ispb.base.eventsys.handler.CheckCustomerStatusHandler;
+import ispb.base.eventsys.handler.CheckTariffAssignmentHandler;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
@@ -79,20 +84,24 @@ public class Server {
         BuildingDictionaryService buildingDictionaryService = new BuildingDictionaryServiceImpl(daoFactory);
         application.addByType(BuildingDictionaryService.class, buildingDictionaryService);
 
-        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory);
+        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory, application);
         application.addByType(CustomerAccountService.class, customerAccountService);
 
         TariffDictionaryService tariffDictionaryService = new TariffDictionaryServiceImpl(daoFactory);
         application.addByType(TariffDictionaryService.class, tariffDictionaryService);
 
-        PaymentService paymentService = new PaymentServiceImpl(daoFactory);
+        PaymentService paymentService = new PaymentServiceImpl(daoFactory, application);
         application.addByType(PaymentService.class, paymentService);
 
-        TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory);
+        TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory, application);
         application.addByType(TariffAssignmentService.class, tariffAssignmentService);
+
+        EventSystem eventSystem = new EventSystemImpl(application, conf);
+        application.addByType(EventSystem.class, eventSystem);
 
         logService.info("Starting http server");
         HttpServer server = new HttpServerImpl(conf);
+        application.addByType(HttpServer.class, server);
         try {
             server.start();
         }
@@ -101,12 +110,17 @@ public class Server {
             System.exit(0);
         }
 
+        eventSystem.addHandler(new CheckTariffAssignmentHandler(), CheckTariffAssignmentMsg.class);
+        eventSystem.addHandler(new CheckCustomerStatusHandler(), CheckCustomerStatusMsg.class);
+
+        logService.info("Starting even system");
+        eventSystem.start();
+
         try {
             server.join();
         }
         catch (InterruptedException e){
             logService.info("Join was interrupted", e);
         }
-
     }
 }

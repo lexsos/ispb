@@ -228,7 +228,7 @@ public class Testing
         StreetDictionaryService streetDictionaryService = new StreetDictionaryServiceImpl(daoFactory);
         application.addByType(StreetDictionaryService.class, streetDictionaryService);
 
-        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory);
+        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory, application);
         application.addByType(CustomerAccountService.class, customerAccountService);
 
         CustomerSummeryViewDao cusSum = daoFactory.getCustomerSummeryViewDao();
@@ -242,7 +242,7 @@ public class Testing
         System.out.println( cusSum.getList(filter, sort, pagination) );
         System.out.println( cusSum.getCount(filter) );
 
-        PaymentService paymentService = new PaymentServiceImpl(daoFactory);
+        PaymentService paymentService = new PaymentServiceImpl(daoFactory, application);
         application.addByType(PaymentService.class, paymentService);
 
         PaymentGroupDataSetDao paymentGroupDao = daoFactory.getPaymentGroupDao();
@@ -279,7 +279,7 @@ public class Testing
 
         tariffDictionaryService.create(tariff);
 
-        TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory);
+        TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory, application);
         application.addByType(TariffAssignmentService.class, tariffAssignmentService);
 
         application.getByType(LogService.class).info("Starting http server");
