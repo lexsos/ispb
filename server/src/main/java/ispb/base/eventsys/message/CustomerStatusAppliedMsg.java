@@ -4,10 +4,11 @@ import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.eventsys.EventMessage;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
-public class CustomerStatusAppliedMsg extends EventMessage {
+public class CustomerStatusAppliedMsg extends EventMessage implements Iterable<Long> {
 
     private Set<Long> customerIdSet = new HashSet<>();
 
@@ -17,5 +18,9 @@ public class CustomerStatusAppliedMsg extends EventMessage {
 
     public Set<Long> getCustomerIdSet(){
         return customerIdSet;
+    }
+
+    public Iterator<Long> iterator(){
+        return customerIdSet.iterator();
     }
 }
