@@ -7,6 +7,7 @@ import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.CustomerAccountService;
+import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.exception.NotFoundException;
 
 import javax.servlet.ServletException;
@@ -48,7 +49,7 @@ public class SetCustomerStatusRpc extends RpcProcedure {
                        HttpServletResponse response,
                        RpcArg obj,
                        Application application) throws ServletException, IOException {
-        CustomerAccountService service = application.getByType(CustomerAccountService.class);
+        CustomerStatusService service = application.getByType(CustomerStatusService.class);
         SetCustomerStatusArgs args = (SetCustomerStatusArgs)obj;
 
         try {

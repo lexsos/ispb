@@ -1,6 +1,7 @@
 package ispb.base.service.account;
 
 
+import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.db.dataset.PaymentDataSet;
 import ispb.base.db.dataset.PaymentGroupDataSet;
 import ispb.base.db.filter.DataSetFilter;
@@ -24,4 +25,8 @@ public interface PaymentService {
             throws NotFoundException, IncorrectDateException;
     void addPayment(long customerId, double sum, String comment)
             throws NotFoundException;
+
+    double getBalance(CustomerDataSet customer, Date dateFor);
+
+    void applyNewPayments();
 }

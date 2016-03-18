@@ -30,12 +30,4 @@ public interface CustomerAccountService {
 
     boolean contractNumberExist(String contractNumber);
 
-    CustomerStatusDataSet setStatus(long customerId, CustomerStatus status, CustomerStatusCause cause, Date from)
-            throws NotFoundException;
-    CustomerStatusDataSet managerSetStatus(long customerId, CustomerStatus status) throws NotFoundException;
-
-    List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
-    long getStatusCount(DataSetFilter filter);
-
-    void applyNewStatuses();
 }

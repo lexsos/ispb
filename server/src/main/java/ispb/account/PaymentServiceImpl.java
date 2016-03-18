@@ -7,6 +7,7 @@ import ispb.base.db.dao.PaymentGroupDataSetDao;
 import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.db.dataset.PaymentDataSet;
 import ispb.base.db.dataset.PaymentGroupDataSet;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
@@ -14,6 +15,7 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.eventsys.EventMessage;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.eventsys.message.CheckPaymentMsg;
+import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.account.PaymentService;
 import ispb.base.service.exception.IncorrectDateException;
 import ispb.base.service.exception.NotFoundException;
@@ -110,6 +112,38 @@ public class PaymentServiceImpl implements PaymentService {
     public long getPaymentGroupCount(DataSetFilter filter){
         PaymentGroupDataSetDao dao = daoFactory.getPaymentGroupDao();
         return dao.getCount(filter);
+    }
+
+    public void applyNewPayments(){
+        List<PaymentDataSet> payments = getPaymentListForApply(new Date());
+        PaymentDataSetDao dao = daoFactory.getPaymentDao();
+        CustomerStatusService statusService = getCustomerStatusService();
+
+        for (PaymentDataSet payment: payments){
+            payment.setProcessed(true);
+            dao.save(payment);
+
+            // change status if need
+            Date paymentDate = payment.getApplyAt();
+            CustomerDataSet customer = payment.getCustomer();
+            statusService.checkStatus(customer, paymentDate);
+        }
+    }
+
+    public double getBalance(CustomerDataSet customer, Date dateFor){
+        PaymentDataSetDao paymentDao = daoFactory.getPaymentDao();
+        return paymentDao.getBalance(customer, dateFor);
+    }
+
+    private CustomerStatusService getCustomerStatusService(){
+        return application.getByType(CustomerStatusService.class);
+    }
+
+    private  List<PaymentDataSet> getPaymentListForApply(Date until){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("applyAt", CmpOperator.LT_EQ, until);
+        filter.add("processed", CmpOperator.EQ, false);
+        return getPayments(filter, null, null);
     }
 
     private void sendMsg(EventMessage message){

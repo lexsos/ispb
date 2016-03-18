@@ -1,6 +1,8 @@
 package ispb.base.service.account;
 
+import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.db.dataset.TariffAssignmentDataSet;
+import ispb.base.db.dataset.TariffDataSet;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
@@ -16,6 +18,8 @@ public interface TariffAssignmentService {
     List<TariffAssignmentDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getCount(DataSetFilter filter);
     void assignTariff(long customerId, long tariffId, Date fromDate) throws NotFoundException, BadDateException;
+
+    TariffDataSet getTariff(CustomerDataSet customer, Date dateFor);
 
     void applyNewAssignment();
 }

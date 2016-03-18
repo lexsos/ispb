@@ -59,9 +59,9 @@ Ext.define 'ISPBClient.view.customer.ShowCustomerStatusWindow',
             else if status == 'INACTIVE' && cause == 'MANAGER'
               return 'Отключен менеджером'
             else if status == 'ACTIVE' && cause == 'SYSTEM_FINANCE'
-              return 'Отключен системой по достижении порога отключения'
-            else if status == 'INACTIVE' && cause == 'SYSTEM_FINANCE'
               return 'Активирован системой по зачислению средст на счет'
+            else if status == 'INACTIVE' && cause == 'SYSTEM_FINANCE'
+              return 'Отключен системой по достижении порога отключения'
             return ''
         }
         {

@@ -12,6 +12,7 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.CustomerAccountService;
+import ispb.base.service.account.CustomerStatusService;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -102,7 +103,7 @@ public class CustomerStatusResource extends RestResource {
         DataSetSort sort = restContext.getDataSetSort();
         Pagination pagination = restContext.getPagination();
 
-        CustomerAccountService service = getCustomerService(restContext);
+        CustomerStatusService service = getCustomerService(restContext);
 
         List<CustomerStatusDataSet>  statusList = service.getStatusList(filter, sort, pagination);
         long total = service.getStatusCount(filter);
@@ -110,8 +111,8 @@ public class CustomerStatusResource extends RestResource {
         return new CustomerStatusListRestResponse(statusList, total);
     }
 
-    private CustomerAccountService getCustomerService(RestContext restContext){
-        return restContext.getApplication().getByType(CustomerAccountService.class);
+    private CustomerStatusService getCustomerService(RestContext restContext){
+        return restContext.getApplication().getByType(CustomerStatusService.class);
     }
 
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem) {

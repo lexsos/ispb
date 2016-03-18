@@ -1,11 +1,13 @@
 package ispb.base.db.dao;
 
 
+import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.db.dataset.PaymentDataSet;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PaymentDataSetDao {
@@ -14,4 +16,5 @@ public interface PaymentDataSetDao {
     List<PaymentDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getCount(DataSetFilter filter);
     PaymentDataSet getById(long id);
+    double getBalance(CustomerDataSet customer, Date dateFor);
 }

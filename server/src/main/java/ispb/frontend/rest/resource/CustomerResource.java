@@ -13,6 +13,7 @@ import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.LogService;
 import ispb.base.service.account.CustomerAccountService;
+import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.account.PaymentService;
 import ispb.base.service.account.TariffAssignmentService;
 import ispb.base.service.exception.*;
@@ -273,6 +274,7 @@ public class CustomerResource extends RestResource {
 
     public RestResponse createEntity(RestContext restContext){
         CustomerAccountService customerService = getCustomerService(restContext);
+        CustomerStatusService customerStatusService = getCustomerStatusService(restContext);
         TariffAssignmentService assignmentService = getTariffAssignmentService(restContext);
         LogService logService = getLogService(restContext);
         PaymentService paymentService = getPaymentService(restContext);
@@ -312,7 +314,7 @@ public class CustomerResource extends RestResource {
         }
 
         try {
-            customerService.setStatus(customer.getId(), entity.getStatus(), CustomerStatusCause.MANAGER, now);
+            customerStatusService.setStatus(customer.getId(), entity.getStatus(), CustomerStatusCause.MANAGER, now);
         }
         catch (NotFoundException e){
             logService.warn("Entity not found in data base", e);
@@ -348,6 +350,10 @@ public class CustomerResource extends RestResource {
 
     private PaymentService getPaymentService(RestContext restContext){
         return restContext.getApplication().getByType(PaymentService.class);
+    }
+
+    private CustomerStatusService getCustomerStatusService(RestContext restContext){
+        return restContext.getApplication().getByType(CustomerStatusService.class);
     }
 
     private TextMessages getTextMessages(RestContext restContext){

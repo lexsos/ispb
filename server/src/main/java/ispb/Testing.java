@@ -6,9 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import ispb.account.CustomerAccountServiceImpl;
-import ispb.account.PaymentServiceImpl;
-import ispb.account.TariffAssignmentServiceImpl;
+import ispb.account.*;
 import ispb.base.Application;
 import ispb.base.db.dao.*;
 import ispb.base.db.dataset.*;
@@ -24,10 +22,7 @@ import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;
-import ispb.base.service.account.CustomerAccountService;
-import ispb.base.service.account.PaymentService;
-import ispb.base.service.account.TariffAssignmentService;
-import ispb.base.service.account.UserAccountService;
+import ispb.base.service.account.*;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -44,7 +39,6 @@ import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
-import ispb.account.UserAccountServiceImpl;
 import org.apache.commons.codec.digest.DigestUtils;
 import ispb.base.service.DBService;
 import ispb.db.DBServiceImpl;
@@ -228,8 +222,11 @@ public class Testing
         StreetDictionaryService streetDictionaryService = new StreetDictionaryServiceImpl(daoFactory);
         application.addByType(StreetDictionaryService.class, streetDictionaryService);
 
-        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory, application);
+        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory);
         application.addByType(CustomerAccountService.class, customerAccountService);
+
+        CustomerStatusService customerStatusService = new CustomerStatusServiceImpl(daoFactory, application);
+        application.addByType(CustomerStatusService.class, customerStatusService);
 
         CustomerSummeryViewDao cusSum = daoFactory.getCustomerSummeryViewDao();
         DataSetFilter filter = new DataSetFilter();

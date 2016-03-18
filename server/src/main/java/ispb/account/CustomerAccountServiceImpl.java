@@ -33,11 +33,9 @@ import java.util.List;
 public class CustomerAccountServiceImpl implements CustomerAccountService {
 
     private DaoFactory daoFactory;
-    private Application application;
 
-    public CustomerAccountServiceImpl(DaoFactory daoFactory, Application application){
+    public CustomerAccountServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;
-        this.application = application;
     }
 
     public List<CustomerSummeryView> getSummeryList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
@@ -128,72 +126,6 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
 
     public boolean contractNumberExist(String contractNumber){
         return getSummeryByContractNumber(contractNumber) != null;
-    }
-
-    public CustomerStatusDataSet setStatus(long customerId, CustomerStatus status, CustomerStatusCause cause, Date from)
-            throws NotFoundException{
-        CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
-        CustomerStatusDataSetDao statusDao = daoFactory.getCustomerStatusDao();
-
-        CustomerDataSet customer = customerDao.getById(customerId);
-        if (customer == null)
-            throw new NotFoundException();
-
-        CustomerStatusDataSet statusDataSet = new CustomerStatusDataSet();
-        statusDataSet.setCustomer(customer);
-        statusDataSet.setStatus(status);
-        statusDataSet.setCause(cause);
-        statusDataSet.setApplyAt(from);
-        statusDao.save(statusDataSet);
-
-        // send message about new status
-        sendMsg(new CheckCustomerStatusMsg());
-
-        return statusDataSet;
-    }
-
-    public CustomerStatusDataSet managerSetStatus(long customerId, CustomerStatus status) throws NotFoundException{
-        return setStatus(customerId, status, CustomerStatusCause.MANAGER, new Date());
-    }
-
-    public List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
-        CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
-        return dao.getList(filter, sort, pagination);
-    }
-
-    public long getStatusCount(DataSetFilter filter){
-        CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
-        return dao.getCount(filter);
-    }
-
-    private List<CustomerStatusDataSet> getStatusListForApply(Date until){
-        DataSetFilter filter = new DataSetFilter();
-        filter.add("applyAt", CmpOperator.LT_EQ, until);
-        filter.add("processed", CmpOperator.EQ, false);
-        return getStatusList(filter, null, null);
-    }
-
-    private void sendMsg(EventMessage message){
-        EventSystem eventSystem = application.getByType(EventSystem.class);
-        if (eventSystem != null)
-            eventSystem.pushMessage(message);
-    }
-
-    public void applyNewStatuses(){
-        // TODO: make batch processing
-        CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
-        List<CustomerStatusDataSet> newStatuses = getStatusListForApply(new Date());
-        CustomerStatusAppliedMsg msg = new CustomerStatusAppliedMsg();
-
-        for (Iterator<CustomerStatusDataSet> i = newStatuses.iterator(); i.hasNext(); ){
-            CustomerStatusDataSet status = i.next();
-            status.setProcessed(true);
-            dao.save(status);
-            msg.addCustomerId(status.getCustomer());
-        }
-
-        // send message about new status applied
-        sendMsg(msg);
     }
 
 }

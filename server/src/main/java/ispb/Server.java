@@ -1,26 +1,23 @@
 package ispb;
 
 
-import ispb.account.CustomerAccountServiceImpl;
-import ispb.account.PaymentServiceImpl;
-import ispb.account.TariffAssignmentServiceImpl;
+import ispb.account.*;
 import ispb.base.Application;
 import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.eventsys.EventSystem;
+import ispb.base.eventsys.handler.CheckPaymentHandler;
 import ispb.base.eventsys.message.CheckCustomerStatusMsg;
+import ispb.base.eventsys.message.CheckPaymentMsg;
 import ispb.base.eventsys.message.CheckTariffAssignmentMsg;
 import ispb.base.frontend.HttpServer;
 import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
 import ispb.base.service.DBService;
 import ispb.base.service.LogService;
-import ispb.base.service.account.CustomerAccountService;
-import ispb.base.service.account.PaymentService;
-import ispb.base.service.account.TariffAssignmentService;
-import ispb.base.service.account.UserAccountService;
+import ispb.base.service.account.*;
 import ispb.base.service.dictionary.BuildingDictionaryService;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -40,7 +37,6 @@ import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
-import ispb.account.UserAccountServiceImpl;
 
 
 public class Server {
@@ -84,8 +80,11 @@ public class Server {
         BuildingDictionaryService buildingDictionaryService = new BuildingDictionaryServiceImpl(daoFactory);
         application.addByType(BuildingDictionaryService.class, buildingDictionaryService);
 
-        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory, application);
+        CustomerAccountService customerAccountService = new CustomerAccountServiceImpl(daoFactory);
         application.addByType(CustomerAccountService.class, customerAccountService);
+
+        CustomerStatusService customerStatusService = new CustomerStatusServiceImpl(daoFactory, application);
+        application.addByType(CustomerStatusService.class, customerStatusService);
 
         TariffDictionaryService tariffDictionaryService = new TariffDictionaryServiceImpl(daoFactory);
         application.addByType(TariffDictionaryService.class, tariffDictionaryService);
@@ -112,6 +111,7 @@ public class Server {
 
         eventSystem.addHandler(new CheckTariffAssignmentHandler(), CheckTariffAssignmentMsg.class);
         eventSystem.addHandler(new CheckCustomerStatusHandler(), CheckCustomerStatusMsg.class);
+        eventSystem.addHandler(new CheckPaymentHandler(), CheckPaymentMsg.class);
 
         logService.info("Starting even system");
         eventSystem.start();

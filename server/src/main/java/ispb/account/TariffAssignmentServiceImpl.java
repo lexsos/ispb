@@ -8,6 +8,7 @@ import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.db.dataset.TariffAssignmentDataSet;
 import ispb.base.db.dataset.TariffDataSet;
 import ispb.base.db.field.CmpOperator;
+import ispb.base.db.field.SortDirection;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
@@ -95,6 +96,25 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
 
         // send message about applied tariff assignment
         sendMsg(msg);
+    }
+
+    public TariffDataSet getTariff(CustomerDataSet customer, Date dateFor){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("applyAt", CmpOperator.LT_EQ, dateFor);
+        filter.add("processed", CmpOperator.EQ, true);
+        filter.add("customerId", CmpOperator.EQ, customer.getId());
+
+        DataSetSort sort = new DataSetSort();
+        sort.add("applyAt", SortDirection.DESC);
+
+        Pagination pagination = new Pagination();
+        pagination.setStart(0);
+        pagination.setLimit(1);
+
+        List<TariffAssignmentDataSet> assignmentList = getList(filter, sort, pagination);
+        if (assignmentList.isEmpty())
+            return null;
+        return assignmentList.get(0).getTariff();
     }
 
     private List<TariffAssignmentDataSet> getListForApply(Date until){
