@@ -279,6 +279,9 @@ public class Testing
         TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory, application);
         application.addByType(TariffAssignmentService.class, tariffAssignmentService);
 
+        TariffPolicyService tariffPolicyService = new TariffPolicyServiceImpl(application);
+        application.addByType(TariffPolicyService.class, tariffPolicyService);
+
         application.getByType(LogService.class).info("Starting http server");
 
         HttpServer server = new HttpServerImpl(conf);

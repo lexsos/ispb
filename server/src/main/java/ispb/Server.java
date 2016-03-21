@@ -98,6 +98,9 @@ public class Server {
         EventSystem eventSystem = new EventSystemImpl(application, conf);
         application.addByType(EventSystem.class, eventSystem);
 
+        TariffPolicyService tariffPolicyService = new TariffPolicyServiceImpl(application);
+        application.addByType(TariffPolicyService.class, tariffPolicyService);
+
         logService.info("Starting http server");
         HttpServer server = new HttpServerImpl(conf);
         application.addByType(HttpServer.class, server);

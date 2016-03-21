@@ -15,8 +15,8 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.eventsys.EventMessage;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.eventsys.message.CheckPaymentMsg;
-import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.account.PaymentService;
+import ispb.base.service.account.TariffPolicyService;
 import ispb.base.service.exception.IncorrectDateException;
 import ispb.base.service.exception.NotFoundException;
 
@@ -25,8 +25,8 @@ import java.util.List;
 
 public class PaymentServiceImpl implements PaymentService {
 
-    private DaoFactory daoFactory;
-    private Application application;
+    private final DaoFactory daoFactory;
+    private final Application application;
 
     public PaymentServiceImpl(DaoFactory daoFactory, Application application){
         this.daoFactory = daoFactory;
@@ -117,16 +117,13 @@ public class PaymentServiceImpl implements PaymentService {
     public void applyNewPayments(){
         List<PaymentDataSet> payments = getPaymentListForApply(new Date());
         PaymentDataSetDao dao = daoFactory.getPaymentDao();
-        CustomerStatusService statusService = getCustomerStatusService();
+        TariffPolicyService tariffPolicyService =getTariffPolicyService();
 
         for (PaymentDataSet payment: payments){
             payment.setProcessed(true);
             dao.save(payment);
 
-            // change status if need
-            Date paymentDate = payment.getApplyAt();
-            CustomerDataSet customer = payment.getCustomer();
-            statusService.checkStatus(customer, paymentDate);
+            tariffPolicyService.paymentApplied(payment);
         }
     }
 
@@ -135,8 +132,8 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentDao.getBalance(customer, dateFor);
     }
 
-    private CustomerStatusService getCustomerStatusService(){
-        return application.getByType(CustomerStatusService.class);
+    private TariffPolicyService getTariffPolicyService(){
+        return application.getByType(TariffPolicyService.class);
     }
 
     private  List<PaymentDataSet> getPaymentListForApply(Date until){

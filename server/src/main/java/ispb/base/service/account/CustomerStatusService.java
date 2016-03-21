@@ -15,15 +15,14 @@ import java.util.List;
 
 public interface CustomerStatusService {
 
+    CustomerStatusDataSet setStatus(CustomerDataSet customer, CustomerStatus status, CustomerStatusCause cause, Date from);
     CustomerStatusDataSet setStatus(long customerId, CustomerStatus status, CustomerStatusCause cause, Date from)
             throws NotFoundException;
     CustomerStatusDataSet managerSetStatus(long customerId, CustomerStatus status) throws NotFoundException;
 
     List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getStatusCount(DataSetFilter filter);
-
-    void checkStatus(CustomerDataSet customer, Date dateFor);
+    CustomerStatusDataSet getStatus(CustomerDataSet customer, Date dateFor);
 
     void applyNewStatuses();
-
 }
