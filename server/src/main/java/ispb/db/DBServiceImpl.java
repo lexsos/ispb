@@ -19,10 +19,10 @@ import ispb.base.service.DBService;
 public class DBServiceImpl implements DBService {
 
     private DaoFactory daoFactory = null;
-    private Config config = null;
-    private AppResources appResources = null;
-    private LogService logService = null;
-    private QueryBuilder queryBuilder;
+    private final Config config;
+    private final AppResources appResources;
+    private final LogService logService;
+    private final QueryBuilder queryBuilder;
 
 
     public DBServiceImpl(Config config, AppResources appResources, LogService logService, QueryBuilder queryBuilder){
