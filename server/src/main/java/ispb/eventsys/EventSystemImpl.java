@@ -7,7 +7,6 @@ import ispb.base.eventsys.EventSystem;
 import ispb.base.resources.Config;
 import org.apache.log4j.Logger;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -16,14 +15,14 @@ import java.util.concurrent.*;
 
 public class EventSystemImpl implements EventSystem {
 
-    private Application application;
-    private Queue<EventMessage> massageQueue;
-    private Map<Class, List<EventHandler>> handlers;
-    private Logger logger = Logger.getLogger(EventSystemImpl.class);
+    private final Application application;
+    private final Queue<EventMessage> massageQueue;
+    private final Map<Class, List<EventHandler>> handlers;
+    private final Logger logger = Logger.getLogger(EventSystemImpl.class);
     private volatile boolean stopped;
-    private ExecutorService service;
-    private int poolSize;
-    private int sleepTime;
+    private final ExecutorService service;
+    private final int poolSize;
+    private final int sleepTime;
 
     private class Runner implements Runnable {
 
@@ -35,7 +34,7 @@ public class EventSystemImpl implements EventSystem {
                     try {
                         Thread.sleep(getSleepTime());
                     }
-                    catch (InterruptedException e){
+                    catch (InterruptedException ignored){
 
                     }
 
@@ -90,11 +89,10 @@ public class EventSystemImpl implements EventSystem {
 
         List<EventHandler> handlerList = handlers.get(eventType);
 
-        for (Iterator<EventHandler> i = handlerList.iterator(); i.hasNext(); )
+        for (EventHandler handler : handlerList)
             try {
-                i.next().run(application, message);
-            }
-            catch (Throwable e){
+                handler.run(application, message);
+            } catch (Throwable e) {
                 logger.warn("Error in event message handler", e);
             }
     }
@@ -120,11 +118,11 @@ public class EventSystemImpl implements EventSystem {
             service.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         }
         catch (InterruptedException e){
-            logger.warn("(Interrupte while wait event message system thread pool ");
+            logger.warn("(Interrupted while wait event message system thread pool ");
         }
     }
 
-    public int getSleepTime() {
+    private int getSleepTime() {
         return sleepTime;
     }
 }

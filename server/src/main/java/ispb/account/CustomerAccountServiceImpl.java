@@ -21,7 +21,7 @@ import java.util.List;
 
 public class CustomerAccountServiceImpl implements CustomerAccountService {
 
-    private DaoFactory daoFactory;
+    private final DaoFactory daoFactory;
 
     public CustomerAccountServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CityDictionaryServiceImpl implements CityDictionaryService {
 
-    private DaoFactory daoFactory;
+    private final DaoFactory daoFactory;
 
     public CityDictionaryServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;
@@ -62,8 +62,6 @@ public class CityDictionaryServiceImpl implements CityDictionaryService {
 
     public boolean exist(String name) {
         CityDataSetDao dao = daoFactory.getCityDao();
-        if (dao.getByName(name) != null)
-            return true;
-        return false;
+        return dao.getByName(name) != null;
     }
 }

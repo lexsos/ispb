@@ -17,7 +17,7 @@ import java.util.List;
 
 public class BuildingDictionaryServiceImpl implements BuildingDictionaryService {
 
-    private DaoFactory daoFactory;
+    private final DaoFactory daoFactory;
 
     public BuildingDictionaryServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;
@@ -88,9 +88,6 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
         if (street == null)
             return false;
 
-        if (daoFactory.getBuildingDao().getByName(street, buildingName) == null )
-            return false;
-
-        return true;
+        return daoFactory.getBuildingDao().getByName(street, buildingName) != null;
     }
 }

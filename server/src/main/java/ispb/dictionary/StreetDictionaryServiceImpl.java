@@ -16,7 +16,7 @@ import java.util.List;
 
 public class StreetDictionaryServiceImpl implements StreetDictionaryService {
 
-    private DaoFactory daoFactory;
+    private final DaoFactory daoFactory;
 
     public StreetDictionaryServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;
@@ -83,18 +83,13 @@ public class StreetDictionaryServiceImpl implements StreetDictionaryService {
         dao.delete(street);
     }
 
-    public boolean exist(long  cityId, String name){
+    public boolean exist(long  cityId, String name) {
         StreetDataSetDao streetDao = daoFactory.getStreetDao();
         CityDataSetDao cityDao = daoFactory.getCityDao();
 
         CityDataSet city = cityDao.getById(cityId);
-        if (city == null)
-            return false;
+        return city != null && streetDao.getByName(city, name) != null;
 
-        if (streetDao.getByName(city, name) == null)
-            return false;
-
-        return true;
     }
 
     public List<StreetDataSet> getList(DataSetFilter filter){

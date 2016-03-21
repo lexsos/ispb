@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TariffDictionaryServiceImpl implements TariffDictionaryService {
 
-    private DaoFactory daoFactory;
+    private final DaoFactory daoFactory;
 
     public TariffDictionaryServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;

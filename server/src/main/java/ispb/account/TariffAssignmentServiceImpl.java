@@ -23,13 +23,12 @@ import ispb.base.service.exception.NotFoundException;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class TariffAssignmentServiceImpl implements TariffAssignmentService {
 
-    private DaoFactory daoFactory;
-    private Application application;
+    private final DaoFactory daoFactory;
+    private final Application application;
 
     public TariffAssignmentServiceImpl(DaoFactory daoFactory, Application application){
         this.daoFactory = daoFactory;
@@ -135,8 +134,7 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         filter.add("customerId", CmpOperator.EQ, customerId);
         List<TariffAssignmentDataSet> assignmentList = dao.getList(filter, null, null);
 
-        for (Iterator<TariffAssignmentDataSet> i = assignmentList.iterator(); i.hasNext();)
-            dao.delete(i.next());
+        assignmentList.forEach(dao::delete);
     }
 
     private Date startOfDay(Date date){

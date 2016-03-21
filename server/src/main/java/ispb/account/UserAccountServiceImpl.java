@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class UserAccountServiceImpl implements UserAccountService {
 
-    private DaoFactory daoFactory;
+    private final DaoFactory daoFactory;
 
     public UserAccountServiceImpl(DaoFactory daoFactory){
         this.daoFactory = daoFactory;
@@ -25,8 +25,8 @@ public class UserAccountServiceImpl implements UserAccountService {
         if (user == null)
             return null;
 
-        String shaPasswd = DigestUtils.sha1Hex(user.getSalt() + password);
-        if (Objects.equals(user.getPassword(), shaPasswd))
+        String shaPassword = DigestUtils.sha1Hex(user.getSalt() + password);
+        if (Objects.equals(user.getPassword(), shaPassword))
             return user;
         return null;
     }
