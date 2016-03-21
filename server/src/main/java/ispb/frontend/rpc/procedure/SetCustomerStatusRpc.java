@@ -6,7 +6,6 @@ import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
-import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.exception.NotFoundException;
 

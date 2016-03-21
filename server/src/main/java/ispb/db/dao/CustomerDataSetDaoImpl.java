@@ -2,15 +2,11 @@ package ispb.db.dao;
 
 
 import ispb.base.db.dao.CustomerDataSetDao;
-import ispb.base.db.dataset.BuildingDataSet;
-import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.dataset.CustomerDataSet;
-import ispb.base.db.dataset.StreetDataSet;
-import ispb.base.resources.AppResources;
 import ispb.db.util.BaseDao;
+
 import org.hibernate.SessionFactory;
 
-import java.util.List;
 
 public class CustomerDataSetDaoImpl extends BaseDao implements CustomerDataSetDao {
 
@@ -27,6 +23,6 @@ public class CustomerDataSetDaoImpl extends BaseDao implements CustomerDataSetDa
     }
 
     public CustomerDataSet getById(long id){
-        return (CustomerDataSet)this.getEntityById(CustomerDataSet.class, id);
+        return this.getEntityById(CustomerDataSet.class, id);
     }
 }

@@ -1,7 +1,6 @@
 package ispb.frontend.rpc.procedure;
 
 import ispb.base.Application;
-import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;

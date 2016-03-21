@@ -1,22 +1,16 @@
 package ispb.frontend.rest.resource;
 
-import ispb.base.Application;
-import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
-import ispb.base.db.filter.DataSetFilter;
-import ispb.base.db.sort.DataSetSort;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.NotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+
 
 public class CityResource extends RestResource {
 
@@ -51,7 +45,7 @@ public class CityResource extends RestResource {
         private List<CityEntity> city_list = null;
 
         public CityListRestResponse(List<CityDataSet> cityList){
-            this.city_list = new LinkedList<CityEntity>();
+            this.city_list = new LinkedList<>();
             for (Iterator<CityDataSet> i = cityList.iterator(); i.hasNext(); ){
                 CityEntity city = new CityEntity(i.next());
                 this.city_list.add(city);
@@ -59,7 +53,7 @@ public class CityResource extends RestResource {
         }
 
         public CityListRestResponse(CityDataSet city){
-            this.city_list = new LinkedList<CityEntity>();
+            this.city_list = new LinkedList<>();
             this.city_list.add(new CityEntity(city));
         }
 

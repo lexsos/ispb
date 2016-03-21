@@ -61,7 +61,6 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
         if (tariff == null)
             throw new NotFoundException();
         dao.delete(tariff);
-        return;
     }
 
     public boolean exist(String tariffName){

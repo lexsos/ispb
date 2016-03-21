@@ -66,7 +66,7 @@ public class PaymentDataSetDaoImpl extends BaseDao implements PaymentDataSetDao 
     }
 
     public PaymentDataSet getById(long id){
-        return (PaymentDataSet)getEntityById(PaymentDataSet.class, id);
+        return getEntityById(PaymentDataSet.class, id);
     }
 
     public double getBalance(CustomerDataSet customer, Date dateFor){

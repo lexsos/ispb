@@ -82,6 +82,6 @@ public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDa
     }
 
     public BuildingDataSet getById(long id){
-        return (BuildingDataSet)this.getEntityById(BuildingDataSet.class, id);
+        return this.getEntityById(BuildingDataSet.class, id);
     }
 }

@@ -27,7 +27,7 @@ public class ConfigImpl implements Config {
             System.out.print("Error occurs while reading default config: " + e.getMessage());
         }
 
-        FileInputStream fin = null;
+        FileInputStream fin;
         try {
             fin = new FileInputStream(fileName);
             confFile.load(fin);
@@ -59,7 +59,7 @@ public class ConfigImpl implements Config {
 
     public boolean getAsBool(String key){
         String value = getAsStr(key);
-        if (value.equals("0") || value.equals("no") || value.equals("false") || value == null )
+        if (value == null || value.equals("0") || value.equals("no") || value.equals("false") )
             return false;
         return true;
     }

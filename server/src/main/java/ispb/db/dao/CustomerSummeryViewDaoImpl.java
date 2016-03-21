@@ -40,6 +40,6 @@ public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSumme
     }
 
     public CustomerSummeryView getById(long id){
-        return (CustomerSummeryView)this.getEntityById(CustomerSummeryView.class, id);
+        return this.getEntityById(CustomerSummeryView.class, id);
     }
 }

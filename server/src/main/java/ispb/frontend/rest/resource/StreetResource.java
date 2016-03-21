@@ -65,13 +65,13 @@ public class StreetResource extends RestResource {
         private List<StreetEntity> streetList = null;
 
         public StreetListRestResponse(List<StreetDataSet> streetList){
-            this.streetList = new LinkedList<StreetEntity>();
+            this.streetList = new LinkedList<>();
             for (Iterator<StreetDataSet> i = streetList.iterator(); i.hasNext(); )
                 this.streetList.add(new StreetEntity(i.next()));
         }
 
         public StreetListRestResponse(StreetDataSet street){
-            streetList = new LinkedList<StreetEntity>();
+            streetList = new LinkedList<>();
             streetList.add(new  StreetEntity(street));
         }
     }

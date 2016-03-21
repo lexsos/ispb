@@ -1,9 +1,7 @@
 package ispb.frontend.rest.resource;
 
 import ispb.base.db.dataset.PaymentGroupDataSet;
-import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
-import ispb.base.db.filter.DataSetFilterItem;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
 import ispb.base.frontend.rest.*;

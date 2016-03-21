@@ -1,7 +1,5 @@
 package ispb.db;
 
-import ispb.base.Application;
-import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;

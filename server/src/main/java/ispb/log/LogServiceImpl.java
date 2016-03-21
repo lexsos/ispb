@@ -12,7 +12,7 @@ import java.util.Properties;
 public class LogServiceImpl implements LogService {
 
     private Logger logger = null;
-    private String confName = "log_conf.properties";
+    private final String confName = "log_conf.properties";
 
     public LogServiceImpl(Config config){
         Properties conf = new Properties();

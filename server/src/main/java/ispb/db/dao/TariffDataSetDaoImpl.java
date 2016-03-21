@@ -48,6 +48,6 @@ public class TariffDataSetDaoImpl extends BaseDao implements TariffDataSetDao {
     }
 
     public TariffDataSet getById(long id){
-        return (TariffDataSet)getEntityById(TariffDataSet.class, id);
+        return getEntityById(TariffDataSet.class, id);
     }
 }

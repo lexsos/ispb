@@ -1,33 +1,22 @@
 package ispb.account;
 
-import ispb.base.Application;
 import ispb.base.db.container.CustomerContainer;
 import ispb.base.db.dao.BuildingDataSetDao;
 import ispb.base.db.dao.CustomerDataSetDao;
-import ispb.base.db.dao.CustomerStatusDataSetDao;
 import ispb.base.db.dao.CustomerSummeryViewDao;
 import ispb.base.db.dataset.BuildingDataSet;
 import ispb.base.db.dataset.CustomerDataSet;
-import ispb.base.db.dataset.CustomerStatusDataSet;
 import ispb.base.db.field.CmpOperator;
-import ispb.base.db.fieldtype.CustomerStatus;
-import ispb.base.db.fieldtype.CustomerStatusCause;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.Pagination;
 import ispb.base.db.view.CustomerSummeryView;
-import ispb.base.eventsys.EventMessage;
-import ispb.base.eventsys.EventSystem;
-import ispb.base.eventsys.message.CheckCustomerStatusMsg;
-import ispb.base.eventsys.message.CustomerStatusAppliedMsg;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.DicElementNotFoundException;
 import ispb.base.service.exception.NotFoundException;
 
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class CustomerAccountServiceImpl implements CustomerAccountService {

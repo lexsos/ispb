@@ -13,8 +13,8 @@ public class ApplicationImpl implements Application {
     private Map<String, Object> objByType = null;
 
     private ApplicationImpl(){
-        objByName = new ConcurrentHashMap<String, Object>();
-        objByType = new ConcurrentHashMap<String, Object>();
+        objByName = new ConcurrentHashMap<>();
+        objByType = new ConcurrentHashMap<>();
     }
 
     public static Application getApplication(){

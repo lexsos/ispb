@@ -48,7 +48,7 @@ public class CityDataSetDaoImpl extends BaseDao implements CityDataSetDao {
     }
 
     public CityDataSet getById(long id){
-        return (CityDataSet)this.getEntityById(CityDataSet.class, id);
+        return this.getEntityById(CityDataSet.class, id);
     }
 
 }

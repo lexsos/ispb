@@ -2,9 +2,6 @@ package ispb.base.service.account;
 
 
 import ispb.base.db.container.CustomerContainer;
-import ispb.base.db.dataset.CustomerStatusDataSet;
-import ispb.base.db.fieldtype.CustomerStatus;
-import ispb.base.db.fieldtype.CustomerStatusCause;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
@@ -13,7 +10,6 @@ import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.DicElementNotFoundException;
 import ispb.base.service.exception.NotFoundException;
 
-import java.util.Date;
 import java.util.List;
 
 public interface CustomerAccountService {

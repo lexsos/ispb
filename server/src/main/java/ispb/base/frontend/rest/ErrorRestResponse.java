@@ -9,20 +9,20 @@ public class ErrorRestResponse extends RestResponse {
     private List<String> errors;
 
     public ErrorRestResponse(){
-        setErrors(new LinkedList<String>());
+        setErrors(new LinkedList<>());
         setCode(ResponseCodes.BAD_REQUEST);
         setSuccess(false);
     }
 
     public ErrorRestResponse(String msg, int code){
-        setErrors(new LinkedList<String>());
+        setErrors(new LinkedList<>());
         getErrors().add(msg);
         setCode(code);
         setSuccess(false);
     }
 
     public ErrorRestResponse(String[] msgList, int code){
-        setErrors(new LinkedList<String>());
+        setErrors(new LinkedList<>());
         for (int i=0; i<msgList.length; i++)
             getErrors().add(msgList[i]);
         setCode(code);

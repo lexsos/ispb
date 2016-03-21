@@ -64,6 +64,6 @@ public class PaymentGroupDataSetDaoImpl extends BaseDao implements PaymentGroupD
     }
 
     public PaymentGroupDataSet getById(long id){
-        return (PaymentGroupDataSet)getEntityById(PaymentGroupDataSet.class, id);
+        return getEntityById(PaymentGroupDataSet.class, id);
     }
 }

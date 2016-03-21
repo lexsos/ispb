@@ -5,7 +5,6 @@ import java.util.List;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.*;
-import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;
 import org.hibernate.SessionFactory;
@@ -59,7 +58,7 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     }
 
     public StreetDataSet getById(long id){
-        return (StreetDataSet)this.getEntityById(StreetDataSet.class, id);
+        return this.getEntityById(StreetDataSet.class, id);
     }
 
     public StreetDataSet getByName(CityDataSet city, String name){

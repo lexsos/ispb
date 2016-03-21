@@ -48,7 +48,7 @@ public class Testing
 {
     public static class JsonTest {
 
-        private Map<String, String> params = new HashMap<String, String>();
+        private Map<String, String> params = new HashMap<>();
 
         public static JsonTest fromJson(String jsonData){
             Gson gson = GsonGetter.get();

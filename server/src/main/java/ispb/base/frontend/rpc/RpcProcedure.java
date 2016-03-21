@@ -1,7 +1,6 @@
 package ispb.base.frontend.rpc;
 
 import ispb.base.Application;
-import ispb.base.db.utils.DaoFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
