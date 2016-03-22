@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class CustomerStatusAppliedMsg extends EventMessage implements Iterable<Long> {
 
-    private Set<Long> customerIdSet = new HashSet<>();
+    private final Set<Long> customerIdSet = new HashSet<>();
 
     public void addCustomerId(CustomerDataSet customer){
         customerIdSet.add(customer.getId());
