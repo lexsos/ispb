@@ -49,6 +49,7 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
 
     public void makeDailyPayment(Date day){
         // TODO: make batch processing
+        // TODO: need journal for daily payment transaction?
         CustomerAccountService customerService = getCustomerService();
         TariffAssignmentService tariffService = getTariffService();
         PaymentService paymentService = getPaymentService();

@@ -7,8 +7,11 @@ import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
+import ispb.base.eventsys.EventScheduler;
 import ispb.base.eventsys.EventSystem;
+import ispb.base.eventsys.handler.AddDailyPaymentHandler;
 import ispb.base.eventsys.handler.CheckPaymentHandler;
+import ispb.base.eventsys.message.AddDailyPaymentMsg;
 import ispb.base.eventsys.message.CheckCustomerStatusMsg;
 import ispb.base.eventsys.message.CheckPaymentMsg;
 import ispb.base.eventsys.message.CheckTariffAssignmentMsg;
@@ -30,6 +33,7 @@ import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
 import ispb.dictionary.TariffDictionaryServiceImpl;
+import ispb.eventsys.EventSchedulerImpl;
 import ispb.eventsys.EventSystemImpl;
 import ispb.base.eventsys.handler.CheckCustomerStatusHandler;
 import ispb.base.eventsys.handler.CheckTariffAssignmentHandler;
@@ -115,9 +119,15 @@ public class Server {
         eventSystem.addHandler(new CheckTariffAssignmentHandler(), CheckTariffAssignmentMsg.class);
         eventSystem.addHandler(new CheckCustomerStatusHandler(), CheckCustomerStatusMsg.class);
         eventSystem.addHandler(new CheckPaymentHandler(), CheckPaymentMsg.class);
+        eventSystem.addHandler(new AddDailyPaymentHandler(), AddDailyPaymentMsg.class);
 
-        logService.info("Starting even system");
+        logService.info("Starting event system");
         eventSystem.start();
+
+        EventScheduler eventScheduler = new EventSchedulerImpl(logService, application);
+        application.addByType(EventScheduler.class, eventScheduler);
+        logService.info("Starting even scheduler");
+        eventScheduler.start();
 
         try {
             server.join();

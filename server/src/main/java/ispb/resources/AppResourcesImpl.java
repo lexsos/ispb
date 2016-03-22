@@ -79,28 +79,36 @@ public class AppResourcesImpl implements AppResources {
         return obj;
     }
 
-    public void loadSingletons(Application application){
+    public Properties getAsProperties(Class forClazz, String path){
 
-        Properties singletons = new Properties();
-        InputStream in = getClass().getResourceAsStream("singletons.properties");
+        Properties properties = new Properties();
+        InputStream in = forClazz.getResourceAsStream(path);
 
         try {
-            singletons.load(in);
+            properties.load(in);
         }
         catch (IOException e){
-            System.out.print("Error occurs while reading singletons.properties: " + e.getMessage());
+            System.out.print("Error occurs while reading " + path + e.getMessage());
+            return null;
         }
+        return properties;
+    }
 
-        for (Iterator i=singletons.keySet().iterator(); i.hasNext(); ){
-            String typeName = i.next().toString();
+    public void loadSingletons(Application application){
+
+        Properties singletons = getAsProperties(getClass(), "singletons.properties");
+        if (singletons == null)
+            return;
+
+        for (Object o : singletons.keySet()) {
+            String typeName = o.toString();
             String fileName = singletons.getProperty(typeName);
             try {
                 Class type = Class.forName(typeName);
                 Object obj = getJsonAsObject(AppResourcesImpl.class, fileName, type);
                 application.addByType(type, obj);
 
-            }
-            catch (Throwable e){
+            } catch (Throwable e) {
                 System.out.print("Error occurs while load type: " + e.getMessage());
             }
         }

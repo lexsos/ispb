@@ -285,6 +285,7 @@ public class CustomerResource extends RestResource {
 
         Date now =  new Date();
 
+        // TODO: Refactoring - add regCustomer to CustomerAccountService and use it here
         try {
             customer = customerService.createSummery(entity);
         }
