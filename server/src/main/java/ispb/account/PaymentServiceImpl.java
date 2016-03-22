@@ -75,6 +75,9 @@ public class PaymentServiceImpl implements PaymentService {
         negativePayment.setGroup(group);
         paymentDao.save(negativePayment);
 
+        group.setClosed(true);
+        paymentGroupDao.save(group);
+
         // send event message about new payment
         sendMsg(new CheckPaymentMsg());
     }
@@ -99,6 +102,9 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setPaymentSum(sum);
         payment.setGroup(group);
         paymentDao.save(payment);
+
+        group.setClosed(true);
+        paymentGroupDao.save(group);
 
         // send event message about new payment
         sendMsg(new CheckPaymentMsg());
@@ -132,6 +138,37 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentDao.getBalance(customer, dateFor);
     }
 
+    public PaymentGroupDataSet openPaymentGroup(String comment){
+        PaymentGroupDataSetDao dao = daoFactory.getPaymentGroupDao();
+        PaymentGroupDataSet group = new PaymentGroupDataSet();
+        group.setComment(comment);
+        dao.save(group);
+        return group;
+    }
+
+    public PaymentDataSet addPaymentToGroup(PaymentGroupDataSet group,
+                                            CustomerDataSet customer,
+                                            double paymentSum,
+                                            Date applyAt){
+        PaymentDataSetDao dao = daoFactory.getPaymentDao();
+        PaymentDataSet payment = new PaymentDataSet();
+        payment.setGroup(group);
+        payment.setCustomer(customer);
+        payment.setPaymentSum(paymentSum);
+        payment.setApplyAt(applyAt);
+        dao.save(payment);
+        return payment;
+    }
+
+    public void closePaymentGroup(PaymentGroupDataSet group){
+        PaymentGroupDataSetDao dao = daoFactory.getPaymentGroupDao();
+        group.setClosed(true);
+        dao.save(group);
+
+        // send event message about new payment
+        sendMsg(new CheckPaymentMsg());
+    }
+
     private TariffPolicyService getTariffPolicyService(){
         return application.getByType(TariffPolicyService.class);
     }
@@ -140,6 +177,7 @@ public class PaymentServiceImpl implements PaymentService {
         DataSetFilter filter = new DataSetFilter();
         filter.add("applyAt", CmpOperator.LT_EQ, until);
         filter.add("processed", CmpOperator.EQ, false);
+        // TODO: need filter by closed flag on group?
         return getPayments(filter, null, null);
     }
 

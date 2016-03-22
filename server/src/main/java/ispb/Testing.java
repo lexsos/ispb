@@ -262,6 +262,9 @@ public class Testing
 
         paymentDao.save(payment);
 
+        paymentGroup.setClosed(true);
+        paymentGroupDao.save(paymentGroup);
+
 
         TariffDictionaryService tariffDictionaryService = new TariffDictionaryServiceImpl(daoFactory);
         application.addByType(TariffDictionaryService.class, tariffDictionaryService);

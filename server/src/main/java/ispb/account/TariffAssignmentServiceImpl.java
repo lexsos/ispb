@@ -20,8 +20,8 @@ import ispb.base.eventsys.message.TariffAppliedMsg;
 import ispb.base.service.account.TariffAssignmentService;
 import ispb.base.service.exception.BadDateException;
 import ispb.base.service.exception.NotFoundException;
+import ispb.base.utils.DateUtils;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         deleteOtherAssignment(fromDate, customer.getId());
 
         TariffAssignmentDataSet assignment = new TariffAssignmentDataSet();
-        assignment.setApplyAt(startOfDay(fromDate));
+        assignment.setApplyAt(DateUtils.startOfDay(fromDate));
         assignment.setCustomer(customer);
         assignment.setTariff(tariff);
         assignmentDao.save(assignment);
@@ -125,8 +125,8 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
 
     private void deleteOtherAssignment(Date day, long customerId){
         TariffAssignmentDataSetDao dao = daoFactory.getTariffAssignmentDao();
-        Date start = startOfDay(day);
-        Date end = endOfDay(day);
+        Date start = DateUtils.startOfDay(day);
+        Date end = DateUtils.endOfDay(day);
 
         DataSetFilter filter = new DataSetFilter();
         filter.add("applyAt", CmpOperator.GT_EQ, start);
@@ -135,24 +135,6 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         List<TariffAssignmentDataSet> assignmentList = dao.getList(filter, null, null);
 
         assignmentList.forEach(dao::delete);
-    }
-
-    private Date startOfDay(Date date){
-        Calendar start = Calendar.getInstance();
-        start.setTime(date);
-        start.set(Calendar.HOUR_OF_DAY, 0);
-        start.set(Calendar.MINUTE, 0);
-        start.set(Calendar.SECOND, 0);
-        return start.getTime();
-    }
-
-    private Date endOfDay(Date date){
-        Calendar start = Calendar.getInstance();
-        start.setTime(date);
-        start.set(Calendar.HOUR_OF_DAY, 23);
-        start.set(Calendar.MINUTE, 59);
-        start.set(Calendar.SECOND, 59);
-        return start.getTime();
     }
 
     private void sendMsg(EventMessage message){

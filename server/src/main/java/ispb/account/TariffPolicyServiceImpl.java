@@ -2,16 +2,15 @@ package ispb.account;
 
 
 import ispb.base.Application;
-import ispb.base.db.dataset.CustomerDataSet;
-import ispb.base.db.dataset.CustomerStatusDataSet;
-import ispb.base.db.dataset.PaymentDataSet;
-import ispb.base.db.dataset.TariffDataSet;
+import ispb.base.db.dataset.*;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.db.fieldtype.CustomerStatusCause;
-import ispb.base.service.account.CustomerStatusService;
-import ispb.base.service.account.PaymentService;
-import ispb.base.service.account.TariffAssignmentService;
-import ispb.base.service.account.TariffPolicyService;
+import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.view.CustomerSummeryView;
+import ispb.base.service.account.*;
+import ispb.base.utils.DateUtils;
+import ispb.base.utils.TextMessages;
 
 import java.util.Date;
 
@@ -48,6 +47,54 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
             statusService.setStatus(customer, CustomerStatus.ACTIVE, CustomerStatusCause.SYSTEM_FINANCE, paymentDate);
     }
 
+    public void makeDailyPayment(Date day){
+        // TODO: make batch processing
+        CustomerAccountService customerService = getCustomerService();
+        TariffAssignmentService tariffService = getTariffService();
+        PaymentService paymentService = getPaymentService();
+        TextMessages textMessages = getTextMessages();
+
+        Date startDay = DateUtils.startOfDay(day);
+        Date midnight = DateUtils.addMinute(startDay, 60);
+        Date endDay = DateUtils.endOfDay(day);
+
+        PaymentGroupDataSet paymentGroup = paymentService.openPaymentGroup(textMessages.getDailyPaymentName(day));
+
+        for (CustomerSummeryView customerSummery: customerService.getSummeryList(null, null, null)){
+
+            CustomerDataSet customer = customerSummery.getCustomer();
+            TariffDataSet tariff = tariffService.getTariff(customer, endDay);
+
+            if (tariff == null || !tariff.isAutoDailyPayment())
+                continue;
+
+            if (!haveActivity(customer, midnight, endDay))
+                continue;
+
+            paymentService.addPaymentToGroup(paymentGroup, customer, -tariff.getDailyPayment(), endDay);
+        }
+
+        paymentService.closePaymentGroup(paymentGroup);
+    }
+
+
+    private boolean haveActivity(CustomerDataSet customer, Date from, Date until){
+        CustomerStatusService statusService = getCustomerStatusService();
+        CustomerStatusDataSet status = statusService.getStatus(customer, from);
+
+        if (status != null && status.getStatus() == CustomerStatus.ACTIVE)
+            return true;
+
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("applyAt", CmpOperator.GT_EQ, from);
+        filter.add("applyAt", CmpOperator.LT_EQ, until);
+        filter.add("processed", CmpOperator.EQ, true);
+        filter.add("status", CmpOperator.EQ, CustomerStatus.ACTIVE);
+        filter.add("customerId", CmpOperator.EQ, customer.getId());
+
+        return statusService.getStatusCount(filter) > 0;
+    }
+
     private CustomerStatusService getCustomerStatusService(){
         return application.getByType(CustomerStatusService.class);
     }
@@ -58,5 +105,13 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
 
     private PaymentService getPaymentService(){
         return application.getByType(PaymentService.class);
+    }
+
+    private CustomerAccountService getCustomerService(){
+        return application.getByType(CustomerAccountService.class);
+    }
+
+    private TextMessages getTextMessages(){
+        return application.getByType(TextMessages.class);
     }
 }

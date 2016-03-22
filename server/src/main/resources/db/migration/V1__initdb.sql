@@ -55,6 +55,7 @@ create table payment_group (
     comment varchar(255) not null,
     create_at timestamp not null,
     delete_at timestamp,
+    closed boolean not null,
     primary key (id)
 );
 

@@ -43,6 +43,10 @@ public class PaymentDataSet extends BaseDataSet implements DeletedMarkable, Iden
     @Temporal(TemporalType.TIMESTAMP)
     private Date applyAt;
 
+    public PaymentDataSet(){
+        setId(-1);
+    }
+
     @Override
     public long getId() {
         return id;

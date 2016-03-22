@@ -26,6 +26,10 @@ public interface PaymentService {
     void addPayment(long customerId, double sum, String comment)
             throws NotFoundException;
 
+    PaymentGroupDataSet openPaymentGroup(String comment);
+    PaymentDataSet addPaymentToGroup(PaymentGroupDataSet group, CustomerDataSet customer, double payment, Date applyAt);
+    void closePaymentGroup(PaymentGroupDataSet group);
+
     double getBalance(CustomerDataSet customer, Date dateFor);
 
     void applyNewPayments();

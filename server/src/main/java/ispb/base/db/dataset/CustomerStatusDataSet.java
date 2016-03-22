@@ -46,6 +46,10 @@ public class CustomerStatusDataSet extends BaseDataSet implements DeletedMarkabl
     @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "FK__customer_status__to__customer"))
     private CustomerDataSet customer;
 
+    public CustomerStatusDataSet(){
+        setId(-1);
+    }
+
     @Override
     public long getId() {
         return id;

@@ -1,3 +1,4 @@
 {
-  "initPaymentName": "Зачисление начального остатка по договору {contract_number}"
+  "initPaymentName": "Зачисление начального остатка по договору {contract_number}",
+  "dailyPaymentName": "Списание ежедневной абонентской платы за {day}"
 }

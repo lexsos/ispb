@@ -28,6 +28,13 @@ public class PaymentGroupDataSet extends BaseDataSet implements DeletedMarkable,
     @Column(nullable = false)
     private String comment;
 
+    @Column(nullable = false)
+    private boolean closed = false;
+
+    public PaymentGroupDataSet(){
+        setId(-1);
+    }
+
     @Override
     public long getId() {
         return id;
@@ -64,5 +71,13 @@ public class PaymentGroupDataSet extends BaseDataSet implements DeletedMarkable,
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 }
