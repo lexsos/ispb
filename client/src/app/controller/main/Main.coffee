@@ -15,6 +15,7 @@ Ext.define 'ISPBClient.controller.main.Main',
         'customer.CustomerList',
         'payment.PaymentList',
         'tariff.TariffList',
+        'user.UserList',
     ]
 
     init: ->

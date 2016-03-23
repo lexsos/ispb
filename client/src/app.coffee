@@ -31,6 +31,9 @@ Ext.application
 
     'tariff.TariffGridCtrl',
     'tariff.EditTariffWindowCtrl',
+
+    'user.UserGridCtrl',
+    'user.EditUserWindowCtrl',
   ]
 
   launch: ->
