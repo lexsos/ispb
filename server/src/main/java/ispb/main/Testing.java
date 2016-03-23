@@ -1,4 +1,4 @@
-package ispb;
+package ispb.main;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import ispb.ApplicationImpl;
 import ispb.account.*;
 import ispb.base.Application;
 import ispb.base.db.dao.*;

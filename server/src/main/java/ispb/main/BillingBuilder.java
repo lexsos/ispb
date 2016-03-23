@@ -1,6 +1,7 @@
-package ispb;
+package ispb.main;
 
 
+import ispb.ApplicationImpl;
 import ispb.account.*;
 import ispb.base.Application;
 import ispb.base.db.filter.WhereBuilder;
@@ -10,7 +11,9 @@ import ispb.base.db.utils.QueryBuilder;
 import ispb.base.eventsys.EventScheduler;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.eventsys.handler.AddDailyPaymentHandler;
+import ispb.base.eventsys.handler.CheckCustomerStatusHandler;
 import ispb.base.eventsys.handler.CheckPaymentHandler;
+import ispb.base.eventsys.handler.CheckTariffAssignmentHandler;
 import ispb.base.eventsys.message.AddDailyPaymentMsg;
 import ispb.base.eventsys.message.CheckCustomerStatusMsg;
 import ispb.base.eventsys.message.CheckPaymentMsg;
@@ -35,24 +38,17 @@ import ispb.dictionary.StreetDictionaryServiceImpl;
 import ispb.dictionary.TariffDictionaryServiceImpl;
 import ispb.eventsys.EventSchedulerImpl;
 import ispb.eventsys.EventSystemImpl;
-import ispb.base.eventsys.handler.CheckCustomerStatusHandler;
-import ispb.base.eventsys.handler.CheckTariffAssignmentHandler;
 import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
 
+public class BillingBuilder {
 
-public class Server {
-    public static void main( String[] args ){
-        if (args.length != 1) {
-            System.out.println("Need config file");
-            System.exit(0);
-        }
-
+    public static Application build(String configFile){
         Application application = ApplicationImpl.getApplication();
 
-        Config conf = new ConfigImpl( args[0] );
+        Config conf = new ConfigImpl(configFile );
         application.addByType(Config.class, conf);
 
         AppResources resources = AppResourcesImpl.getInstance();
@@ -67,6 +63,7 @@ public class Server {
         QueryBuilder queryBuilder = new QueryBuilderImpl(whereBuilder, sortBuilder);
 
         DBService dbService = new DBServiceImpl(conf, resources, logService, queryBuilder);
+        application.addByType(DBService.class, dbService);
         dbService.migrate();
 
         DaoFactory daoFactory = dbService.getDaoFactory();
@@ -75,7 +72,7 @@ public class Server {
         UserAccountService userAccountService = new UserAccountServiceImpl(daoFactory);
         application.addByType(UserAccountService.class, userAccountService);
 
-        CityDictionaryService  cityDictionaryService = new CityDictionaryServiceImpl(daoFactory);
+        CityDictionaryService cityDictionaryService = new CityDictionaryServiceImpl(daoFactory);
         application.addByType(CityDictionaryService.class, cityDictionaryService);
 
         StreetDictionaryService streetDictionaryService = new StreetDictionaryServiceImpl(daoFactory);
@@ -99,43 +96,23 @@ public class Server {
         TariffAssignmentService tariffAssignmentService = new TariffAssignmentServiceImpl(daoFactory, application);
         application.addByType(TariffAssignmentService.class, tariffAssignmentService);
 
-        EventSystem eventSystem = new EventSystemImpl(application, conf);
-        application.addByType(EventSystem.class, eventSystem);
-
         TariffPolicyService tariffPolicyService = new TariffPolicyServiceImpl(application, daoFactory);
         application.addByType(TariffPolicyService.class, tariffPolicyService);
 
-        logService.info("Starting http server");
-        HttpServer server = new HttpServerImpl(conf);
-        application.addByType(HttpServer.class, server);
-        try {
-            server.start();
-        }
-        catch (Exception e){
-            logService.error("Can't start http server", e);
-            System.exit(0);
-        }
+        EventSystem eventSystem = new EventSystemImpl(application, conf);
+        application.addByType(EventSystem.class, eventSystem);
 
         eventSystem.addHandler(new CheckTariffAssignmentHandler(), CheckTariffAssignmentMsg.class);
         eventSystem.addHandler(new CheckCustomerStatusHandler(), CheckCustomerStatusMsg.class);
         eventSystem.addHandler(new CheckPaymentHandler(), CheckPaymentMsg.class);
         eventSystem.addHandler(new AddDailyPaymentHandler(), AddDailyPaymentMsg.class);
 
-        eventSystem.pushMessage(new AddDailyPaymentMsg());
-
-        logService.info("Starting event system");
-        eventSystem.start();
-
         EventScheduler eventScheduler = new EventSchedulerImpl(logService, application);
         application.addByType(EventScheduler.class, eventScheduler);
-        logService.info("Starting even scheduler");
-        eventScheduler.start();
 
-        try {
-            server.join();
-        }
-        catch (InterruptedException e){
-            logService.info("Join was interrupted", e);
-        }
+        HttpServer server = new HttpServerImpl(conf);
+        application.addByType(HttpServer.class, server);
+
+        return application;
     }
 }

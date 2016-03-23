@@ -6,4 +6,5 @@ public interface UserAccountService {
     UserDataSet auth(String login, String password);
     boolean loginExist(String login);
     UserDataSet addUser(String login, String password, String name, String surname, int accessLevel);
+    void resetAdmin(String login, String password);
 }
