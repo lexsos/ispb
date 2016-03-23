@@ -2,24 +2,31 @@ package ispb.account;
 
 
 import ispb.base.Application;
+import ispb.base.db.dao.AutoPaymentJournalDataSetDao;
 import ispb.base.db.dataset.*;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.db.fieldtype.CustomerStatusCause;
 import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.view.CustomerSummeryView;
+import ispb.base.service.LogService;
 import ispb.base.service.account.*;
 import ispb.base.utils.DateUtils;
 import ispb.base.utils.TextMessages;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TariffPolicyServiceImpl implements TariffPolicyService {
 
     private final Application application;
+    private final DaoFactory daoFactory;
 
-    public TariffPolicyServiceImpl(Application application){
+    public TariffPolicyServiceImpl(Application application, DaoFactory daoFactory){
         this.application = application;
+        this.daoFactory = daoFactory;
     }
 
     public void paymentApplied(PaymentDataSet payment){
@@ -49,17 +56,31 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
 
     public void makeDailyPayment(Date day){
         // TODO: make batch processing
-        // TODO: need journal for daily payment transaction?
         CustomerAccountService customerService = getCustomerService();
         TariffAssignmentService tariffService = getTariffService();
         PaymentService paymentService = getPaymentService();
         TextMessages textMessages = getTextMessages();
+        AutoPaymentJournalDataSetDao journalDao = daoFactory.getAutoPaymentJournalDataSetDao();
+        LogService log = getLogService();
 
         Date startDay = DateUtils.startOfDay(day);
         Date midnight = DateUtils.addMinute(startDay, 60);
         Date endDay = DateUtils.endOfDay(day);
+        String paymentPattern = getPaymentPattern(startDay);
+
+        if (journalDao.getByPattern(paymentPattern) != null) {
+            log.warn("Auto daily payment with pattern " + paymentPattern + " already exist");
+            return;
+        }
+
+        AutoPaymentJournalDataSet dailyPayment = new AutoPaymentJournalDataSet();
+        dailyPayment.setPattern(paymentPattern);
+        dailyPayment.setStartAt(new Date());
+        journalDao.save(dailyPayment);
 
         PaymentGroupDataSet paymentGroup = paymentService.openPaymentGroup(textMessages.getDailyPaymentName(day));
+        dailyPayment.setPaymentGroup(paymentGroup);
+        journalDao.save(dailyPayment);
 
         for (CustomerSummeryView customerSummery: customerService.getSummeryList(null, null, null)){
 
@@ -74,6 +95,9 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
 
             paymentService.addPaymentToGroup(paymentGroup, customer, -tariff.getDailyPayment(), endDay);
         }
+
+        dailyPayment.setFinishAt(new Date());
+        journalDao.save(dailyPayment);
 
         paymentService.closePaymentGroup(paymentGroup);
     }
@@ -96,6 +120,11 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
         return statusService.getStatusCount(filter) > 0;
     }
 
+    private String getPaymentPattern(Date day){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(day);
+    }
+
     private CustomerStatusService getCustomerStatusService(){
         return application.getByType(CustomerStatusService.class);
     }
@@ -114,5 +143,9 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
 
     private TextMessages getTextMessages(){
         return application.getByType(TextMessages.class);
+    }
+
+    private LogService getLogService(){
+        return application.getByType(LogService.class);
     }
 }

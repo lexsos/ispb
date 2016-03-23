@@ -106,6 +106,17 @@ create table customer_status (
     primary key (id)
 );
 
+create table auto_payment_journal (
+    id  bigserial not null,
+    create_at timestamp not null,
+    delete_at timestamp,
+    pattern varchar(255) not null,
+    paymentGroup_id int8,
+    start_at timestamp,
+    finish_at timestamp,
+    primary key (id)
+);
+
 
 
 create unique index index_city__name__delete_at ON city (name) WHERE delete_at IS NULL;
@@ -130,6 +141,9 @@ alter table tariff_assignment add constraint FK__tariff_assignment__to__customer
 alter table tariff_assignment add constraint FK__tariff_assignment__to__tariff foreign key (tariff_id) references tariff;
 
 alter table customer_status add constraint FK__customer_status__to__customer foreign key (customer_id) references customer;
+
+alter table auto_payment_journal add constraint FK__auto_payment_journal__to__payment_group foreign key (paymentGroup_id) references payment_group;
+create unique index index_auto_payment_journal__pattern__delete_at ON auto_payment_journal (pattern) WHERE delete_at IS NULL;
 
 CREATE OR REPLACE VIEW customer_view AS
     SELECT

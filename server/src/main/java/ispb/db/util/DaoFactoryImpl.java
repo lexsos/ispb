@@ -61,4 +61,8 @@ public class DaoFactoryImpl implements DaoFactory {
     public CustomerStatusDataSetDao getCustomerStatusDao(){
         return new CustomerStatusDataSetDaoImpl(sessions, resourceses, queryBuilder);
     }
+
+    public AutoPaymentJournalDataSetDao getAutoPaymentJournalDataSetDao(){
+        return new AutoPaymentJournalDataSetDaoImpl(sessions, resourceses);
+    }
 }

@@ -102,7 +102,7 @@ public class Server {
         EventSystem eventSystem = new EventSystemImpl(application, conf);
         application.addByType(EventSystem.class, eventSystem);
 
-        TariffPolicyService tariffPolicyService = new TariffPolicyServiceImpl(application);
+        TariffPolicyService tariffPolicyService = new TariffPolicyServiceImpl(application, daoFactory);
         application.addByType(TariffPolicyService.class, tariffPolicyService);
 
         logService.info("Starting http server");
@@ -120,6 +120,8 @@ public class Server {
         eventSystem.addHandler(new CheckCustomerStatusHandler(), CheckCustomerStatusMsg.class);
         eventSystem.addHandler(new CheckPaymentHandler(), CheckPaymentMsg.class);
         eventSystem.addHandler(new AddDailyPaymentHandler(), AddDailyPaymentMsg.class);
+
+        eventSystem.pushMessage(new AddDailyPaymentMsg());
 
         logService.info("Starting event system");
         eventSystem.start();
