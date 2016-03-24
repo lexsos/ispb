@@ -20,7 +20,7 @@ Ext.define 'ISPBClient.view.main.Main',
       items: [
         {
           xtype: 'tbtext'
-          text: 'ISP Builling web client'
+          text: 'ISP Billing web client'
           style: 'font-size: 14pt;'
         }
         '->'
