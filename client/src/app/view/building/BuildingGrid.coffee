@@ -39,12 +39,6 @@ Ext.define 'ISPBClient.view.building.BuildingGrid',
         }
         '-'
         {
-          text: 'Удалить'
-          icon: 'static/img/delete.gif'
-          action: 'delete'
-        }
-        '-'
-        {
           fieldLabel: 'Группировать по'
           xtype: 'combobox'
           queryMode: 'local'

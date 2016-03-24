@@ -33,12 +33,6 @@ Ext.define 'ISPBClient.view.city.CityGrid',
           icon:'static/img/edit.png'
           action: 'edit'
         }
-        '-'
-        {
-          text: 'Удалить'
-          icon: 'static/img/delete.gif'
-          action: 'delete'
-        }
       ]
     }
   ]

@@ -23,6 +23,7 @@ public interface CustomerAccountService {
             throws AlreadyExistException, DicElementNotFoundException, NotFoundException;
     CustomerSummeryView createSummery(CustomerContainer container)
             throws AlreadyExistException, DicElementNotFoundException;
+    void deleteCustomer(long customerId) throws NotFoundException;
 
     boolean contractNumberExist(String contractNumber);
 

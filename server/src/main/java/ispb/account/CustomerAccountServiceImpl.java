@@ -113,6 +113,15 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
         return getSummeryById(customerId);
     }
 
+    public void deleteCustomer(long customerId) throws NotFoundException{
+        CustomerDataSetDao dao = daoFactory.getCustomerDao();
+
+        CustomerDataSet customer = dao.getById(customerId);
+        if (customer == null)
+            throw  new NotFoundException();
+        dao.delete(customer);
+    }
+
     public boolean contractNumberExist(String contractNumber){
         return getSummeryByContractNumber(contractNumber) != null;
     }

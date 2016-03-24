@@ -324,6 +324,17 @@ public class CustomerResource extends RestResource {
         return new  CustomerSummeryListRestResponse(customer);
     }
 
+    public RestResponse deleteEntity(RestContext restContext){
+        CustomerAccountService service = getCustomerService(restContext);
+        try {
+            service.deleteCustomer(restContext.getId());
+            return new RestResponse();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+    }
+
     protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
         if (restItem.propertyEquals("cityId__eq"))
             return new DataSetFilterItem("cityId", CmpOperator.EQ, restItem.asLong());

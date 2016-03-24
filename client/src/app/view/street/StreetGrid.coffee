@@ -38,12 +38,6 @@ Ext.define 'ISPBClient.view.street.StreetGrid',
         }
         '-'
         {
-          text: 'Удалить'
-          icon: 'static/img/delete.gif'
-          action: 'delete'
-        }
-        '-'
-        {
           fieldLabel: 'Группировать по'
           xtype: 'combobox'
           queryMode: 'local'

@@ -2,6 +2,7 @@ package ispb.db.dao;
 
 
 import ispb.base.db.dao.CustomerSummeryViewDao;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.*;
 import ispb.base.db.sort.DataSetSort;
@@ -32,11 +33,25 @@ public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSumme
     }
 
     public List<CustomerSummeryView> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
-        return getQueryAsList(hqlListTmpl, queryBuilder, fieldsDescriptor, filter, sort, pagination);
+        DataSetFilter newFilter;
+        if (filter == null)
+            newFilter = new  DataSetFilter();
+        else
+            newFilter = filter.getCopy();
+        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
+
+        return getQueryAsList(hqlListTmpl, queryBuilder, fieldsDescriptor, newFilter, sort, pagination);
     }
 
     public long getCount(DataSetFilter filter){
-        return getRowCount(hqlCountTmpl, queryBuilder, fieldsDescriptor, filter);
+        DataSetFilter newFilter;
+        if (filter == null)
+            newFilter = new  DataSetFilter();
+        else
+            newFilter = filter.getCopy();
+        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
+
+        return getRowCount(hqlCountTmpl, queryBuilder, fieldsDescriptor, newFilter);
     }
 
     public CustomerSummeryView getById(long id){

@@ -1,6 +1,11 @@
 {
   "fieldDescriptors": {
 
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName":"customerView.customer.deleteAt"
+    },
+
     "contractNumber":{
       "validOperators":["EQ", "LIKE"],
       "hqlFieldName":"customerView.customer.contractNumber",

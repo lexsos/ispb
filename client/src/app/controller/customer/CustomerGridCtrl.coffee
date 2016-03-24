@@ -17,6 +17,9 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       'CustomerGrid button[action=add]':
         click: this.onAddClick
 
+      'CustomerGrid button[action=delete]':
+        click: this.onDeleteClick
+
       'CustomerGrid menuitem[action=showPayments]':
         click: this.onShowPaymentsClick
 
@@ -76,6 +79,15 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
   onAddClick: (element) ->
     view = Ext.widget('addCustomerWindow')
     view.setStore(element.up('grid').getStore())
+
+  onDeleteClick: (element) ->
+    record = this.getSelectedRecord(element)
+    store = element.up('grid').getStore()
+    if record
+      Ext.MessageBox.confirm 'Удаление', 'Удалить абонента с номером договора ' + record.get('contractNumber'), (btn) ->
+        if btn == 'yes'
+          store.remove(record)
+          store.sync()
 
   onShowPaymentsClick: (element) ->
     record = this.getSelectedRecord(element)

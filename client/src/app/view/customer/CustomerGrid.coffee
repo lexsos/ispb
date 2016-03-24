@@ -61,6 +61,12 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
         }
         '-'
         {
+          text: 'Удалить'
+          icon: 'static/img/delete.gif'
+          action: 'delete'
+        }
+        '-'
+        {
           text: 'Платежи'
           icon:'static/img/money.png'
 
