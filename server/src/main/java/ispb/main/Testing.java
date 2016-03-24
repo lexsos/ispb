@@ -206,11 +206,10 @@ public class Testing
         System.out.println(daoF.getUserDao().getByLogin("alex"));
         System.out.println(daoF.getUserDao().getByLogin("lex"));
 
-        UserAccountService userAccountService = new UserAccountServiceImpl(daoFactory);
+        UserAccountService userAccountService = new UserAccountServiceImpl(daoFactory, logService);
         application.addByType(UserAccountService.class, userAccountService);
 
-        UserAccountService accSer = new UserAccountServiceImpl(daoFactory);
-        System.out.println(accSer.addUser("lex", "123456", "Lex", "---", AccessLevel.ADMIN));
+        UserAccountService accSer = new UserAccountServiceImpl(daoFactory, logService);
 
         CityDictionaryService cityDictionaryService = new CityDictionaryServiceImpl(daoF);
         application.addByType(CityDictionaryService.class, cityDictionaryService);

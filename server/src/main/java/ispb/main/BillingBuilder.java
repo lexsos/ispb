@@ -69,7 +69,7 @@ public class BillingBuilder {
         DaoFactory daoFactory = dbService.getDaoFactory();
         application.addByType(DaoFactory.class, daoFactory);
 
-        UserAccountService userAccountService = new UserAccountServiceImpl(daoFactory);
+        UserAccountService userAccountService = new UserAccountServiceImpl(daoFactory, logService);
         application.addByType(UserAccountService.class, userAccountService);
 
         CityDictionaryService cityDictionaryService = new CityDictionaryServiceImpl(daoFactory);

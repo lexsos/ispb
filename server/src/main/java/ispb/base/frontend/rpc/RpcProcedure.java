@@ -14,7 +14,7 @@ public abstract class RpcProcedure implements RpcAccessLevelable {
                                 RpcArg obj,
                                 Application application) throws ServletException, IOException;
 
-    public Class<RpcArg> getArgType(){
-        return (Class)VoidArg.class;
+    public Class<? extends RpcArg> getArgType(){
+        return VoidArg.class;
     }
 }

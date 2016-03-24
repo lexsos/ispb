@@ -1,5 +1,6 @@
 package ispb.base.frontend.utils;
 
+// TODO: refactoring replace with enum
 public class AccessLevel {
     public static final int ALL = 0;
     public static final int KASS = 10;

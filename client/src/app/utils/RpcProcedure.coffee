@@ -70,3 +70,7 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
       this.call "set_customer_status",
         customerId: customerId
         status: status
+
+    loginExist: (login) ->
+      this.call "login_exist",
+        login: login

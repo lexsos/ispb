@@ -25,6 +25,10 @@ public class UserDataSetDaoImpl extends BaseDao implements UserDataSetDao {
         markAsDeleted(user);
     }
 
+    public UserDataSet getById(long userId){
+        return getEntityById(UserDataSet.class, userId);
+    }
+
     public List<UserDataSet> getAll(){
         String hql = resources.getAsString(this.getClass(), "UserDataSetDaoImpl/getAll.hql");
         Object result = this.doTransaction(

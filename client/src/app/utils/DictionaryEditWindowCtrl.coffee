@@ -25,7 +25,7 @@ Ext.define 'ISPBClient.utils.DictionaryEditWindowCtrl',
     record = form.getRecord()
     values = form.getValues()
 
-    if !this.validateForm(form)
+    if !this.validateForm(form, record)
       return
 
     if (!record)

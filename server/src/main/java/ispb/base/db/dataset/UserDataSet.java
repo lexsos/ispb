@@ -1,5 +1,6 @@
 package ispb.base.db.dataset;
 
+import ispb.base.db.container.UserContainer;
 import ispb.base.db.utils.BaseDataSet;
 import ispb.base.db.utils.DeletedMarkable;
 import ispb.base.db.utils.Identifiable;
@@ -9,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "users")
-public class UserDataSet extends BaseDataSet implements DeletedMarkable, Identifiable {
+public class UserDataSet extends BaseDataSet implements DeletedMarkable, Identifiable, UserContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

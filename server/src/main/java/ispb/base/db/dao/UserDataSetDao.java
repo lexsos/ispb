@@ -8,4 +8,5 @@ public interface UserDataSetDao {
     void delete(UserDataSet user);
     List<UserDataSet> getAll();
     UserDataSet getByLogin(String login);
+    UserDataSet getById(long userId);
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public abstract class RestResource implements RestAccessLevelable {
 
-    public abstract Class<RestEntity> getEntityType();
+    public abstract Class<? extends RestEntity> getEntityType();
 
     public RestResponse getEntity(RestContext restContext){
         return ErrorRestResponse.methodNotAllowed();

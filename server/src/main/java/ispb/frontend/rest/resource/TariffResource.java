@@ -11,7 +11,6 @@ import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.NotFoundException;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,9 +39,7 @@ public class TariffResource extends RestResource {
         }
 
         public boolean verify(){
-            if (getName() != null)
-                return true;
-            return false;
+            return getName() != null;
         }
 
         public String getName() {
@@ -104,8 +101,8 @@ public class TariffResource extends RestResource {
 
         public TariffListRestResponse(List<TariffDataSet> dataSetList){
             tariffList = new LinkedList<>();
-            for (Iterator<TariffDataSet> i = dataSetList.iterator(); i.hasNext();)
-                tariffList.add(new TariffEntity(i.next()));
+            for (TariffDataSet tariff : dataSetList)
+                tariffList.add(new TariffEntity(tariff));
         }
 
         public TariffListRestResponse(TariffDataSet tariff){
@@ -122,7 +119,7 @@ public class TariffResource extends RestResource {
         return AccessLevel.MANAGER;
     }
 
-    public Class getEntityType(){
+    public Class<? extends RestEntity> getEntityType(){
         return TariffEntity.class;
     }
 

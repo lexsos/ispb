@@ -5,45 +5,44 @@ import ispb.base.Application;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
-import ispb.base.service.dictionary.TariffDictionaryService;
+import ispb.base.service.account.UserAccountService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TariffNameExistRpc extends RpcProcedure {
+public class LoginExistRpc extends RpcProcedure {
 
-    private static class TariffNameExistArgs extends RpcArg {
-
-        private String name;
+    private static class LoginExistArgs extends RpcArg {
+        private String login;
 
         public boolean verify() {
-            return getName() != null;
+            return getLogin() != null;
         }
 
-        public String getName() {
-            return name;
+        public String getLogin() {
+            return login;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setLogin(String login) {
+            this.login = login;
         }
     }
 
     public int getAccessLevel(){
-        return AccessLevel.MIN;
+        return AccessLevel.ADMIN;
     }
 
-    public Class getArgType(){
-        return TariffNameExistArgs.class;
+    public Class<? extends RpcArg> getArgType(){
+        return LoginExistArgs.class;
     }
 
     public Object call(HttpServletRequest request,
                        HttpServletResponse response,
                        RpcArg obj,
                        Application application) throws ServletException, IOException {
-        TariffNameExistArgs args = (TariffNameExistArgs)obj;
-        return application.getByType(TariffDictionaryService.class).exist(args.getName());
+        LoginExistArgs arg = (LoginExistArgs) obj;
+        return application.getByType(UserAccountService.class).loginExist(arg.getLogin());
     }
 }

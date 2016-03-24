@@ -4,11 +4,29 @@ Ext.define 'ISPBClient.view.user.UserGrid',
 
   columns: [
     {xtype: 'rownumberer'}
-    {header: 'Логин', dataIndex: 'cityName', flex: 1}
-    {header: 'Имя', dataIndex: 'streetName', flex: 1}
-    {header: 'Фамилия', dataIndex: 'name', flex: 1}
-    {header: 'Уровень доступа', dataIndex: 'name', flex: 1}
-    {header: 'Включен', dataIndex: 'name', flex: 1}
+    {header: 'Логин', dataIndex: 'login', flex: 1}
+    {header: 'Имя', dataIndex: 'name', flex: 1}
+    {header: 'Фамилия', dataIndex: 'surname', flex: 1}
+    {
+      header: 'Уровень доступа'
+      dataIndex: 'accessLevel'
+      flex: 1
+      renderer: (v) ->
+        if v == 100
+          return "менеджер"
+        else if v == 1000
+          return "администратор"
+        return v
+    }
+    {
+      header: 'Включен'
+      dataIndex: 'active'
+      flex: 1
+      renderer: (v) ->
+        if v
+          return '<img src="static/img/green-led.gif">'
+        return '<img src="static/img/red-led.gif">'
+    }
   ]
 
   store:
