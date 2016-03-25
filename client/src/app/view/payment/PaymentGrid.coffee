@@ -17,6 +17,8 @@ Ext.define 'ISPBClient.view.payment.PaymentGrid',
   store:
     model: 'ISPBClient.model.PaymentGroup'
     autoLoad: true
+    remoteFilter: true
+    remoteSort: true
 
   dockedItems: [
     {
