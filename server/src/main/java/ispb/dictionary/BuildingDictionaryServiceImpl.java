@@ -23,10 +23,6 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
         this.daoFactory = daoFactory;
     }
 
-    public List<BuildingDataSet> getAll(){
-        return daoFactory.getBuildingDao().getAll();
-    }
-
     public List<BuildingDataSet> getList(DataSetFilter filter, DataSetSort sort){
         return daoFactory.getBuildingDao().getList(filter, sort);
     }

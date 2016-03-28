@@ -22,9 +22,7 @@ public class SetCustomerStatusRpc extends RpcProcedure {
         private CustomerStatus status;
 
         public boolean verify() {
-            if (getCustomerId() > 0 && getStatus() != null)
-                return true;
-            return false;
+            return getCustomerId() > 0 && getStatus() != null;
         }
 
         public long getCustomerId() {
@@ -40,7 +38,7 @@ public class SetCustomerStatusRpc extends RpcProcedure {
         return AccessLevel.MANAGER;
     }
 
-    public Class getArgType() {
+    public Class<? extends RpcArg> getArgType() {
         return SetCustomerStatusArgs.class;
     }
 

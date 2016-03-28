@@ -43,7 +43,7 @@ import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
 
-public class BillingBuilder {
+class BillingBuilder {
 
     public static Application build(String configFile){
         Application application = ApplicationImpl.getApplication();

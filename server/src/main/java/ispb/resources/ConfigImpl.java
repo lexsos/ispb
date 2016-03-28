@@ -11,8 +11,8 @@ import java.util.Properties;
 
 public class ConfigImpl implements Config {
 
-    private Properties defaults;
-    private Properties confFile;
+    private final Properties defaults;
+    private final Properties confFile;
 
     public ConfigImpl(String fileName){
 

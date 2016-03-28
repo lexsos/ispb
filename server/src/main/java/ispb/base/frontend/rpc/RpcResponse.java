@@ -8,7 +8,7 @@ import ispb.base.utils.GsonGetter;
 public class RpcResponse implements Jsonable {
 
     private int code = ResponseCodes.OK;
-    private Object value = null;
+    private Object value;
 
     public RpcResponse(){}
 
@@ -45,7 +45,7 @@ public class RpcResponse implements Jsonable {
         return new RpcResponse(null, ResponseCodes.JSON_ERROR);
     }
 
-    public static RpcResponse incompatibleDataStruct(){
+    public static RpcResponse incompatibleDataStructure(){
         return new RpcResponse(null, ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
     }
 

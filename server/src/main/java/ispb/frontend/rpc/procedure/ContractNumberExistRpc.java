@@ -19,9 +19,7 @@ public class ContractNumberExistRpc extends RpcProcedure {
         private String contractNumber;
 
         public boolean verify() {
-            if (getContractNumber() != null)
-                return true;
-            return false;
+            return getContractNumber() != null;
         }
 
         public String getContractNumber() {
@@ -33,7 +31,7 @@ public class ContractNumberExistRpc extends RpcProcedure {
         return AccessLevel.MIN;
     }
 
-    public Class getArgType() {
+    public Class<? extends RpcArg> getArgType() {
         return  ContractNumberExistArgs.class;
     }
 

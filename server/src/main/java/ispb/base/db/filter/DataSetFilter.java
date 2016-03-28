@@ -7,12 +7,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DataSetFilter implements Iterable {
+public class DataSetFilter implements Iterable<DataSetFilterItem> {
 
-    private List<DataSetFilterItem> filterItems;
+    private final List<DataSetFilterItem> filterItems;
 
     public DataSetFilter(){
-        filterItems = new LinkedList();
+        filterItems = new LinkedList<>();
     }
 
     private DataSetFilter(List<DataSetFilterItem> filterItems){
@@ -33,7 +33,6 @@ public class DataSetFilter implements Iterable {
     }
 
     public DataSetFilter getCopy(){
-        DataSetFilter copy = new DataSetFilter(new LinkedList<>(filterItems));
-        return copy;
+        return new DataSetFilter(new LinkedList<>(filterItems));
     }
 }

@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ResetAdmin {
+class ResetAdmin {
 
     public static void run (String configFile) {
         String newPassword;

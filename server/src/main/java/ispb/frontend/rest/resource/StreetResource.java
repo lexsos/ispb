@@ -30,9 +30,7 @@ public class StreetResource extends RestResource {
         }
 
         public boolean verify(){
-            if (name != null && cityId > 0)
-                return true;
-            return false;
+            return name != null && cityId > 0;
         }
 
         public String getName() {
@@ -60,18 +58,18 @@ public class StreetResource extends RestResource {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class StreetListRestResponse extends RestResponse {
 
-        private List<StreetEntity> streetList = null;
+        private final List<StreetEntity> streetList = new LinkedList<>();
 
+        @SuppressWarnings("Convert2streamapi")
         public StreetListRestResponse(List<StreetDataSet> streetList){
-            this.streetList = new LinkedList<>();
-            for (Iterator<StreetDataSet> i = streetList.iterator(); i.hasNext(); )
-                this.streetList.add(new StreetEntity(i.next()));
+            for (StreetDataSet streetDataSet : streetList)
+                this.streetList.add(new StreetEntity(streetDataSet));
         }
 
         public StreetListRestResponse(StreetDataSet street){
-            streetList = new LinkedList<>();
             streetList.add(new  StreetEntity(street));
         }
     }
@@ -84,7 +82,7 @@ public class StreetResource extends RestResource {
         return AccessLevel.MANAGER;
     }
 
-    public Class getEntityType(){
+    public Class<? extends RestEntity> getEntityType(){
         return StreetEntity.class;
     }
 

@@ -14,7 +14,6 @@ import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.CustomerStatusService;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,9 +43,7 @@ public class CustomerStatusResource extends RestResource {
         }
 
         public boolean verify(){
-            if (customerId > 0 && status != null)
-                return true;
-            return false;
+            return customerId > 0 && status != null;
         }
 
         public CustomerStatus getStatus() {
@@ -66,21 +63,21 @@ public class CustomerStatusResource extends RestResource {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class CustomerStatusListRestResponse extends RestResponse {
 
-        private List<CustomerStatusEntity> statusList;
-        private long total;
+        private final List<CustomerStatusEntity> statusList = new LinkedList<>();
+        private final long total;
 
+        @SuppressWarnings("Convert2streamapi")
         public CustomerStatusListRestResponse(List<CustomerStatusDataSet>  dataSetList, long total){
             this.total = total;
-            statusList = new LinkedList<>();
-            for (Iterator<CustomerStatusDataSet> i = dataSetList.iterator(); i.hasNext(); )
-                statusList.add(new CustomerStatusEntity(i.next()));
+            for (CustomerStatusDataSet statusDataSet : dataSetList)
+                statusList.add(new CustomerStatusEntity(statusDataSet));
         }
 
         public CustomerStatusListRestResponse(CustomerStatusDataSet dataSet){
             total = 0;
-            statusList = new LinkedList<>();
             statusList.add(new CustomerStatusEntity(dataSet));
         }
     }
@@ -93,7 +90,7 @@ public class CustomerStatusResource extends RestResource {
         return AccessLevel.MANAGER;
     }
 
-    public Class getEntityType(){
+    public Class<? extends RestEntity> getEntityType(){
         return CustomerStatusEntity.class ;
     }
 

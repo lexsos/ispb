@@ -16,10 +16,6 @@ public class CustomerStatusAppliedMsg extends EventMessage implements Iterable<L
         customerIdSet.add(customer.getId());
     }
 
-    public Set<Long> getCustomerIdSet(){
-        return customerIdSet;
-    }
-
     public Iterator<Long> iterator(){
         return customerIdSet.iterator();
     }

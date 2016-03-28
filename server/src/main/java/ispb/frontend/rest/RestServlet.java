@@ -4,7 +4,7 @@ import ispb.base.db.dataset.UserDataSet;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
-import ispb.base.frontend.exception.IncompatibleDataStruct;
+import ispb.base.frontend.exception.IncompatibleDataStructure;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
@@ -28,13 +28,13 @@ public class RestServlet extends BaseServlet {
         return getTypeByKey(resourceName);
     }
 
-    protected void writeRestResponse(HttpServletRequest request,
-                                     HttpServletResponse response,
-                                     RestResponse restResponse) throws IOException{
+    private void writeRestResponse(HttpServletRequest request,
+                                   HttpServletResponse response,
+                                   RestResponse restResponse) throws IOException{
         writeJson(response, restResponse.toJson());
     }
 
-    protected Pagination getPagination(Map<String, String[]> parameterMap){
+    private Pagination getPagination(Map<String, String[]> parameterMap){
         Pagination pagination = new Pagination();
         if (parameterMap.containsKey("start") && parameterMap.containsKey("limit")){
             int start = Integer.parseInt(parameterMap.get("start")[0]);
@@ -154,8 +154,8 @@ public class RestServlet extends BaseServlet {
                     restResponse = resource.createEntity(restContext);
                 } catch (ReadJsonError e) {
                     restResponse = ErrorRestResponse.jsonError();
-                } catch (IncompatibleDataStruct e) {
-                    restResponse = ErrorRestResponse.incompatibleDataStruct();
+                } catch (IncompatibleDataStructure e) {
+                    restResponse = ErrorRestResponse.incompatibleDataStructure();
                 }
             else if (Objects.equals(method, "PUT") && id != null)
                 try {
@@ -164,8 +164,8 @@ public class RestServlet extends BaseServlet {
                     restResponse = resource.updateEntity(restContext);
                 } catch (ReadJsonError e) {
                     restResponse = ErrorRestResponse.jsonError();
-                } catch (IncompatibleDataStruct e) {
-                    restResponse = ErrorRestResponse.incompatibleDataStruct();
+                } catch (IncompatibleDataStructure e) {
+                    restResponse = ErrorRestResponse.incompatibleDataStructure();
                 }
         }
         catch (Throwable e){

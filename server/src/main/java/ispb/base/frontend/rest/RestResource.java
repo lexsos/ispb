@@ -6,9 +6,9 @@ import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.sort.DataSetSortItem;
 import ispb.base.db.field.SortDirection;
 
-import java.util.Iterator;
 import java.util.Map;
 
+@SuppressWarnings("UnusedParameters")
 public abstract class RestResource implements RestAccessLevelable {
 
     public abstract Class<? extends RestEntity> getEntityType();
@@ -37,23 +37,11 @@ public abstract class RestResource implements RestAccessLevelable {
         return ErrorRestResponse.methodNotAllowed();
     }
 
-    protected RestFilter getRestFilter(Map<String, String[]> params){
-        String[] filtersData = params.get("filter");
-        if (filtersData == null || filtersData.length < 1)
-            return new  RestFilter();
-        return new RestFilter(filtersData[0]);
-    }
-
-    protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
-        return null;
-    }
-
     public DataSetFilter getDataSetFilter(Map<String, String[]> params){
         RestFilter restFilter = getRestFilter(params);
         DataSetFilter dataSetFilter = new DataSetFilter();
 
-        for (Iterator<RestFilterItem> i = restFilter.iterator(); i.hasNext();){
-            RestFilterItem item = i.next();
+        for (RestFilterItem item : restFilter) {
             DataSetFilterItem dataSetFilterItem = restToDataSetFilter(item);
             if (dataSetFilterItem != null)
                 dataSetFilter.add(dataSetFilterItem);
@@ -62,19 +50,11 @@ public abstract class RestResource implements RestAccessLevelable {
         return dataSetFilter;
     }
 
-    protected RestSort getRestSort(Map<String, String[]> params){
-        String[] sortData = params.get("sort");
-        if (sortData == null || sortData.length < 1)
-            return new RestSort();
-        return new RestSort(sortData[0]);
-    }
-
     public DataSetSort getDataSetSort(Map<String, String[]> params){
         RestSort restSort = getRestSort(params);
         DataSetSort dataSetSort = new DataSetSort();
 
-        for (Iterator<RestSortItem> i=restSort.iterator();i.hasNext();){
-            RestSortItem item = i.next();
+        for (RestSortItem item : restSort) {
             DataSetSortItem dataSetSortItem = restToDataSetSort(item);
             if (dataSetSortItem != null)
                 dataSetSort.add(dataSetSortItem);
@@ -87,5 +67,23 @@ public abstract class RestResource implements RestAccessLevelable {
         String fieldName = restSortItem.getProperty();
         SortDirection direction = restSortItem.isAsc()?SortDirection.ASC:SortDirection.DESC;
         return new DataSetSortItem(fieldName, direction);
+    }
+
+    protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
+        return null;
+    }
+
+    private RestSort getRestSort(Map<String, String[]> params){
+        String[] sortData = params.get("sort");
+        if (sortData == null || sortData.length < 1)
+            return new RestSort();
+        return new RestSort(sortData[0]);
+    }
+
+    private RestFilter getRestFilter(Map<String, String[]> params){
+        String[] filtersData = params.get("filter");
+        if (filtersData == null || filtersData.length < 1)
+            return new  RestFilter();
+        return new RestFilter(filtersData[0]);
     }
 }

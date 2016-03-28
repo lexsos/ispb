@@ -6,8 +6,8 @@ import ispb.base.db.field.SortDirection;
 
 public class DataSetSortItem implements FieldItem {
 
-    private String fieldName;
-    private SortDirection direction;
+    private final String fieldName;
+    private final SortDirection direction;
 
     public DataSetSortItem(String fieldName, SortDirection direction){
         this.fieldName = fieldName;

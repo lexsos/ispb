@@ -18,9 +18,7 @@ public class CityNameExistRpc extends RpcProcedure {
         private String name;
 
         public boolean verify() {
-            if (getName() != null)
-                return true;
-            return false;
+            return getName() != null;
         }
 
         public String getName() {
@@ -36,7 +34,7 @@ public class CityNameExistRpc extends RpcProcedure {
         return AccessLevel.MIN;
     }
 
-    public Class getArgType(){
+    public Class<? extends RpcArg> getArgType(){
         return CityNameExistArgs.class;
     }
 

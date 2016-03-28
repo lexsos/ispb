@@ -16,10 +16,6 @@ public class TariffAppliedMsg extends EventMessage implements Iterable<Long> {
         customerIdSet.add(customer.getId());
     }
 
-    public Set<Long> getCustomerIdSet(){
-        return customerIdSet;
-    }
-
     public Iterator<Long> iterator(){
         return customerIdSet.iterator();
     }

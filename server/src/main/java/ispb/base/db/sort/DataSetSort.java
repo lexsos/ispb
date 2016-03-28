@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DataSetSort implements Iterable {
+public class DataSetSort implements Iterable<DataSetSortItem> {
 
-    private List<DataSetSortItem> sortItems;
+    private final List<DataSetSortItem> sortItems;
 
     public DataSetSort(){
         sortItems = new LinkedList<>();

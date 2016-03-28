@@ -20,7 +20,6 @@ import ispb.base.service.exception.*;
 import ispb.base.utils.TextMessages;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,10 +47,8 @@ public class CustomerResource extends RestResource {
         private String tariffName;
 
         public boolean verify(){
-            if (getName() != null && getSurname() != null && getPatronymic() != null && getPassport() != null && getPhone() != null &&
-                    getComment() != null && getContractNumber() != null && getBuildingId() > 0 && getRoom() != null && getStatus() != null)
-                return true;
-            return false;
+            return getName() != null && getSurname() != null && getPatronymic() != null && getPassport() != null && getPhone() != null &&
+                    getComment() != null && getContractNumber() != null && getBuildingId() > 0 && getRoom() != null && getStatus() != null;
         }
 
         public CustomerEntity(CustomerSummeryView customer){
@@ -203,30 +200,21 @@ public class CustomerResource extends RestResource {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class CustomerSummeryListRestResponse extends RestResponse {
 
-        private List<CustomerEntity> customerList;
-        private long total;
+        private final List<CustomerEntity> customerList = new LinkedList<>();
+        private final long total;
 
         public CustomerSummeryListRestResponse(CustomerSummeryView customer){
-            customerList = new LinkedList<>();
             customerList.add(new CustomerEntity(customer));
             total = 1;
         }
 
         public CustomerSummeryListRestResponse(List<CustomerSummeryView> customers, long total){
-            customerList = new LinkedList<>();
             this.total = total;
-            for (Iterator<CustomerSummeryView> i = customers.iterator(); i.hasNext(); )
-                customerList.add(new CustomerEntity(i.next()));
-        }
-
-        public List<CustomerEntity> getCustomerList() {
-            return customerList;
-        }
-
-        public void setCustomerList(List<CustomerEntity> customerList) {
-            this.customerList = customerList;
+            for (CustomerSummeryView customer : customers)
+                customerList.add(new CustomerEntity(customer));
         }
     }
 
@@ -238,7 +226,7 @@ public class CustomerResource extends RestResource {
         return AccessLevel.MANAGER;
     }
 
-    public Class getEntityType(){
+    public Class<? extends RestEntity> getEntityType(){
         return CustomerEntity.class ;
     }
 

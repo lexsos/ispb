@@ -23,11 +23,7 @@ public class RestSortItem {
         this.direction = direction;
     }
 
-    public boolean isAsc(){
-        if (direction == null)
-            return true;
-        if (Objects.equals(direction.toLowerCase(), "asc"))
-            return true;
-        return false;
+    public boolean isAsc() {
+        return direction == null || Objects.equals(direction.toLowerCase(), "asc");
     }
 }

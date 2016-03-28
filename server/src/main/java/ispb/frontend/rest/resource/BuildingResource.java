@@ -12,7 +12,6 @@ import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.DicElementNotFoundException;
 import ispb.base.service.exception.NotFoundException;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,9 +26,7 @@ public class BuildingResource extends RestResource {
         private String qualifiedStreetName;
 
         public boolean verify(){
-            if (name != null && streetId > 0)
-                return true;
-            return false;
+            return name != null && streetId > 0;
         }
 
         public BuildingEntity (){}
@@ -100,30 +97,21 @@ public class BuildingResource extends RestResource {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class BuildingListRestResponse extends RestResponse {
 
-        private List<BuildingEntity> buildingList = null;
+        private final List<BuildingEntity> buildingList = new LinkedList<>();
 
         public BuildingListRestResponse(List<BuildingDataSet> buildingList){
-            this.buildingList = new LinkedList();
-            for (Iterator<BuildingDataSet> i = buildingList.iterator(); i.hasNext(); ){
-                BuildingEntity entity = new BuildingEntity(i.next());
+            for (BuildingDataSet building : buildingList) {
+                BuildingEntity entity = new BuildingEntity(building);
                 this.buildingList.add(entity);
             }
         }
 
         public BuildingListRestResponse(BuildingDataSet building){
-            this.buildingList = new LinkedList();
             BuildingEntity entity = new BuildingEntity(building);
             this.buildingList.add(entity);
-        }
-
-        public List<BuildingEntity> getBuildingList() {
-            return buildingList;
-        }
-
-        public void setBuildingList(List<BuildingEntity> buildingList) {
-            this.buildingList = buildingList;
         }
     }
 
@@ -135,7 +123,7 @@ public class BuildingResource extends RestResource {
         return AccessLevel.MANAGER;
     }
 
-    public Class getEntityType(){
+    public Class<? extends RestEntity> getEntityType(){
         return BuildingEntity.class;
     }
 

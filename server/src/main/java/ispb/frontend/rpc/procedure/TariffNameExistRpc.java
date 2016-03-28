@@ -35,7 +35,7 @@ public class TariffNameExistRpc extends RpcProcedure {
         return AccessLevel.MIN;
     }
 
-    public Class getArgType(){
+    public Class<? extends RpcArg> getArgType(){
         return TariffNameExistArgs.class;
     }
 

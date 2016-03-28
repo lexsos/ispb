@@ -24,9 +24,7 @@ public class AddVirtualPaymentRpc extends RpcProcedure {
         private Date until;
 
         public boolean verify() {
-            if (customerId > 0 && comment != null && until != null)
-                return true;
-            return false;
+            return customerId > 0 && comment != null && until != null;
         }
 
         public long getCustomerId() {
@@ -51,7 +49,7 @@ public class AddVirtualPaymentRpc extends RpcProcedure {
         return AccessLevel.KASS;
     }
 
-    public Class getArgType() {
+    public Class<? extends RpcArg> getArgType() {
         return AddVirtualPaymentArgs.class;
     }
 

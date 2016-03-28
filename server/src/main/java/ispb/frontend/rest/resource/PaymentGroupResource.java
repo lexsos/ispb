@@ -9,7 +9,6 @@ import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.PaymentService;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,23 +33,23 @@ public class PaymentGroupResource extends RestResource {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class PaymentListRestResponse extends RestResponse {
 
-        private List<PaymentGroupEntity> paymentGroupList;
-        private long total;
+        private final List<PaymentGroupEntity> paymentGroupList = new LinkedList<>();
+        private final long total;
 
 
         public PaymentListRestResponse(PaymentGroupDataSet dataSet){
             total = 1;
-            paymentGroupList = new LinkedList<>();
             paymentGroupList.add(new PaymentGroupEntity(dataSet));
         }
 
+        @SuppressWarnings("Convert2streamapi")
         public PaymentListRestResponse(List<PaymentGroupDataSet> dataSetList, long total){
             this.total = total;
-            paymentGroupList = new LinkedList<>();
-            for (Iterator<PaymentGroupDataSet> i = dataSetList.iterator(); i.hasNext(); )
-                paymentGroupList.add(new PaymentGroupEntity(i.next()));
+            for (PaymentGroupDataSet groupDataSet : dataSetList)
+                paymentGroupList.add(new PaymentGroupEntity(groupDataSet));
         }
     }
 
@@ -62,7 +61,7 @@ public class PaymentGroupResource extends RestResource {
         return AccessLevel.KASS;
     }
 
-    public Class getEntityType() {
+    public Class<? extends RestEntity> getEntityType() {
         return PaymentGroupEntity.class;
     }
 

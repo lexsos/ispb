@@ -20,9 +20,7 @@ public class StreetNameExistRpc extends RpcProcedure {
         private long cityId;
 
         public boolean verify() {
-            if (getName() != null && getCityId() > 0)
-                return true;
-            return false;
+            return getName() != null && getCityId() > 0;
         }
 
         public String getName() {
@@ -46,7 +44,7 @@ public class StreetNameExistRpc extends RpcProcedure {
         return AccessLevel.MIN;
     }
 
-    public Class getArgType() {
+    public Class<? extends RpcArg> getArgType() {
         return StreetNameExistArgs.class;
     }
 

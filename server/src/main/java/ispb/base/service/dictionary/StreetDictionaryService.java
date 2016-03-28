@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface StreetDictionaryService {
     List<StreetDataSet> getList(DataSetFilter filter);
-    List<StreetDataSet> getAll();
-    List<StreetDataSet> getByCity(long cityId);
     StreetDataSet create(long cityId, String streetName) throws AlreadyExistException, DicElementNotFoundException;
     StreetDataSet update(long streetId, long cityId, String streetName)
             throws AlreadyExistException, DicElementNotFoundException, NotFoundException;

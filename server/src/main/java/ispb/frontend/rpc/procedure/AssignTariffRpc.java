@@ -23,9 +23,7 @@ public class AssignTariffRpc extends RpcProcedure {
         private Date from;
 
         public boolean verify() {
-            if (getFrom() != null && getCustomerId() > 0 && getTariffId() > 0)
-                return true;
-            return false;
+            return getFrom() != null && getCustomerId() > 0 && getTariffId() > 0;
         }
 
         public long getCustomerId() {
@@ -45,7 +43,7 @@ public class AssignTariffRpc extends RpcProcedure {
         return AccessLevel.MANAGER;
     }
 
-    public Class getArgType() {
+    public Class<? extends RpcArg> getArgType() {
         return AssignTariffArgs.class;
     }
 

@@ -36,9 +36,7 @@ public class LoginRpc extends RpcProcedure {
         }
 
         public boolean verify(){
-            if (login != null && password != null)
-                return true;
-            return false;
+            return login != null && password != null;
         }
     }
 
@@ -59,7 +57,7 @@ public class LoginRpc extends RpcProcedure {
         return AccessLevel.ALL;
     }
 
-    public Class getArgType(){
+    public Class<? extends RpcArg> getArgType(){
         return LoginArgs.class;
     }
 }

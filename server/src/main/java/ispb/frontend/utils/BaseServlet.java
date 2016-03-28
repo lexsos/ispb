@@ -12,7 +12,7 @@ import java.util.Properties;
 import ispb.ApplicationImpl;
 import ispb.base.Application;
 import ispb.base.db.dataset.UserDataSet;
-import ispb.base.frontend.exception.IncompatibleDataStruct;
+import ispb.base.frontend.exception.IncompatibleDataStructure;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.utils.Verifiable;
 import ispb.base.service.LogService;
@@ -38,7 +38,7 @@ public class BaseServlet extends HttpServlet  {
         response.getWriter().println(json);
     }
 
-    protected <T> T readJsonObject(HttpServletRequest request, Class<T> clazz){
+    private <T> T readJsonObject(HttpServletRequest request, Class<T> clazz){
         T jsonObj = null;
         try {
             jsonObj = GsonGetter.get().fromJson(request.getReader(), clazz);
@@ -54,13 +54,13 @@ public class BaseServlet extends HttpServlet  {
 
     protected <T> T prepareJsonRequest(HttpServletRequest request,
                                        HttpServletResponse response,
-                                       Class<T> clazz)  throws ReadJsonError, IncompatibleDataStruct {
+                                       Class<T> clazz)  throws ReadJsonError, IncompatibleDataStructure {
         T obj = this.readJsonObject(request, clazz);
         if (obj == null)
             throw new ReadJsonError();
         if (obj instanceof Verifiable)
             if (!((Verifiable)obj).verify())
-                throw new IncompatibleDataStruct();
+                throw new IncompatibleDataStructure();
         return obj;
     }
 

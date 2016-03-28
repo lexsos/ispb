@@ -97,16 +97,16 @@ public class TariffResource extends RestResource {
 
     private static class TariffListRestResponse extends RestResponse {
 
-        private List<TariffEntity> tariffList = null;
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+        private final List<TariffEntity> tariffList = new LinkedList<>();
 
+        @SuppressWarnings("Convert2streamapi")
         public TariffListRestResponse(List<TariffDataSet> dataSetList){
-            tariffList = new LinkedList<>();
             for (TariffDataSet tariff : dataSetList)
                 tariffList.add(new TariffEntity(tariff));
         }
 
         public TariffListRestResponse(TariffDataSet tariff){
-            tariffList = new LinkedList<>();
             tariffList.add(new TariffEntity(tariff));
         }
     }

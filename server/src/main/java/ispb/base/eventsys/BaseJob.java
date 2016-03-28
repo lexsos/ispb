@@ -2,6 +2,7 @@ package ispb.base.eventsys;
 
 
 import ispb.base.Application;
+import ispb.base.service.LogService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -21,7 +22,13 @@ public abstract class BaseJob  implements Job {
 
         if (obj instanceof Application) {
             Application application = (Application) obj;
-            execute(application);
+            LogService logService = application.getByType(LogService.class);
+            try {
+                execute(application);
+            }
+            catch (Throwable e){
+                logService.warn("Error while execute job in scheduler", e);
+            }
         }
     }
 

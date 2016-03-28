@@ -16,8 +16,8 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 public class HttpServerImpl implements HttpServer {
 
     private Server server;
-    private HandlerList handlers;
-    private Config config;
+    private final HandlerList handlers;
+    private final Config config;
 
     public HttpServerImpl(Config config){
         this.config = config;
@@ -69,7 +69,7 @@ public class HttpServerImpl implements HttpServer {
     private void addStaticHandler(){
         boolean useStatic = config.getAsBool("frontend.use_static");
         String staticDir = config.getAsStr("frontend.static_dir");
-        String staticPrfix = config.getAsStr("frontend.static_prefix");
+        String staticPrefix = config.getAsStr("frontend.static_prefix");
         String[] welcomeFiles = config.getAsStr("frontend.static_welcome_file").split(";");
 
         if (!useStatic)
@@ -82,7 +82,7 @@ public class HttpServerImpl implements HttpServer {
 
         ContextHandler staticHandler = new ContextHandler();
         staticHandler.setHandler(resourceHandler);
-        staticHandler.setContextPath(staticPrfix);
+        staticHandler.setContextPath(staticPrefix);
 
         handlers.addHandler(staticHandler);
     }

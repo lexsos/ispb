@@ -35,10 +35,6 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
         return customer;
     }
 
-    public void setCustomer(CustomerDataSet customer) {
-        this.customer = customer;
-    }
-
     @Override
     public long getId() {
         return id;
@@ -53,23 +49,11 @@ public class CustomerSummeryView extends BaseDataSet implements Identifiable {
         return balance;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
     public TariffDataSet getTariff() {
         return tariff;
     }
 
-    public void setTariff(TariffDataSet tariff) {
-        this.tariff = tariff;
-    }
-
     public CustomerStatus getStatus() {
         return status;
-    }
-
-    public void setStatus(CustomerStatus status) {
-        this.status = status;
     }
 }

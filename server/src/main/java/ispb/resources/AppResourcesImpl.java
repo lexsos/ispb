@@ -8,7 +8,6 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -16,8 +15,8 @@ import java.util.concurrent.ConcurrentMap;
 
 public class AppResourcesImpl implements AppResources {
 
-    private ConcurrentMap<String, String> stringResourcesCache;
-    private ConcurrentMap<String, Object> objectResourcesCache;
+    private final ConcurrentMap<String, String> stringResourcesCache;
+    private final ConcurrentMap<String, Object> objectResourcesCache;
     private static AppResources instance = null;
 
     public static AppResources getInstance(){

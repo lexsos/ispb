@@ -11,7 +11,6 @@ import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.TariffAssignmentService;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,14 +19,14 @@ public class TariffAssignmentResource extends RestResource {
 
     private static class TariffAssignmentEntity extends RestEntity {
 
-        private Date applyAt;
-        private boolean processed;
-        private long customerId;
-        private long tariffId;
+        private final Date applyAt;
+        private final boolean processed;
+        private final long customerId;
+        private final long tariffId;
 
-        private String customerQualifiedName;
-        private String tariffName;
-        private String customerContractNumber;
+        private final String customerQualifiedName;
+        private final String tariffName;
+        private final String customerContractNumber;
 
         public TariffAssignmentEntity(TariffAssignmentDataSet assignment){
 
@@ -54,16 +53,17 @@ public class TariffAssignmentResource extends RestResource {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class TariffListRestResponse extends RestResponse {
 
-        private List<TariffAssignmentEntity> tariffAssignmentList;
-        private long total;
+        private final List<TariffAssignmentEntity> tariffAssignmentList = new LinkedList<>();
+        private final long total;
 
+        @SuppressWarnings("Convert2streamapi")
         public TariffListRestResponse(List<TariffAssignmentDataSet> assignmentList, long total){
-            tariffAssignmentList = new LinkedList<>();
             this.total = total;
-            for (Iterator<TariffAssignmentDataSet> i=assignmentList.iterator(); i.hasNext();)
-                tariffAssignmentList.add(new TariffAssignmentEntity(i.next()));
+            for (TariffAssignmentDataSet assignmentDataSet : assignmentList)
+                tariffAssignmentList.add(new TariffAssignmentEntity(assignmentDataSet));
         }
     }
 
@@ -75,7 +75,7 @@ public class TariffAssignmentResource extends RestResource {
         return AccessLevel.MANAGER;
     }
 
-    public Class getEntityType() {
+    public Class<? extends RestEntity> getEntityType() {
         return TariffAssignmentEntity.class;
     }
 

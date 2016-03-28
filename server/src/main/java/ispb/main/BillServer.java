@@ -8,7 +8,7 @@ import ispb.base.frontend.HttpServer;
 import ispb.base.service.LogService;
 
 
-public class BillServer {
+class BillServer {
     public static void run (String configFile) {
 
         Application application = BillingBuilder.build(configFile);

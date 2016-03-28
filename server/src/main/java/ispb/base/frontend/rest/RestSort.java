@@ -9,23 +9,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class RestSort implements Iterable {
+public class RestSort implements Iterable<RestSortItem> {
 
     private List<RestSortItem> sortItems;
 
-    private static Type type = new TypeToken<List<RestSortItem>>(){}.getType();
+    private static final Type type = new TypeToken<List<RestSortItem>>(){}.getType();
 
     public RestSort(String jsonData){
         try {
             sortItems = GsonGetter.get().fromJson(jsonData, type);
         }
         catch (Throwable e){
-            sortItems = new LinkedList();
+            sortItems = new LinkedList<>();
         }
     }
 
     public RestSort(){
-        sortItems = new LinkedList();
+        sortItems = new LinkedList<>();
     }
 
     public Iterator<RestSortItem> iterator(){

@@ -74,8 +74,10 @@ public class UserResource extends RestResource {
 
     private static class UserListRestResponse extends RestResponse {
 
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         private final List<UserEntity> userList = new LinkedList<>();
 
+        @SuppressWarnings("Convert2streamapi")
         public UserListRestResponse(List<UserDataSet> userDataSetList){
             for (UserDataSet user: userDataSetList)
                 userList.add(new UserEntity(user));

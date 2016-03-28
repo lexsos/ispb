@@ -31,10 +31,8 @@ public class FieldDescriptor {
         return hqlFieldName + " DESC";
     }
 
-    public boolean isValidOperator(CmpOperator operator){
-        if (validOperators == null)
-            return false;
-        return validOperators.contains(operator);
+    public boolean isValidOperator(CmpOperator operator) {
+        return validOperators != null && validOperators.contains(operator);
     }
 
     public boolean isValidOperator(DataSetFilterItem item){

@@ -8,23 +8,9 @@ import java.util.List;
 public class ErrorRestResponse extends RestResponse {
     private List<String> errors;
 
-    public ErrorRestResponse(){
-        setErrors(new LinkedList<>());
-        setCode(ResponseCodes.BAD_REQUEST);
-        setSuccess(false);
-    }
-
     public ErrorRestResponse(String msg, int code){
         setErrors(new LinkedList<>());
         getErrors().add(msg);
-        setCode(code);
-        setSuccess(false);
-    }
-
-    public ErrorRestResponse(String[] msgList, int code){
-        setErrors(new LinkedList<>());
-        for (int i=0; i<msgList.length; i++)
-            getErrors().add(msgList[i]);
         setCode(code);
         setSuccess(false);
     }
@@ -57,7 +43,7 @@ public class ErrorRestResponse extends RestResponse {
         return new ErrorRestResponse("Error in JSON structure.", ResponseCodes.JSON_ERROR);
     }
 
-    public static ErrorRestResponse incompatibleDataStruct(){
+    public static ErrorRestResponse incompatibleDataStructure(){
         return new ErrorRestResponse("Incompatible data structure format.", ResponseCodes.DATA_FORMAT_INCOMPATIBLE);
     }
 

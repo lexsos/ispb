@@ -36,7 +36,7 @@ public class Main {
 
     }
 
-    public static Options makeOptions(){
+    private static Options makeOptions(){
         Options options = new Options();
 
         options.addOption("c", "configfile", true, "config file path");

@@ -1,7 +1,7 @@
 package ispb.frontend.rpc;
 
 import ispb.base.db.dataset.UserDataSet;
-import ispb.base.frontend.exception.IncompatibleDataStruct;
+import ispb.base.frontend.exception.IncompatibleDataStructure;
 import ispb.base.frontend.exception.ReadJsonError;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
@@ -25,9 +25,9 @@ public class RpcServlet extends BaseServlet {
         return getTypeByKey(procedureName);
     }
 
-    protected void writeRpcResponse(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    RpcResponse rpcResponse) throws IOException {
+    private void writeRpcResponse(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  RpcResponse rpcResponse) throws IOException {
         writeJson(response, rpcResponse.toJson());
     }
 
@@ -64,8 +64,8 @@ public class RpcServlet extends BaseServlet {
             writeRpcResponse(request, response, RpcResponse.jsonError());
             return;
         }
-        catch (IncompatibleDataStruct e){
-            writeRpcResponse(request, response, RpcResponse.incompatibleDataStruct());
+        catch (IncompatibleDataStructure e){
+            writeRpcResponse(request, response, RpcResponse.incompatibleDataStructure());
             return;
         }
 

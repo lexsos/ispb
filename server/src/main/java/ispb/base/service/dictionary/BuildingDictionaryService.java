@@ -11,7 +11,6 @@ import ispb.base.service.exception.NotFoundException;
 import java.util.List;
 
 public interface BuildingDictionaryService {
-    List<BuildingDataSet> getAll();
     List<BuildingDataSet> getList(DataSetFilter filter, DataSetSort sort);
     BuildingDataSet create(long streetId, String buildingName) throws AlreadyExistException, DicElementNotFoundException;
     BuildingDataSet update(long buildingId, long streetId, String buildingName)

@@ -12,7 +12,6 @@ import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.PaymentService;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,22 +61,22 @@ public class PaymentResource extends RestResource {
 
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class PaymentListRestResponse extends RestResponse {
 
-        private List<PaymentEntity> paymentList;
-        private long total;
+        private final List<PaymentEntity> paymentList = new LinkedList<>();
+        private final long total;
 
         public PaymentListRestResponse(PaymentDataSet payment){
-            paymentList = new LinkedList<>();
             paymentList.add(new PaymentEntity(payment));
             total = 1;
         }
 
+        @SuppressWarnings("Convert2streamapi")
         public PaymentListRestResponse(List<PaymentDataSet> payments, long total){
             this.total = total;
-            paymentList = new LinkedList<>();
-            for (Iterator<PaymentDataSet> i = payments.iterator(); i.hasNext(); )
-                paymentList.add(new PaymentEntity(i.next()));
+            for (PaymentDataSet payment : payments)
+                paymentList.add(new PaymentEntity(payment));
         }
 
     }
@@ -90,7 +89,7 @@ public class PaymentResource extends RestResource {
         return AccessLevel.KASS;
     }
 
-    public Class getEntityType(){
+    public Class<? extends RestEntity> getEntityType(){
         return PaymentEntity.class ;
     }
 

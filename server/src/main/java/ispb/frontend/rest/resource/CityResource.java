@@ -7,7 +7,6 @@ import ispb.base.service.dictionary.CityDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.NotFoundException;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,9 +25,7 @@ public class CityResource extends RestResource {
         }
 
         public boolean verify(){
-            if (name != null)
-                return true;
-            return false;
+            return name != null;
         }
 
         public String getName() {
@@ -40,29 +37,20 @@ public class CityResource extends RestResource {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private static class CityListRestResponse extends RestResponse{
 
-        private List<CityEntity> city_list = null;
+        private final List<CityEntity> city_list = new LinkedList<>();
 
         public CityListRestResponse(List<CityDataSet> cityList){
-            this.city_list = new LinkedList<>();
-            for (Iterator<CityDataSet> i = cityList.iterator(); i.hasNext(); ){
-                CityEntity city = new CityEntity(i.next());
+            for (CityDataSet cityDataSet : cityList) {
+                CityEntity city = new CityEntity(cityDataSet);
                 this.city_list.add(city);
             }
         }
 
         public CityListRestResponse(CityDataSet city){
-            this.city_list = new LinkedList<>();
             this.city_list.add(new CityEntity(city));
-        }
-
-        public List<CityEntity> getCity_list() {
-            return city_list;
-        }
-
-        public void setCity_list(List<CityEntity> city_list) {
-            this.city_list = city_list;
         }
     }
 
@@ -74,7 +62,7 @@ public class CityResource extends RestResource {
         return AccessLevel.MANAGER;
     }
 
-    public Class getEntityType(){
+    public Class<? extends RestEntity> getEntityType(){
         return CityEntity.class;
     }
 

@@ -89,7 +89,7 @@ public class LoginInfoRpc extends RpcProcedure {
         return AccessLevel.ALL;
     }
 
-    public Class getArgType(){
+    public Class<? extends RpcArg> getArgType(){
         return VoidArg.class;
     }
 

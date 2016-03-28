@@ -9,31 +9,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class RestFilter implements Iterable {
+public class RestFilter implements Iterable<RestFilterItem> {
 
     private List<RestFilterItem> filterItems;
 
-    private static Type type = new TypeToken<List<RestFilterItem>>(){}.getType();
+    private static final Type type = new TypeToken<List<RestFilterItem>>(){}.getType();
 
     public RestFilter(String jsonData){
         try {
             filterItems = GsonGetter.get().fromJson(jsonData, type);
         }
         catch (Throwable e){
-            filterItems = new LinkedList();
+            filterItems = new LinkedList<>();
         }
     }
 
     public RestFilter(){
-        filterItems = new LinkedList();
+        filterItems = new LinkedList<>();
     }
 
     public Iterator<RestFilterItem> iterator() {
         return filterItems.iterator();
     }
-
-    public int size() {
-        return filterItems.size();
-    }
-
 }

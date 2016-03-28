@@ -40,12 +40,6 @@ public class TariffAssignmentServiceImpl implements TariffAssignmentService {
         return dao.getList(filter, sort, pagination);
     }
 
-    public List<TariffAssignmentDataSet> getHistory(long customerId){
-        DataSetFilter filter = new DataSetFilter();
-        filter.add("customerId", CmpOperator.EQ, customerId);
-        return getList(filter, null, null);
-    }
-
     public long getCount(DataSetFilter filter){
         TariffAssignmentDataSetDao dao = daoFactory.getTariffAssignmentDao();
         return dao.getCount(filter);

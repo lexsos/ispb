@@ -21,9 +21,7 @@ public class AddPaymentRpc extends RpcProcedure {
         private String comment;
 
         public boolean verify() {
-            if (getCustomerId() > 0 && getComment() != null)
-                return true;
-            return false;
+            return getCustomerId() > 0 && getComment() != null;
         }
 
         public long getCustomerId() {
@@ -43,7 +41,7 @@ public class AddPaymentRpc extends RpcProcedure {
         return AccessLevel.KASS;
     }
 
-    public Class getArgType() {
+    public Class<? extends RpcArg> getArgType() {
         return AddPaymentArgs.class;
     }
 
