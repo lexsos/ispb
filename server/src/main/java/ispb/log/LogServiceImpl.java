@@ -12,6 +12,7 @@ import java.util.Properties;
 public class LogServiceImpl implements LogService {
 
     private Logger logger = null;
+    @SuppressWarnings("FieldCanBeLocal")
     private final String confName = "log_conf.properties";
 
     public LogServiceImpl(Config config){

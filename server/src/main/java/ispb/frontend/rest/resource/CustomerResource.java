@@ -200,9 +200,10 @@ public class CustomerResource extends RestResource {
         }
     }
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+
     private static class CustomerSummeryListRestResponse extends RestResponse {
 
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         private final List<CustomerEntity> customerList = new LinkedList<>();
         private final long total;
 
@@ -211,6 +212,7 @@ public class CustomerResource extends RestResource {
             total = 1;
         }
 
+        @SuppressWarnings("Convert2streamapi")
         public CustomerSummeryListRestResponse(List<CustomerSummeryView> customers, long total){
             this.total = total;
             for (CustomerSummeryView customer : customers)

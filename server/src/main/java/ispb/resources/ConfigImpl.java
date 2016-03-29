@@ -57,6 +57,7 @@ public class ConfigImpl implements Config {
         return Float.parseFloat(getAsStr(key));
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     public boolean getAsBool(String key){
         String value = getAsStr(key);
         if (value == null || value.equals("0") || value.equals("no") || value.equals("false") )

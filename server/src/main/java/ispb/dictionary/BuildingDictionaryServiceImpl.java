@@ -79,6 +79,7 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
         buildingDao.delete(building);
     }
 
+    @SuppressWarnings("SimplifiableIfStatement")
     public boolean exist(long streetId, String buildingName){
         StreetDataSet street = daoFactory.getStreetDao().getById(streetId);
         if (street == null)

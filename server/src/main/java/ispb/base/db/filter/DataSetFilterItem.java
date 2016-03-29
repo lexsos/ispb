@@ -47,6 +47,7 @@ public class DataSetFilterItem  implements FieldItem {
         return 0;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     public boolean equals(Object other){
         if (this == other)
             return true;
