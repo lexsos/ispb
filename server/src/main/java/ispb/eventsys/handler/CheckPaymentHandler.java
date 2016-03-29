@@ -1,4 +1,4 @@
-package ispb.base.eventsys.handler;
+package ispb.eventsys.handler;
 
 import ispb.base.Application;
 import ispb.base.eventsys.EventHandler;

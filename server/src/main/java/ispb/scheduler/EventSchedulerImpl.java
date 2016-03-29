@@ -1,7 +1,7 @@
-package ispb.eventsys;
+package ispb.scheduler;
 
 import ispb.base.Application;
-import ispb.base.eventsys.EventScheduler;
+import ispb.base.scheduler.EventScheduler;
 import ispb.base.resources.AppResources;
 import ispb.base.service.LogService;
 import org.quartz.*;

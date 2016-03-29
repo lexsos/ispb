@@ -2,7 +2,7 @@ package ispb.main.command;
 
 
 import ispb.base.Application;
-import ispb.base.eventsys.EventScheduler;
+import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.frontend.HttpServer;
 import ispb.base.service.LogService;

@@ -1,7 +1,7 @@
-package ispb.eventsys.job;
+package ispb.scheduler.job;
 
 import ispb.base.Application;
-import ispb.base.eventsys.BaseJob;
+import ispb.base.scheduler.BaseJob;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.eventsys.message.AddDailyPaymentMsg;
 

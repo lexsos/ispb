@@ -1,4 +1,4 @@
-package ispb.base.eventsys;
+package ispb.base.scheduler;
 
 
 public interface EventScheduler {
