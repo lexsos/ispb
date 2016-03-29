@@ -244,7 +244,7 @@ public class CustomerResource extends RestResource {
 
     public RestResponse updateEntity(RestContext restContext){
         CustomerAccountService service = getCustomerService(restContext);
-        CustomerEntity entity = (CustomerEntity)restContext.getEntity();
+        CustomerEntity entity = restContext.getEntityByType(CustomerEntity.class);
         try {
             CustomerSummeryView customer = service.updateSummery(entity);
             return new CustomerSummeryListRestResponse(customer);
@@ -268,7 +268,7 @@ public class CustomerResource extends RestResource {
         PaymentService paymentService = getPaymentService(restContext);
         TextMessages msg = getTextMessages(restContext);
 
-        CustomerEntity entity = (CustomerEntity)restContext.getEntity();
+        CustomerEntity entity = restContext.getEntityByType(CustomerEntity.class);
         CustomerSummeryView customer;
 
         Date now =  new Date();

@@ -136,7 +136,7 @@ public class BuildingResource extends RestResource {
     }
 
     public RestResponse createEntity(RestContext restContext){
-        BuildingEntity entity = (BuildingEntity)restContext.getEntity();
+        BuildingEntity entity = restContext.getEntityByType(BuildingEntity.class);
         BuildingDictionaryService service = getBuildingDicService(restContext);
         try {
             BuildingDataSet building = service.create(entity.getStreetId(), entity.getName());
@@ -151,7 +151,7 @@ public class BuildingResource extends RestResource {
     }
 
     public RestResponse updateEntity(RestContext restContext){
-        BuildingEntity entity = (BuildingEntity)restContext.getEntity();
+        BuildingEntity entity = restContext.getEntityByType(BuildingEntity.class);
         BuildingDictionaryService service = getBuildingDicService(restContext);
         try {
             BuildingDataSet building = service.update(restContext.getId(), entity.getStreetId(), entity.getName());

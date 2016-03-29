@@ -92,7 +92,7 @@ public class StreetResource extends RestResource {
     }
 
     public RestResponse createEntity(RestContext restContext){
-        StreetEntity entity = (StreetEntity)restContext.getEntity();
+        StreetEntity entity = restContext.getEntityByType(StreetEntity.class);
         StreetDictionaryService service = getStreetDicService(restContext);
         try {
             StreetDataSet street = service.create(entity.getCityId(), entity.getName());
@@ -107,7 +107,7 @@ public class StreetResource extends RestResource {
     }
 
     public RestResponse updateEntity(RestContext restContext){
-        StreetEntity entity = (StreetEntity)restContext.getEntity();
+        StreetEntity entity = restContext.getEntityByType(StreetEntity.class);
         StreetDictionaryService service = getStreetDicService(restContext);
         try {
             StreetDataSet street = service.update(restContext.getId(), entity.getCityId(), entity.getName());

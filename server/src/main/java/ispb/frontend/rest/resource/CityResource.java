@@ -78,7 +78,7 @@ public class CityResource extends RestResource {
     }
 
     public RestResponse createEntity(RestContext restContext){
-        CityEntity entity = (CityEntity)restContext.getEntity();
+        CityEntity entity = restContext.getEntityByType(CityEntity.class);
         try {
             CityDataSet city = getCityDicService(restContext).create(entity.getName());
             return new CityListRestResponse(city);
@@ -89,7 +89,7 @@ public class CityResource extends RestResource {
     }
 
     public RestResponse updateEntity(RestContext restContext){
-        CityEntity entity = (CityEntity)restContext.getEntity();
+        CityEntity entity = restContext.getEntityByType(CityEntity.class);
         try {
             CityDataSet city = getCityDicService(restContext).update(restContext.getId(), entity.getName());
             return new CityListRestResponse(city);
