@@ -1,13 +1,14 @@
-package ispb.main;
+package ispb.main.command;
 
 import ispb.base.Application;
 import ispb.base.service.account.UserAccountService;
+import ispb.main.utils.BillingBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-class ResetAdmin {
+public class ResetAdmin {
 
     public static void run (String configFile) {
         String newPassword;

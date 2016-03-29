@@ -1,23 +1,45 @@
 package ispb.main;
 
 
+import ispb.main.command.BillServer;
+import ispb.main.command.ClearDb;
+import ispb.main.command.ResetAdmin;
 import org.apache.commons.cli.*;
 
 public class Main {
     public static void main( String[] args ){
 
         Options options = makeOptions();
-        CommandLineParser parser = new DefaultParser();
         CommandLine line;
 
         try {
-            line = parser.parse( options, args );
+            line = parse(options, args);
         }
         catch( ParseException exp ) {
             System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
             return;
         }
 
+        analyze(line, options);
+    }
+
+    private static Options makeOptions(){
+        Options options = new Options();
+
+        options.addOption("c", "configfile", true, "config file path");
+        options.addOption("billserver", "run billing server");
+        options.addOption("cleardb", "delete all data and prepare clear db");
+        options.addOption("resetadmin", "reset password for admin user");
+
+        return options;
+    }
+
+    private static CommandLine parse(Options options,  String[] args) throws ParseException {
+        CommandLineParser parser = new DefaultParser();
+        return parser.parse( options, args );
+    }
+
+    private static void analyze(CommandLine line, Options options){
         String configFile = line.getOptionValue("configfile");
 
         if (line.hasOption("billserver") && configFile != null){
@@ -33,17 +55,5 @@ public class Main {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp( "ispb", options );
         }
-
-    }
-
-    private static Options makeOptions(){
-        Options options = new Options();
-
-        options.addOption("c", "configfile", true, "config file path");
-        options.addOption("billserver", "run billing server");
-        options.addOption("cleardb", "delete all data and prepare clear db");
-        options.addOption("resetadmin", "reset password for admin user");
-
-        return options;
     }
 }

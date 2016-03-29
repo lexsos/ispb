@@ -1,4 +1,4 @@
-package ispb.main;
+package ispb.main.command;
 
 import ispb.ApplicationImpl;
 import ispb.base.Application;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 
-class ClearDb {
+public class ClearDb {
 
     public static void run (String configFile) {
         BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
