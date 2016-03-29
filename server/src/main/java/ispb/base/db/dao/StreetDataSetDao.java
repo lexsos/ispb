@@ -6,6 +6,7 @@ import ispb.base.db.filter.DataSetFilter;
 
 import java.util.List;
 
+// TODO: move methods to service class
 public interface StreetDataSetDao {
 
     long save(StreetDataSet street);

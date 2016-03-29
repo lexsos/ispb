@@ -10,12 +10,10 @@ import ispb.base.db.utils.QueryBuilder;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import java.util.Iterator;
-
 public class QueryBuilderImpl implements QueryBuilder {
 
-    private WhereBuilder whereBuilder;
-    private SortBuilder sortBuilder;
+    private final WhereBuilder whereBuilder;
+    private final SortBuilder sortBuilder;
 
     public QueryBuilderImpl(WhereBuilder whereBuilder, SortBuilder sortBuilder){
         this.whereBuilder = whereBuilder;
@@ -31,8 +29,7 @@ public class QueryBuilderImpl implements QueryBuilder {
         hql = hql.replaceAll("\\{sort_statement\\}", sortStatement);
         Query query = session.createQuery(hql);
 
-        for (Iterator<String> i = whereStatement.getParameters().keySet().iterator(); i.hasNext();){
-            String parameterName = i.next();
+        for (String parameterName : whereStatement.getParameters().keySet()) {
             Object value = whereStatement.getParameters().get(parameterName);
             query.setParameter(parameterName, value);
         }

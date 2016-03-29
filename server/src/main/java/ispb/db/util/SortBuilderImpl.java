@@ -13,6 +13,7 @@ import java.util.List;
 
 public class SortBuilderImpl implements SortBuilder {
 
+    // TODO: simplify code
     public String buildSort(FieldSetDescriptor descriptor, DataSetSort sort){
 
         if (sort == null)
@@ -23,8 +24,7 @@ public class SortBuilderImpl implements SortBuilder {
 
         List<String> orderBy = new LinkedList<>();
 
-        for (Iterator<DataSetSortItem> i = sort.iterator(); i.hasNext();){
-            DataSetSortItem item = i.next();
+        for (DataSetSortItem item : sort) {
             FieldDescriptor fieldDescriptor = descriptor.getFieldDescriptor(item);
             if (fieldDescriptor == null)
                 continue;

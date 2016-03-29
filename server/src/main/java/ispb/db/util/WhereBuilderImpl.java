@@ -46,8 +46,7 @@ public class WhereBuilderImpl implements WhereBuilder {
         WhereStatement where = new WhereStatement();
         int count = 0;
 
-        for (Iterator<DataSetFilterItem> i = filter.iterator(); i.hasNext();){
-            DataSetFilterItem item = i.next();
+        for (DataSetFilterItem item : filter) {
             FieldDescriptor fieldDescriptor = descriptors.getFieldDescriptor(item);
 
             if (fieldDescriptor == null)
@@ -64,8 +63,7 @@ public class WhereBuilderImpl implements WhereBuilder {
                 String placeHolderName = getPlaceHolderName(++count);
                 where.getParameters().put(placeHolderName, item.getValue());
                 conditions.add(prepareFieldCondition(fieldDescriptor, item, placeHolderName));
-            }
-            else
+            } else
                 conditions.add(prepareFieldCondition(fieldDescriptor, item));
         }
 

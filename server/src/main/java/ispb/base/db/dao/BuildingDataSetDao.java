@@ -9,6 +9,7 @@ import ispb.base.db.sort.DataSetSort;
 
 import java.util.List;
 
+// TODO: move methods to service class
 public interface BuildingDataSetDao {
     long save(BuildingDataSet building);
     void delete(BuildingDataSet building);

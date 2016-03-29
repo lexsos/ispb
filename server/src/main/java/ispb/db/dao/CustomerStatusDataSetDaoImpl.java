@@ -16,10 +16,10 @@ import java.util.List;
 
 public class CustomerStatusDataSetDaoImpl extends BaseDao implements CustomerStatusDataSetDao {
 
-    private QueryBuilder queryBuilder;
-    private FieldSetDescriptor fieldsDescriptor;
-    private String hqlListTmpl;
-    private String hqlCountTmpl;
+    private final QueryBuilder queryBuilder;
+    private final FieldSetDescriptor fieldsDescriptor;
+    private final String hqlListTmpl;
+    private final String hqlCountTmpl;
 
     public CustomerStatusDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);

@@ -11,7 +11,7 @@ import ispb.db.util.BaseDao;
 
 public class CityDataSetDaoImpl extends BaseDao implements CityDataSetDao {
 
-    private AppResources resources;
+    private final AppResources resources;
 
     public CityDataSetDaoImpl(SessionFactory sessions, AppResources resources){
         super(sessions);

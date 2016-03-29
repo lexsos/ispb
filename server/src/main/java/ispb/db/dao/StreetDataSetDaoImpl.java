@@ -16,9 +16,9 @@ import ispb.db.util.BaseDao;
 
 public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
 
-    private QueryBuilder queryBuilder;
-    private FieldSetDescriptor fieldsDescriptor;
-    private String hqlListTmpl;
+    private final QueryBuilder queryBuilder;
+    private final FieldSetDescriptor fieldsDescriptor;
+    private final String hqlListTmpl;
 
     public StreetDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
@@ -37,13 +37,9 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
     }
 
     public List<StreetDataSet> getList(DataSetFilter filter){
-        DataSetFilter newFilter = filter.getCopy();
-        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, newFilter, null).list()
-        );
-        return (List<StreetDataSet>)result;
+        return getListWithoutDeleted(StreetDataSet.class,
+                filter, null, null,
+                queryBuilder, fieldsDescriptor, hqlListTmpl);
     }
 
     public List<StreetDataSet> getAll(){

@@ -19,9 +19,9 @@ import java.util.List;
 
 public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDao {
 
-    private QueryBuilder queryBuilder;
-    private FieldSetDescriptor fieldsDescriptor;
-    private String hqlListTmpl;
+    private final QueryBuilder queryBuilder;
+    private final FieldSetDescriptor fieldsDescriptor;
+    private final String hqlListTmpl;
 
     public BuildingDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
@@ -40,13 +40,9 @@ public class BuildingDataSetDaoImpl extends BaseDao implements BuildingDataSetDa
     }
 
     public List<BuildingDataSet> getList(DataSetFilter filter, DataSetSort sort){
-        DataSetFilter newFilter = filter.getCopy();
-        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
-        Object result = this.doTransaction(
-                (session, transaction) ->
-                        queryBuilder.getQuery(hqlListTmpl, session, fieldsDescriptor, newFilter, sort).list()
-        );
-        return (List<BuildingDataSet>)result;
+        return getListWithoutDeleted(BuildingDataSet.class,
+                filter, sort, null,
+                queryBuilder, fieldsDescriptor, hqlListTmpl);
     }
 
     public List<BuildingDataSet> getList(DataSetFilter filter){

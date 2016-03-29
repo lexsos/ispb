@@ -17,12 +17,13 @@ import org.hibernate.Transaction;
 
 public class BaseDao {
 
-    private SessionFactory sessions;
+    private final SessionFactory sessions;
 
     public BaseDao(SessionFactory sessions){
         this.sessions = sessions;
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected SessionFactory getSessions(){
         return this.sessions;
     }
@@ -75,6 +76,7 @@ public class BaseDao {
         );
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> T getEntityById(Class<T> clazz, long id){
         Object obj = this.doTransaction(
                 (session, transaction) -> session.get(clazz, id)
@@ -89,12 +91,12 @@ public class BaseDao {
         return resources.getJsonAsObject(this.getClass(), resourceName, FieldSetDescriptor.class);
     }
 
-    protected List getQueryAsList(String hqlListTmpl,
-                                  QueryBuilder queryBuilder,
-                                  FieldSetDescriptor fieldsDescriptor,
-                                  DataSetFilter filter,
-                                  DataSetSort sort,
-                                  Pagination pagination){
+    private List getQueryAsList(String hqlListTmpl,
+                                QueryBuilder queryBuilder,
+                                FieldSetDescriptor fieldsDescriptor,
+                                DataSetFilter filter,
+                                DataSetSort sort,
+                                Pagination pagination){
 
         Object result = this.doTransaction(
                 (session, transaction) -> {
@@ -116,10 +118,10 @@ public class BaseDao {
             return null;
     }
 
-    protected long getRowCount(String hqlCountTmpl,
-                               QueryBuilder queryBuilder,
-                               FieldSetDescriptor fieldsDescriptor,
-                               DataSetFilter filter){
+    private long getRowCount(String hqlCountTmpl,
+                             QueryBuilder queryBuilder,
+                             FieldSetDescriptor fieldsDescriptor,
+                             DataSetFilter filter){
 
         Object result = this.doTransaction(
                 (session, transaction) ->
@@ -131,8 +133,8 @@ public class BaseDao {
         return 0;
     }
 
-    // TODO: refactoring to use this method in dao implementation
-    protected <T> List<T> getListWithoutDeleted(Class<T> clazz,
+
+    protected <T> List<T> getListWithoutDeleted(@SuppressWarnings("UnusedParameters") Class<T> clazz,
                                                 DataSetFilter filter,
                                                 DataSetSort sort,
                                                 Pagination pagination,
@@ -149,7 +151,6 @@ public class BaseDao {
         return getQueryAsList(hqlListTmpl, queryBuilder, fieldsDescriptor, newFilter, sort, pagination);
     }
 
-    // TODO: refactoring to use this method in dao implementation
     protected long getCountWithoutDeleted(DataSetFilter filter,
                                           QueryBuilder queryBuilder,
                                           FieldSetDescriptor fieldsDescriptor,

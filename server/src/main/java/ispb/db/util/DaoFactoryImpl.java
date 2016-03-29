@@ -10,59 +10,59 @@ import org.hibernate.SessionFactory;
 
 public class DaoFactoryImpl implements DaoFactory {
 
-    private SessionFactory sessions;
-    private AppResources resourceses;
-    private QueryBuilder queryBuilder;
+    private final SessionFactory sessions;
+    private final AppResources resources;
+    private final QueryBuilder queryBuilder;
 
-    public DaoFactoryImpl(SessionFactory sessions, AppResources resourceses, QueryBuilder queryBuilder){
+    public DaoFactoryImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         this.sessions = sessions;
-        this.resourceses = resourceses;
+        this.resources = resources;
         this.queryBuilder = queryBuilder;
     }
 
     public CityDataSetDao getCityDao(){
-        return new CityDataSetDaoImpl(sessions, resourceses);
+        return new CityDataSetDaoImpl(sessions, resources);
     }
 
     public StreetDataSetDao getStreetDao(){
-        return new StreetDataSetDaoImpl(sessions, resourceses, queryBuilder);
+        return new StreetDataSetDaoImpl(sessions, resources, queryBuilder);
     }
 
     public BuildingDataSetDao getBuildingDao(){
-        return new BuildingDataSetDaoImpl(sessions, resourceses, queryBuilder);
+        return new BuildingDataSetDaoImpl(sessions, resources, queryBuilder);
     }
 
     public CustomerDataSetDao getCustomerDao(){
         return new CustomerDataSetDaoImpl(sessions);
     }
 
-    public UserDataSetDao getUserDao(){ return new UserDataSetDaoImpl(sessions, resourceses); }
+    public UserDataSetDao getUserDao(){ return new UserDataSetDaoImpl(sessions, resources); }
 
     public CustomerSummeryViewDao getCustomerSummeryViewDao(){
-        return new CustomerSummeryViewDaoImpl(sessions, resourceses, queryBuilder);
+        return new CustomerSummeryViewDaoImpl(sessions, resources, queryBuilder);
     }
 
     public PaymentGroupDataSetDao getPaymentGroupDao(){
-        return new PaymentGroupDataSetDaoImpl(sessions, resourceses, queryBuilder);
+        return new PaymentGroupDataSetDaoImpl(sessions, resources, queryBuilder);
     }
 
     public PaymentDataSetDao getPaymentDao(){
-        return new PaymentDataSetDaoImpl(sessions, resourceses, queryBuilder);
+        return new PaymentDataSetDaoImpl(sessions, resources, queryBuilder);
     }
 
     public TariffDataSetDao getTariffDao(){
-        return new TariffDataSetDaoImpl(sessions, resourceses, queryBuilder);
+        return new TariffDataSetDaoImpl(sessions, resources, queryBuilder);
     }
 
     public TariffAssignmentDataSetDao getTariffAssignmentDao(){
-        return new TariffAssignmentDataSetDaoImpl(sessions, resourceses, queryBuilder);
+        return new TariffAssignmentDataSetDaoImpl(sessions, resources, queryBuilder);
     }
 
     public CustomerStatusDataSetDao getCustomerStatusDao(){
-        return new CustomerStatusDataSetDaoImpl(sessions, resourceses, queryBuilder);
+        return new CustomerStatusDataSetDaoImpl(sessions, resources, queryBuilder);
     }
 
     public AutoPaymentJournalDataSetDao getAutoPaymentJournalDataSetDao(){
-        return new AutoPaymentJournalDataSetDaoImpl(sessions, resourceses);
+        return new AutoPaymentJournalDataSetDaoImpl(sessions, resources);
     }
 }

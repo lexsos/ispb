@@ -2,7 +2,6 @@ package ispb.db.dao;
 
 
 import ispb.base.db.dao.CustomerSummeryViewDao;
-import ispb.base.db.field.CmpOperator;
 import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.*;
 import ispb.base.db.sort.DataSetSort;
@@ -18,10 +17,10 @@ import java.util.List;
 
 public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSummeryViewDao {
 
-    private QueryBuilder queryBuilder;
-    private String hqlListTmpl;
-    private String hqlCountTmpl;
-    private FieldSetDescriptor fieldsDescriptor;
+    private final QueryBuilder queryBuilder;
+    private final String hqlListTmpl;
+    private final String hqlCountTmpl;
+    private final FieldSetDescriptor fieldsDescriptor;
 
     public CustomerSummeryViewDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
@@ -33,25 +32,14 @@ public class CustomerSummeryViewDaoImpl extends BaseDao implements CustomerSumme
     }
 
     public List<CustomerSummeryView> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
-        DataSetFilter newFilter;
-        if (filter == null)
-            newFilter = new  DataSetFilter();
-        else
-            newFilter = filter.getCopy();
-        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
+        return getListWithoutDeleted(CustomerSummeryView.class,
+                filter, sort, pagination,
+                queryBuilder, fieldsDescriptor, hqlListTmpl);
 
-        return getQueryAsList(hqlListTmpl, queryBuilder, fieldsDescriptor, newFilter, sort, pagination);
     }
 
     public long getCount(DataSetFilter filter){
-        DataSetFilter newFilter;
-        if (filter == null)
-            newFilter = new  DataSetFilter();
-        else
-            newFilter = filter.getCopy();
-        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
-
-        return getRowCount(hqlCountTmpl, queryBuilder, fieldsDescriptor, newFilter);
+        return getCountWithoutDeleted(filter, queryBuilder, fieldsDescriptor, hqlCountTmpl);
     }
 
     public CustomerSummeryView getById(long id){

@@ -2,7 +2,6 @@ package ispb.db.dao;
 
 import ispb.base.db.dao.TariffDataSetDao;
 import ispb.base.db.dataset.TariffDataSet;
-import ispb.base.db.field.CmpOperator;
 import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
@@ -16,9 +15,9 @@ import java.util.List;
 
 public class TariffDataSetDaoImpl extends BaseDao implements TariffDataSetDao {
 
-    private QueryBuilder queryBuilder;
-    private FieldSetDescriptor fieldsDescriptor;
-    private String hqlListTmpl;
+    private final QueryBuilder queryBuilder;
+    private final FieldSetDescriptor fieldsDescriptor;
+    private final String hqlListTmpl;
 
     public TariffDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
@@ -37,14 +36,9 @@ public class TariffDataSetDaoImpl extends BaseDao implements TariffDataSetDao {
     }
 
     public List<TariffDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
-        DataSetFilter newFilter;
-        if (filter == null)
-            newFilter = new  DataSetFilter();
-        else
-            newFilter = filter.getCopy();
-        newFilter.add("deleteAt", CmpOperator.IS_NULL, null);
-
-        return getQueryAsList(hqlListTmpl, queryBuilder, fieldsDescriptor, newFilter, sort, pagination);
+        return getListWithoutDeleted(TariffDataSet.class,
+                filter, sort, pagination,
+                queryBuilder, fieldsDescriptor, hqlListTmpl);
     }
 
     public TariffDataSet getById(long id){
