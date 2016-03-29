@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserDataSetDaoImpl extends BaseDao implements UserDataSetDao {
 
-    private AppResources resources;
+    private final AppResources resources;
 
     public UserDataSetDaoImpl(SessionFactory sessions, AppResources resources){
         super(sessions);
