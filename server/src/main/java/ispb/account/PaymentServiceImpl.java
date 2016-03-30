@@ -169,6 +169,18 @@ public class PaymentServiceImpl implements PaymentService {
         sendMsg(new CheckPaymentMsg());
     }
 
+    public PaymentGroupDataSet renamePaymentGroup(long groupId, String newComment) throws NotFoundException{
+        PaymentGroupDataSetDao dao = daoFactory.getPaymentGroupDao();
+
+        PaymentGroupDataSet group = dao.getById(groupId);
+        if (group == null)
+            throw  new NotFoundException();
+
+        group.setComment(newComment);
+        dao.save(group);
+        return group;
+    }
+
     private TariffPolicyService getTariffPolicyService(){
         return application.getByType(TariffPolicyService.class);
     }

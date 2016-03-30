@@ -36,6 +36,12 @@ Ext.define 'ISPBClient.view.payment.PaymentGrid',
           icon: 'static/img/grid.png'
           action: 'showPayments'
         }
+        '-'
+        {
+          text: 'Редактировать'
+          icon:'static/img/edit.png'
+          action: 'edit'
+        }
       ]
     }
 

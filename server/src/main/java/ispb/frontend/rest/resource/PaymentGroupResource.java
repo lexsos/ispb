@@ -7,6 +7,7 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.PaymentService;
+import ispb.base.service.exception.NotFoundException;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -29,24 +30,28 @@ public class PaymentGroupResource extends RestResource {
         }
 
         public boolean verify(){
-            return false;
+            return comment != null;
+        }
+
+        public String getComment() {
+            return comment;
         }
     }
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private static class PaymentListRestResponse extends RestResponse {
+    private static class PaymentGroupListRestResponse extends RestResponse {
 
         private final List<PaymentGroupEntity> paymentGroupList = new LinkedList<>();
         private final long total;
 
 
-        public PaymentListRestResponse(PaymentGroupDataSet dataSet){
+        public PaymentGroupListRestResponse(PaymentGroupDataSet dataSet){
             total = 1;
             paymentGroupList.add(new PaymentGroupEntity(dataSet));
         }
 
         @SuppressWarnings("Convert2streamapi")
-        public PaymentListRestResponse(List<PaymentGroupDataSet> dataSetList, long total){
+        public PaymentGroupListRestResponse(List<PaymentGroupDataSet> dataSetList, long total){
             this.total = total;
             for (PaymentGroupDataSet groupDataSet : dataSetList)
                 paymentGroupList.add(new PaymentGroupEntity(groupDataSet));
@@ -74,7 +79,20 @@ public class PaymentGroupResource extends RestResource {
         long totalCount = service.getPaymentGroupCount(filter);
         List<PaymentGroupDataSet> paymentGroupList = service.getPaymentGroups(filter, sort, pagination);
 
-        return new PaymentListRestResponse(paymentGroupList, totalCount);
+        return new PaymentGroupListRestResponse(paymentGroupList, totalCount);
+    }
+
+    public RestResponse updateEntity(RestContext restContext){
+        PaymentService service = getPaymentService(restContext);
+        PaymentGroupEntity entity = restContext.getEntityByType(PaymentGroupEntity.class);
+
+        try {
+            PaymentGroupDataSet group = service.renamePaymentGroup(entity.getId(), entity.getComment());
+            return new PaymentGroupListRestResponse(group);
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
     }
 
     private PaymentService getPaymentService(RestContext restContext){

@@ -28,6 +28,7 @@ Ext.application
 
     'payment.PaymentGridCtrl',
     'payment.ShowPaymentsInGroupWindowCtrl',
+    'payment.EditPaymentGroupWindowCtrl',
 
     'tariff.TariffGridCtrl',
     'tariff.EditTariffWindowCtrl',

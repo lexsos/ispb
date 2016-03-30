@@ -12,6 +12,9 @@ Ext.define 'ISPBClient.controller.payment.PaymentGridCtrl',
       'PaymentGrid button[action=showPayments]':
         click: this.onShowPaymentsClick
 
+      'PaymentGrid button[action=edit]':
+        click: this.onEditClick
+
       'PaymentGrid':
         itemdblclick: this.onItemDblClick
 
@@ -40,3 +43,14 @@ Ext.define 'ISPBClient.controller.payment.PaymentGridCtrl',
     store = view.down('grid').getStore()
     store.filter("groupId__eq", paymentGroup.get('id'))
     view.show()
+
+  onEditClick: (element) ->
+    paymentGroup = this.getSelectedRecord(element)
+    if paymentGroup
+      view = Ext.widget('editPaymentGroupWindow')
+      store = element.up('grid').getStore()
+      view.setStore(store)
+      view.down('form').loadRecord(paymentGroup)
+      view.show()
+
+

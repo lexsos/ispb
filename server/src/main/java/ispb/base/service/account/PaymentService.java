@@ -29,6 +29,7 @@ public interface PaymentService {
     PaymentGroupDataSet openPaymentGroup(String comment);
     PaymentDataSet addPaymentToGroup(PaymentGroupDataSet group, CustomerDataSet customer, double payment, Date applyAt);
     void closePaymentGroup(PaymentGroupDataSet group);
+    PaymentGroupDataSet renamePaymentGroup(long groupId, String newComment) throws NotFoundException;
 
     double getBalance(CustomerDataSet customer, Date dateFor);
 
