@@ -5,6 +5,7 @@ import ispb.base.db.dao.CityDataSetDao;
 import ispb.base.db.dao.StreetDataSetDao;
 import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.dataset.StreetDataSet;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.service.dictionary.StreetDictionaryService;
@@ -30,7 +31,7 @@ public class StreetDictionaryServiceImpl implements StreetDictionaryService {
         if (city == null)
             throw new DicElementNotFoundException();
 
-        StreetDataSet otherStreet = streetDao.getByName(city, streetName);
+        StreetDataSet otherStreet = getByName(city, streetName);
         if (otherStreet != null)
             throw new AlreadyExistException();
 
@@ -54,7 +55,7 @@ public class StreetDictionaryServiceImpl implements StreetDictionaryService {
         if (city == null)
             throw new DicElementNotFoundException();
 
-        StreetDataSet otherStreet = streetDao.getByName(city, streetName);
+        StreetDataSet otherStreet = getByName(city, streetName);
         if (otherStreet != null && otherStreet.getId() != street.getId())
             throw new AlreadyExistException();
 
@@ -73,16 +74,26 @@ public class StreetDictionaryServiceImpl implements StreetDictionaryService {
     }
 
     public boolean exist(long  cityId, String name) {
-        StreetDataSetDao streetDao = daoFactory.getStreetDao();
         CityDataSetDao cityDao = daoFactory.getCityDao();
 
         CityDataSet city = cityDao.getById(cityId);
-        return city != null && streetDao.getByName(city, name) != null;
+        return city != null && getByName(city, name) != null;
 
     }
 
     public List<StreetDataSet> getList(DataSetFilter filter){
         StreetDataSetDao streetDao = daoFactory.getStreetDao();
         return streetDao.getList(filter);
+    }
+
+    private StreetDataSet getByName(CityDataSet city, String name){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("cityId", CmpOperator.EQ, city.getId());
+        filter.add("name", CmpOperator.EQ, name);
+
+        List<StreetDataSet> list = getList(filter);
+        if (list.isEmpty())
+            return null;
+        return list.get(0);
     }
 }

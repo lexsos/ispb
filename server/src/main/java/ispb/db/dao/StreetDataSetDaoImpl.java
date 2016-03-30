@@ -2,14 +2,12 @@ package ispb.db.dao;
 
 import java.util.List;
 
-import ispb.base.db.field.CmpOperator;
 import ispb.base.db.field.FieldSetDescriptor;
 import ispb.base.db.filter.*;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.resources.AppResources;
 import org.hibernate.SessionFactory;
 import ispb.base.db.dao.StreetDataSetDao;
-import ispb.base.db.dataset.CityDataSet;
 import ispb.base.db.dataset.StreetDataSet;
 import ispb.db.util.BaseDao;
 
@@ -42,28 +40,7 @@ public class StreetDataSetDaoImpl extends BaseDao implements StreetDataSetDao {
                 queryBuilder, fieldsDescriptor, hqlListTmpl);
     }
 
-    public List<StreetDataSet> getAll(){
-        DataSetFilter filter = new DataSetFilter();
-        return getList(filter);
-    }
-
-    public List<StreetDataSet> getByCity(CityDataSet city){
-        DataSetFilter filter = new DataSetFilter();
-        filter.add("cityId", CmpOperator.EQ, city.getId());
-        return getList(filter);
-    }
-
     public StreetDataSet getById(long id){
         return this.getEntityById(StreetDataSet.class, id);
-    }
-
-    public StreetDataSet getByName(CityDataSet city, String name){
-        DataSetFilter filter = new DataSetFilter();
-        filter.add("cityId", CmpOperator.EQ, city.getId());
-        filter.add("name", CmpOperator.EQ, name);
-        List<StreetDataSet> list = getList(filter);
-        if (list.isEmpty())
-            return null;
-        return list.get(0);
     }
 }
