@@ -4,6 +4,7 @@ import ispb.base.db.dao.BuildingDataSetDao;
 import ispb.base.db.dao.StreetDataSetDao;
 import ispb.base.db.dataset.BuildingDataSet;
 import ispb.base.db.dataset.StreetDataSet;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
@@ -36,7 +37,7 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
         if (street == null)
             throw new DicElementNotFoundException();
 
-        BuildingDataSet otherBuilding = buildingDao.getByName(street, buildingName);
+        BuildingDataSet otherBuilding = getByName(street, buildingName);
         if (otherBuilding != null)
             throw new AlreadyExistException();
 
@@ -61,7 +62,7 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
         if (street == null)
             throw new DicElementNotFoundException();
 
-        BuildingDataSet otherBuilding = buildingDao.getByName(street, buildingName);
+        BuildingDataSet otherBuilding = getByName(street, buildingName);
         if (otherBuilding != null && otherBuilding.getId() != building.getId())
             throw new AlreadyExistException();
 
@@ -85,6 +86,20 @@ public class BuildingDictionaryServiceImpl implements BuildingDictionaryService 
         if (street == null)
             return false;
 
-        return daoFactory.getBuildingDao().getByName(street, buildingName) != null;
+        return getByName(street, buildingName) != null;
+    }
+
+    private BuildingDataSet getByName(StreetDataSet street, String buildingName){
+        BuildingDataSetDao dao = daoFactory.getBuildingDao();
+
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("streetId", CmpOperator.EQ, street.getId());
+        filter.add("name", CmpOperator.EQ, buildingName);
+
+        List<BuildingDataSet> list = dao.getList(filter, null);
+
+        if (list.isEmpty())
+            return null;
+        return list.get(0);
     }
 }
