@@ -55,7 +55,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerPaymentWindow',
         {
           xtype: 'textfield'
           name : 'comment'
-          fieldLabel: 'Коментарий'
+          fieldLabel: 'Комментарий'
           margin: '5 5 5 5'
           width: 350
         }
@@ -69,4 +69,4 @@ Ext.define 'ISPBClient.view.customer.AddCustomerPaymentWindow',
       element.down('displayfield[name=contractNumberLabel]').setValue(customer.get('contractNumber'))
       element.down('displayfield[name=qualifiedNameLabel]').setValue(customer.get('qualifiedName'))
       commentField = element.down('textfield[name=comment]')
-      commentField.setValue('Платеж от ' + Ext.Date.format(new Date(), 'Y-m-d') + ' по доровору ' + customer.get('contractNumber'))
+      commentField.setValue('Платеж от ' + Ext.Date.format(new Date(), 'd.m.Y') + ' по доровору ' + customer.get('contractNumber'))

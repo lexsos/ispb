@@ -49,8 +49,8 @@ Ext.define 'ISPBClient.view.customer.ShowPaymentsCustomerWindow',
 
       columns: [
         {xtype: 'rownumberer'}
-        {header: 'Дата проводки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
-        {header: 'Коментарий', dataIndex: 'paymentGroupComment', flex: 1}
+        {header: 'Дата проводки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s')}
+        {header: 'Комментарий', dataIndex: 'paymentGroupComment', flex: 1}
         {
           header: 'Сумма'
           dataIndex: 'paymentSum'

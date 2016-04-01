@@ -9,7 +9,7 @@ Ext.define 'ISPBClient.view.payment.PaymentGrid',
       dataIndex: 'createAt',
       flex: 1
       renderer: (v) ->
-        return Ext.util.Format.date(v, 'Y-m-d H:i:s')
+        return Ext.util.Format.date(v, 'd.m.Y H:i:s')
     }
     {header: 'Комментарий', dataIndex: 'comment', flex: 1}
   ]

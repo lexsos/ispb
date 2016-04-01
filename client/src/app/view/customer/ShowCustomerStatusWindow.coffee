@@ -46,7 +46,7 @@ Ext.define 'ISPBClient.view.customer.ShowCustomerStatusWindow',
 
       columns: [
         {xtype: 'rownumberer'}
-        {header: 'Дата обработки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
+        {header: 'Дата обработки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s')}
         {
           header: 'Описание'
           dataIndex: 'cause'

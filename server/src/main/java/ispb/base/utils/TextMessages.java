@@ -9,6 +9,7 @@ public class TextMessages {
 
     private String initPaymentName;
     private String dailyPaymentName;
+    private String dailyPaymentDateFormat;
 
     public String getInitPaymentName(String contractNumber) {
         String result = initPaymentName;
@@ -18,7 +19,7 @@ public class TextMessages {
 
     public String getDailyPaymentName(Date day){
         String result = dailyPaymentName;
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df = new SimpleDateFormat(dailyPaymentDateFormat);
         result = result.replaceAll("\\{day\\}", df.format(day));
         return result;
     }

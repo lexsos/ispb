@@ -46,7 +46,7 @@ Ext.define 'ISPBClient.view.customer.ShowAssignTariffCustomerWindow',
 
       columns: [
         {xtype: 'rownumberer'}
-        {header: 'Дата назначения', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
+        {header: 'Дата назначения', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s')}
         {header: 'Название тарифа', dataIndex: 'tariffName', flex: 1}
         {
           header: 'Статус'

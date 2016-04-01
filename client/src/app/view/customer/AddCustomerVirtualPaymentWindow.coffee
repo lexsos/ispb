@@ -57,7 +57,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerVirtualPaymentWindow',
           name : 'dateUntil'
           fieldLabel: 'Срок виртуального платежа'
           margin: '5 5 5 5'
-          format: 'Y-m-d'
+          format: 'd.m.Y'
         }
       ]
     }

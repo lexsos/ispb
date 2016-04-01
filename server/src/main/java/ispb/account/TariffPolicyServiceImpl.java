@@ -54,6 +54,15 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
             statusService.setStatus(customer, CustomerStatus.ACTIVE, CustomerStatusCause.SYSTEM_FINANCE, paymentDate);
     }
 
+    public void makeDailyPaymentBackwards (Date day){
+        // TODO: write implementation
+    }
+
+    public boolean DailyPaymentExist(Date day){
+        // TODO: write implementation
+        return false;
+    }
+
     public void makeDailyPayment(Date day){
         // TODO: make batch processing
         CustomerAccountService customerService = getCustomerService();
