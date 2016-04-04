@@ -42,36 +42,42 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   name : 'contractNumber'
                   fieldLabel: 'Номер договора'
                   margin: '5 5 5 5'
+                  width: 400
                 }
                 {
                   xtype: 'textfield'
                   name : 'name'
                   fieldLabel: 'Имя'
                   margin: '5 5 5 5'
+                  width: 400
                 }
                 {
                   xtype: 'textfield'
                   name : 'surname'
                   fieldLabel: 'Фамилия'
                   margin: '5 5 5 5'
+                  width: 400
                 }
                 {
                   xtype: 'textfield'
                   name : 'patronymic'
                   fieldLabel: 'Отчество'
                   margin: '5 5 5 5'
+                  width: 400
                 }
                 {
-                  xtype: 'textfield'
+                  xtype: 'textareafield'
                   name : 'passport'
                   fieldLabel: 'Паспортные данные'
                   margin: '5 5 5 5'
+                  width: 400
                 }
                 {
                   xtype: 'textfield'
                   name : 'phone'
                   fieldLabel: 'Мобильный телефон'
                   margin: '5 5 5 5'
+                  width: 400
                 }
                 {
                   xtype: 'combobox'
@@ -81,6 +87,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   displayField: 'name',
                   valueField: 'id',
                   typeAhead: true
+                  width: 400
                   store:
                     model: 'ISPBClient.model.City'
                     autoLoad: true
@@ -93,6 +100,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   displayField: 'name',
                   valueField: 'id',
                   typeAhead: true
+                  width: 400
                   store:
                     model: 'ISPBClient.model.Street'
                     autoLoad: false
@@ -106,6 +114,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   displayField: 'name',
                   valueField: 'id',
                   typeAhead: true
+                  width: 400
                   store:
                     model: 'ISPBClient.model.Building'
                     autoLoad: false
@@ -116,12 +125,14 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   name : 'room'
                   fieldLabel: 'Квартира/Офис'
                   margin: '5 5 5 5'
+                  width: 400
                 }
                 {
                   xtype: 'textareafield'
                   name : 'comment'
                   fieldLabel: 'Дополительные сведения'
                   margin: '5 5 5 5'
+                  width: 400
                 }
               ]
             }
@@ -135,6 +146,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   fieldLabel: 'Начальный остаток'
                   margin: '5 5 5 5'
                   value: 0
+                  width: 400
                 }
                 {
                   xtype: 'combobox'
@@ -144,6 +156,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   displayField: 'name',
                   valueField: 'id',
                   typeAhead: true
+                  width: 400
                   store:
                     model: 'ISPBClient.model.Tariff'
                     autoLoad: true
@@ -158,6 +171,7 @@ Ext.define 'ISPBClient.view.customer.AddCustomerWindow',
                   valueField: 'key'
                   typeAhead: true
                   value: 'ACTIVE'
+                  width: 400
 
                   store:
                     fields: ['key', 'name']

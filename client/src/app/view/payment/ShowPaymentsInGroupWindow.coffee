@@ -55,7 +55,7 @@ Ext.define 'ISPBClient.view.payment.ShowPaymentsInGroupWindow',
 
       columns: [
         {xtype: 'rownumberer'}
-        {header: 'Дата проводки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('Y-m-d H:i:s')}
+        {header: 'Дата проводки', dataIndex: 'applyAt', width: 150, renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s')}
         {header: 'Номер договора', dataIndex: 'customerContractNumber', flex: 1}
         {header: 'ФИО абенента', dataIndex: 'customerQualifiedName', flex: 1}
         {
@@ -100,6 +100,6 @@ Ext.define 'ISPBClient.view.payment.ShowPaymentsInGroupWindow',
   listeners:
     show: (element) ->
       paymentGroup = element.getPaymentGroup()
-      createDate = Ext.util.Format.date(paymentGroup.get('createAt'), 'Y-m-d H:i:s')
+      createDate = Ext.util.Format.date(paymentGroup.get('createAt'), 'd.m.Y H:i:s')
       element.down('displayfield[name=createAtLabel]').setValue(createDate)
       element.down('displayfield[name=commentLabel]').setValue(paymentGroup.get('comment'))

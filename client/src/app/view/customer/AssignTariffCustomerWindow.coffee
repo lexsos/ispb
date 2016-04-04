@@ -61,7 +61,7 @@ Ext.define 'ISPBClient.view.customer.AssignTariffCustomerWindow',
           name : 'dateFrom'
           fieldLabel: 'Дата назначения тарифа'
           margin: '5 5 5 5'
-          format: 'Y-m-d'
+          format: 'd.m.Y'
         }
       ]
     }
