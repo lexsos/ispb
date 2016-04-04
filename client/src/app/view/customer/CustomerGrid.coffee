@@ -4,20 +4,21 @@ Ext.define 'ISPBClient.view.customer.CustomerGrid',
 
   columns: [
     {xtype: 'rownumberer'}
-    {header: 'Договор', dataIndex: 'contractNumber', flex: 1}
+    {header: 'Договор', dataIndex: 'contractNumber', width: 100}
     {header: 'ФИО', dataIndex: 'qualifiedName', flex: 1}
     {header: 'Адрес', dataIndex: 'qualifiedAddress', flex: 1}
-    {header: 'Телефон', dataIndex: 'phone', flex: 1}
+    {header: 'Дополнительные сведения', dataIndex: 'comment', flex: 1}
+    {header: 'Телефон', dataIndex: 'phone', width: 120}
     {
       header: 'Баланс'
       dataIndex: 'balance'
       align: 'right'
-      flex: 1
+      width: 70
       renderer: (v) ->
         formated = Ext.util.Format.number(v, '0,000.00') + 'р.'
         return formated
     }
-    {header: 'Тариф', dataIndex: 'tariffName', flex: 1}
+    {header: 'Тариф', dataIndex: 'tariffName', width: 100}
     {
       header: 'Статус'
       dataIndex: 'status'
