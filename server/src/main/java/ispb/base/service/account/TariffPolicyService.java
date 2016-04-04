@@ -10,5 +10,6 @@ public interface TariffPolicyService {
     void paymentApplied(PaymentDataSet payment);
     void makeDailyPayment(Date day);
     void makeDailyPaymentBackwards(Date day);
-    boolean DailyPaymentExist(Date day);
+    boolean dailyPaymentExist(Date day);
+    void deleteDailyPayment(Date day);
 }

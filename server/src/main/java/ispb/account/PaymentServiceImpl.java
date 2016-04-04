@@ -149,13 +149,15 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentDataSet addPaymentToGroup(PaymentGroupDataSet group,
                                             CustomerDataSet customer,
                                             double paymentSum,
-                                            Date applyAt){
+                                            Date applyAt,
+                                            boolean processed){
         PaymentDataSetDao dao = daoFactory.getPaymentDao();
         PaymentDataSet payment = new PaymentDataSet();
         payment.setGroup(group);
         payment.setCustomer(customer);
         payment.setPaymentSum(paymentSum);
         payment.setApplyAt(applyAt);
+        payment.setProcessed(processed);
         dao.save(payment);
         return payment;
     }

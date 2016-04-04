@@ -54,16 +54,23 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
             statusService.setStatus(customer, CustomerStatus.ACTIVE, CustomerStatusCause.SYSTEM_FINANCE, paymentDate);
     }
 
-    public void makeDailyPaymentBackwards (Date day){
-        // TODO: write implementation
-    }
-
-    public boolean DailyPaymentExist(Date day){
-        // TODO: write implementation
-        return false;
+    public void makeDailyPaymentBackwards(Date day){
+        makeDailyPaymentImpl(day, true);
     }
 
     public void makeDailyPayment(Date day){
+        makeDailyPaymentImpl(day, false);
+    }
+
+    public boolean dailyPaymentExist(Date day){
+        return getDailyJournalRecord(day) != null;
+    }
+
+    public void deleteDailyPayment(Date day){
+        // TODO: write implementation
+    }
+
+    private void makeDailyPaymentImpl(Date day, boolean backwards){
         // TODO: make batch processing
         CustomerAccountService customerService = getCustomerService();
         TariffAssignmentService tariffService = getTariffService();
@@ -75,7 +82,7 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
         Date startDay = DateUtils.startOfDay(day);
         Date midnight = DateUtils.addMinute(startDay, 60);
         Date endDay = DateUtils.endOfDay(day);
-        String paymentPattern = getPaymentPattern(startDay);
+        String paymentPattern = getDailyPaymentPattern(startDay);
 
         if (journalDao.getByPattern(paymentPattern) != null) {
             log.warn("Auto daily payment with pattern " + paymentPattern + " already exist");
@@ -102,7 +109,7 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
             if (!haveActivity(customer, midnight, endDay))
                 continue;
 
-            paymentService.addPaymentToGroup(paymentGroup, customer, -tariff.getDailyPayment(), endDay);
+            paymentService.addPaymentToGroup(paymentGroup, customer, -tariff.getDailyPayment(), endDay, backwards);
         }
 
         dailyPayment.setFinishAt(new Date());
@@ -129,7 +136,14 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
         return statusService.getStatusCount(filter) > 0;
     }
 
-    private String getPaymentPattern(Date day){
+    private AutoPaymentJournalDataSet getDailyJournalRecord(Date day){
+        Date startDay = DateUtils.startOfDay(day);
+        String paymentPattern = getDailyPaymentPattern(startDay);
+        AutoPaymentJournalDataSetDao journalDao = daoFactory.getAutoPaymentJournalDataSetDao();
+        return journalDao.getByPattern(paymentPattern);
+    }
+
+    private String getDailyPaymentPattern(Date day){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(day);
     }
