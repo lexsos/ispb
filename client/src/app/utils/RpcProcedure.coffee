@@ -74,3 +74,9 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
     loginExist: (login) ->
       this.call "login_exist",
         login: login
+
+    planeSuspenseCustomer: (customerId, dateSuspend, dateResume) ->
+      this.call "plane_suspense_customer",
+        customerId: customerId
+        dateSuspend: dateSuspend
+        dateResume: dateResume

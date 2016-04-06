@@ -44,6 +44,9 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       'CustomerGrid menuitem[action=deactivateCustomer]':
         click: this.onDeactivateCustomerClick
 
+      'CustomerGrid menuitem[action=suspenseCustomer]':
+        click: this.onSuspenseCustomerClick
+
       'CustomerGrid combobox[action=filterBy]':
         change: this.onFilterByChange
 
@@ -220,3 +223,10 @@ Ext.define 'ISPBClient.controller.customer.CustomerGridCtrl',
       Ext.MessageBox.confirm 'Отключение', 'Вы действительно желатие отключить абонента с номером договора ' + contractNumber, (btn) =>
         if btn == 'yes'
           this.setCustomerStatus(customerId, 'INACTIVE')
+
+  onSuspenseCustomerClick: (element) ->
+    record = this.getSelectedRecord(element)
+    if record
+      view = Ext.widget('planeSuspenseCustomerWindow')
+      view.setCustomer(record)
+      view.show()

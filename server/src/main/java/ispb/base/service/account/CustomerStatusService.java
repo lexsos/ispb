@@ -19,6 +19,8 @@ public interface CustomerStatusService {
     CustomerStatusDataSet setStatus(long customerId, CustomerStatus status, CustomerStatusCause cause, Date from)
             throws NotFoundException;
     CustomerStatusDataSet managerSetStatus(long customerId, CustomerStatus status) throws NotFoundException;
+    CustomerStatusDataSet managerPlaneStatus(long customerId, CustomerStatus status, Date from)
+            throws NotFoundException;
 
     List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getStatusCount(DataSetFilter filter);

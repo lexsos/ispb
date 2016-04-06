@@ -69,6 +69,11 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
         return setStatus(customerId, status, CustomerStatusCause.MANAGER, new Date());
     }
 
+    public CustomerStatusDataSet managerPlaneStatus(long customerId, CustomerStatus status, Date from)
+            throws NotFoundException{
+        return setStatus(customerId, status, CustomerStatusCause.MANAGER, from);
+    }
+
     public List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
         CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
         return dao.getList(filter, sort, pagination);
