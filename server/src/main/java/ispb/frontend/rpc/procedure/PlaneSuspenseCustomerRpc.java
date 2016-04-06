@@ -8,6 +8,7 @@ import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.exception.NotFoundException;
+import ispb.base.service.exception.ServiceException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +64,7 @@ public class PlaneSuspenseCustomerRpc extends RpcProcedure {
             service.managerPlaneStatus(args.getCustomerId(), CustomerStatus.ACTIVE, args.getDateResume());
             return true;
         }
-        catch (NotFoundException e){
+        catch (ServiceException e){
             return false;
         }
     }

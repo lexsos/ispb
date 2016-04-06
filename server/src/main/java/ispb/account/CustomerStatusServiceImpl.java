@@ -20,6 +20,7 @@ import ispb.base.eventsys.message.CheckCustomerStatusMsg;
 import ispb.base.eventsys.message.CustomerStatusAppliedMsg;
 import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.account.TariffPolicyService;
+import ispb.base.service.exception.BadDateException;
 import ispb.base.service.exception.DeleteNotAllowedException;
 import ispb.base.service.exception.NotFoundException;
 
@@ -71,7 +72,9 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
     }
 
     public CustomerStatusDataSet managerPlaneStatus(long customerId, CustomerStatus status, Date from)
-            throws NotFoundException{
+            throws NotFoundException, BadDateException {
+        if (from.before(new Date()))
+            throw new BadDateException();
         return setStatus(customerId, status, CustomerStatusCause.MANAGER, from);
     }
 

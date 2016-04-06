@@ -8,6 +8,7 @@ import ispb.base.db.fieldtype.CustomerStatusCause;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
+import ispb.base.service.exception.BadDateException;
 import ispb.base.service.exception.DeleteNotAllowedException;
 import ispb.base.service.exception.NotFoundException;
 
@@ -21,7 +22,7 @@ public interface CustomerStatusService {
             throws NotFoundException;
     CustomerStatusDataSet managerSetStatus(long customerId, CustomerStatus status) throws NotFoundException;
     CustomerStatusDataSet managerPlaneStatus(long customerId, CustomerStatus status, Date from)
-            throws NotFoundException;
+            throws NotFoundException, BadDateException;
 
     List<CustomerStatusDataSet> getStatusList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getStatusCount(DataSetFilter filter);
