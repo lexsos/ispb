@@ -20,8 +20,9 @@ Ext.define 'ISPBClient.controller.customer.AddCustomerVirtualPaymentWindowCtrl',
     customerId = window.getCustomer().get('id')
     sum = window.down('numberfield[name=paymentSum]').getValue()
     dateUntil = window.down('datefield[name=dateUntil]').getValue()
+    formatDateUntil = Ext.Date.format(dateUntil, 'd.m.Y H:i:s')
     dateUntil = Ext.Date.format(dateUntil, 'Y-m-d H:i:s')
-    comment = 'Виртуальный платеж по договору ' + window.getCustomer().get('contractNumber') + ' сроком до ' + dateUntil
+    comment = 'Виртуальный платеж по договору ' + window.getCustomer().get('contractNumber') + ' сроком до ' + formatDateUntil
 
     if ISPBClient.utils.RpcProcedure.addVirtualPayment(customerId, sum, dateUntil, comment)
       window.close()

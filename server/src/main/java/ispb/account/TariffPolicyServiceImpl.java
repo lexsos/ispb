@@ -54,6 +54,24 @@ public class TariffPolicyServiceImpl implements TariffPolicyService {
             statusService.setStatus(customer, CustomerStatus.ACTIVE, CustomerStatusCause.SYSTEM_FINANCE, paymentDate);
     }
 
+    public void beforeStatusApplied(CustomerStatusDataSet status){
+        PaymentService paymentService = getPaymentService();
+        TariffAssignmentService tariffService = getTariffService();
+
+        double balance = paymentService.getBalance(status.getCustomer(), status.getApplyAt());
+        TariffDataSet tariff = tariffService.getTariff(status.getCustomer(), status.getApplyAt());
+
+        if (tariff == null)
+            return;
+
+        if (balance < tariff.getOffThreshold() &&
+                status.getStatus() == CustomerStatus.ACTIVE &&
+                status.getCause() == CustomerStatusCause.MANAGER){
+            status.setStatus(CustomerStatus.INACTIVE);
+            status.setCause(CustomerStatusCause.SYSTEM_FINANCE);
+        }
+    }
+
     public void makeDailyPaymentBackwards(Date day){
         makeDailyPaymentImpl(day, true);
     }

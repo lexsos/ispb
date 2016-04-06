@@ -19,6 +19,7 @@ import ispb.base.eventsys.EventSystem;
 import ispb.base.eventsys.message.CheckCustomerStatusMsg;
 import ispb.base.eventsys.message.CustomerStatusAppliedMsg;
 import ispb.base.service.account.CustomerStatusService;
+import ispb.base.service.account.TariffPolicyService;
 import ispb.base.service.exception.NotFoundException;
 
 import java.util.Date;
@@ -83,8 +84,11 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
         CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
         List<CustomerStatusDataSet> newStatuses = getStatusListForApply(new Date());
         CustomerStatusAppliedMsg msg = new CustomerStatusAppliedMsg();
+        TariffPolicyService tariffPolicyService = getTariffPolicyService();
 
         for (CustomerStatusDataSet status : newStatuses) {
+            tariffPolicyService.beforeStatusApplied(status);
+
             status.setProcessed(true);
             dao.save(status);
             msg.addCustomerId(status.getCustomer());
@@ -124,5 +128,9 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
         EventSystem eventSystem = application.getByType(EventSystem.class);
         if (eventSystem != null)
             eventSystem.pushMessage(message);
+    }
+
+    private TariffPolicyService getTariffPolicyService(){
+        return application.getByType(TariffPolicyService.class);
     }
 }

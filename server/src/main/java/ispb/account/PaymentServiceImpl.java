@@ -45,8 +45,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     public void addVirtualPayment(long customerId, double sum, Date until, String comment)
             throws NotFoundException, IncorrectDateException{
-        PaymentGroupDataSetDao paymentGroupDao = daoFactory.getPaymentGroupDao();
-        PaymentDataSetDao paymentDao = daoFactory.getPaymentDao();
         CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
         Date now = new Date();
 
@@ -57,57 +55,27 @@ public class PaymentServiceImpl implements PaymentService {
         if (until.before(now))
             throw new IncorrectDateException();
 
-        PaymentGroupDataSet group = new PaymentGroupDataSet();
-        group.setComment(comment);
-        paymentGroupDao.save(group);
-
-        PaymentDataSet positivePayment = new PaymentDataSet();
-        positivePayment.setCustomer(customer);
-        positivePayment.setApplyAt(new Date());
-        positivePayment.setPaymentSum(sum);
-        positivePayment.setGroup(group);
-        paymentDao.save(positivePayment);
-
-        PaymentDataSet negativePayment = new PaymentDataSet();
-        negativePayment.setCustomer(customer);
-        negativePayment.setApplyAt(until);
-        negativePayment.setPaymentSum(-sum);
-        negativePayment.setGroup(group);
-        paymentDao.save(negativePayment);
-
-        group.setClosed(true);
-        paymentGroupDao.save(group);
-
-        // send event message about new payment
-        sendMsg(new CheckPaymentMsg());
+        PaymentGroupDataSet group = openPaymentGroup(comment);
+        addPaymentToGroup(group, customer, sum, now, false);
+        addPaymentToGroup(group, customer, -sum, until, false);
+        closePaymentGroup(group);
     }
 
     public void addPayment(long customerId, double sum, String comment)
             throws NotFoundException{
-        PaymentGroupDataSetDao paymentGroupDao = daoFactory.getPaymentGroupDao();
-        PaymentDataSetDao paymentDao = daoFactory.getPaymentDao();
+        addPayment(customerId, sum, comment, new Date());
+    }
+
+    public void addPayment(long customerId, double sum, String comment, Date applyAt) throws NotFoundException{
         CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
 
         CustomerDataSet customer = customerDao.getById(customerId);
         if (customer == null)
             throw new NotFoundException();
 
-        PaymentGroupDataSet group = new PaymentGroupDataSet();
-        group.setComment(comment);
-        paymentGroupDao.save(group);
-
-        PaymentDataSet payment = new PaymentDataSet();
-        payment.setCustomer(customer);
-        payment.setApplyAt(new Date());
-        payment.setPaymentSum(sum);
-        payment.setGroup(group);
-        paymentDao.save(payment);
-
-        group.setClosed(true);
-        paymentGroupDao.save(group);
-
-        // send event message about new payment
-        sendMsg(new CheckPaymentMsg());
+        PaymentGroupDataSet group = openPaymentGroup(comment);
+        addPaymentToGroup(group, customer, sum, applyAt, false);
+        closePaymentGroup(group);
     }
 
     public List<PaymentGroupDataSet> getPaymentGroups(DataSetFilter filter, DataSetSort sort, Pagination pagination){
@@ -123,7 +91,7 @@ public class PaymentServiceImpl implements PaymentService {
     public void applyNewPayments(){
         List<PaymentDataSet> payments = getPaymentListForApply(new Date());
         PaymentDataSetDao dao = daoFactory.getPaymentDao();
-        TariffPolicyService tariffPolicyService =getTariffPolicyService();
+        TariffPolicyService tariffPolicyService = getTariffPolicyService();
 
         for (PaymentDataSet payment: payments){
             payment.setProcessed(true);

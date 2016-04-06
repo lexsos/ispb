@@ -298,7 +298,7 @@ public class CustomerResource extends RestResource {
 
         try {
             String comment = msg.getInitPaymentName(customer.getCustomer().getContractNumber());
-            paymentService.addPayment(customer.getId(), entity.getBalance(), comment);
+            paymentService.addPayment(customer.getId(), entity.getBalance(), comment, now);
         }
         catch (NotFoundException e){
             logService.warn("Entity not found in data base", e);
