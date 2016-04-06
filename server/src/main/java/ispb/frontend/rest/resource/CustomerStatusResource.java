@@ -12,6 +12,8 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.frontend.rest.*;
 import ispb.base.frontend.utils.AccessLevel;
 import ispb.base.service.account.CustomerStatusService;
+import ispb.base.service.exception.DeleteNotAllowedException;
+import ispb.base.service.exception.NotFoundException;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -105,6 +107,21 @@ public class CustomerStatusResource extends RestResource {
         long total = service.getStatusCount(filter);
 
         return new CustomerStatusListRestResponse(statusList, total);
+    }
+
+    public RestResponse deleteEntity(RestContext restContext){
+        CustomerStatusService service = getCustomerService(restContext);
+        try {
+            service.delete(restContext.getId());
+            return new RestResponse();
+        }
+        catch (NotFoundException e){
+            return ErrorRestResponse.notFound();
+        }
+        catch (DeleteNotAllowedException e){
+            return ErrorRestResponse.methodNotAllowed();
+        }
+
     }
 
     private CustomerStatusService getCustomerService(RestContext restContext){

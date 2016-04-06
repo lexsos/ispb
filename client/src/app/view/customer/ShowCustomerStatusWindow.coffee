@@ -94,6 +94,17 @@ Ext.define 'ISPBClient.view.customer.ShowCustomerStatusWindow',
 
       dockedItems: [
         {
+          xtype: 'toolbar'
+          dock: 'top'
+          items:[
+            {
+              text: 'Удалить'
+              icon: 'static/img/delete.gif'
+              action: 'delete'
+            }
+          ]
+        }
+        {
           xtype: 'pagingtoolbar',
           dock: 'bottom',
           displayInfo: true,

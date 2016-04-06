@@ -20,6 +20,7 @@ import ispb.base.eventsys.message.CheckCustomerStatusMsg;
 import ispb.base.eventsys.message.CustomerStatusAppliedMsg;
 import ispb.base.service.account.CustomerStatusService;
 import ispb.base.service.account.TariffPolicyService;
+import ispb.base.service.exception.DeleteNotAllowedException;
 import ispb.base.service.exception.NotFoundException;
 
 import java.util.Date;
@@ -120,6 +121,18 @@ public class CustomerStatusServiceImpl implements CustomerStatusService {
         if (statusList.isEmpty())
             return null;
         return statusList.get(0);
+    }
+
+    public void delete(long statusId) throws NotFoundException, DeleteNotAllowedException{
+        CustomerStatusDataSetDao dao = daoFactory.getCustomerStatusDao();
+        CustomerStatusDataSet status = dao.getById(statusId);
+
+        if (status == null)
+            throw new NotFoundException();
+        if (status.isProcessed())
+            throw new DeleteNotAllowedException();
+
+        dao.delete(status);
     }
 
     private List<CustomerStatusDataSet> getStatusListForApply(Date until){
