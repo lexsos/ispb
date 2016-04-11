@@ -2,6 +2,7 @@ package ispb.main.command;
 
 
 import ispb.base.Application;
+import ispb.base.radius.RadiusServer;
 import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.frontend.HttpServer;
@@ -18,6 +19,7 @@ public class BillServer {
         EventSystem eventSystem = application.getByType(EventSystem.class);
         EventScheduler eventScheduler = application.getByType(EventScheduler.class);
         HttpServer server = application.getByType(HttpServer.class);
+        RadiusServer radiusServer = application.getByType(RadiusServer.class);
 
         logService.info("Starting http server");
         try {
@@ -33,6 +35,10 @@ public class BillServer {
 
         logService.info("Starting even scheduler");
         eventScheduler.start();
+
+        logService.info("Starting RADIUS server");
+        radiusServer.start();
+
 
         try {
             server.join();

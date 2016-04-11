@@ -8,6 +8,7 @@ import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
+import ispb.base.radius.RadiusServer;
 import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
 import ispb.eventsys.handler.AddDailyPaymentHandler;
@@ -36,6 +37,7 @@ import ispb.dictionary.BuildingDictionaryServiceImpl;
 import ispb.dictionary.CityDictionaryServiceImpl;
 import ispb.dictionary.StreetDictionaryServiceImpl;
 import ispb.dictionary.TariffDictionaryServiceImpl;
+import ispb.radius.RadiusServerImpl;
 import ispb.scheduler.EventSchedulerImpl;
 import ispb.eventsys.EventSystemImpl;
 import ispb.frontend.HttpServerImpl;
@@ -112,6 +114,9 @@ public class BillingBuilder {
 
         HttpServer server = new HttpServerImpl(conf);
         application.addByType(HttpServer.class, server);
+
+        RadiusServer radiusServer = new RadiusServerImpl();
+        application.addByType(RadiusServer.class, radiusServer);
 
         return application;
     }
