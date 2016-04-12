@@ -39,7 +39,6 @@ public class BillServer {
         logService.info("Starting RADIUS server");
         radiusServer.start();
 
-
         try {
             server.join();
         }

@@ -115,7 +115,7 @@ public class BillingBuilder {
         HttpServer server = new HttpServerImpl(conf);
         application.addByType(HttpServer.class, server);
 
-        RadiusServer radiusServer = new RadiusServerImpl();
+        RadiusServer radiusServer = new RadiusServerImpl(conf, logService);
         application.addByType(RadiusServer.class, radiusServer);
 
         return application;

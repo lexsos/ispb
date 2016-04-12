@@ -1,39 +1,115 @@
 package ispb.radius;
 
 import ispb.base.radius.RadiusServer;
+import ispb.base.resources.Config;
+import ispb.base.service.LogService;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketTimeoutException;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class RadiusServerImpl implements RadiusServer {
 
     private DatagramSocket authSocket = null;
+    private final BlockingQueue<DatagramPacket> udpAuthQueue;
+    private final Config config;
+    private final LogService logService;
+    private final int MAX_PACKET_LENGTH = 4096;
+    private volatile boolean started;
+    private final ExecutorService workers;
+    private final ExecutorService listeners;
 
-    public void start(){
+    private class Listener implements Runnable {
 
-        try {
-            authSocket = new DatagramSocket(1812);
-        }
-        catch (Throwable e){
-            return;
-        }
+        public void run(){
 
-        while (true) {
-            DatagramPacket packetIn = new DatagramPacket(new byte[4096], 4096);
-            try {
-                authSocket.receive(packetIn);
-                System.out.print(packetIn.getAddress());
-                System.out.print(" ");
-                System.out.println(packetIn.getLength());
-            }
-            catch (Throwable e){
-
+            while (isStarted() && !getAuthSocket().isClosed()){
+                DatagramPacket packetIn = new DatagramPacket(new byte[MAX_PACKET_LENGTH], MAX_PACKET_LENGTH);
+                try {
+                    getAuthSocket().receive(packetIn);
+                    if (!offerAuthPacket(packetIn))
+                        getLogService().info("Discard RADIUS auth packet from " + packetIn.getAddress());
+                }
+                catch (SocketTimeoutException ignored){
+                }
+                catch (Throwable e){
+                    getLogService().warn("Interrupted while wait RADIUS auth packet", e);
+                }
             }
         }
     }
 
-    public void stop(){
+    public RadiusServerImpl(Config config, LogService logService){
+        this.config = config;
+        this.logService = logService;
 
+        int queueSize = config.getAsInt("radius.queueSize");
+        udpAuthQueue = new ArrayBlockingQueue<>(queueSize, true);
+
+        int workerCount = config.getAsInt("radius.workerCount");
+        workers = Executors.newFixedThreadPool(workerCount);
+
+        listeners = Executors.newFixedThreadPool(1);
+    }
+
+    public void start(){
+        authSocket = createAuthSocket();
+        if (authSocket == null)
+            return;
+
+        started = true;
+        listeners.submit(new Listener());
+    }
+
+    public void stop(){
+        if (authSocket == null)
+            return;
+        started = false;
+        authSocket.close();
+    }
+
+    private DatagramSocket createAuthSocket(){
+        int port = config.getAsInt("radius.authPort");
+        String bindAddress = config.getAsStr("radius.authAddress");
+        int timeout = config.getAsInt("radius.authTimeout");
+
+        try {
+            InetAddress address = InetAddress.getByName(bindAddress);
+            DatagramSocket socket = new DatagramSocket(port, address);
+            socket.setSoTimeout(timeout);
+            return socket;
+        }
+        catch (Throwable e){
+            logService.warn("Can't create socket for RADIUS server", e);
+            return null;
+        }
+    }
+
+    private boolean offerAuthPacket(DatagramPacket packet){
+        try {
+            return udpAuthQueue.offer(packet);
+        }
+        catch (Throwable e){
+            logService.warn("Can't add to server queue RADIUS auth packet", e);
+            return false;
+        }
+    }
+
+    private DatagramSocket getAuthSocket(){
+        return authSocket;
+    }
+
+    private boolean isStarted(){
+        return started;
+    }
+
+    private LogService getLogService(){
+        return logService;
     }
 }
