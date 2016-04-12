@@ -8,10 +8,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 
 public class RadiusServerImpl implements RadiusServer {
@@ -24,6 +21,8 @@ public class RadiusServerImpl implements RadiusServer {
     private volatile boolean started;
     private final ExecutorService workers;
     private final ExecutorService listeners;
+    private final int workerTimeout;
+    private final int workerCount;
 
     private class Listener implements Runnable {
 
@@ -45,16 +44,27 @@ public class RadiusServerImpl implements RadiusServer {
         }
     }
 
+    private class AuthHandler implements Runnable {
+
+        public void run(){
+
+            while (isStarted()){
+                DatagramPacket packet = pullAuth();
+                if (packet == null)
+                    continue;
+            }
+        }
+    }
+
     public RadiusServerImpl(Config config, LogService logService){
         this.config = config;
         this.logService = logService;
-
+        workerTimeout = config.getAsInt("radius.workerTimeout");
+        workerCount = config.getAsInt("radius.workerCount");
         int queueSize = config.getAsInt("radius.queueSize");
+
         udpAuthQueue = new ArrayBlockingQueue<>(queueSize, true);
-
-        int workerCount = config.getAsInt("radius.workerCount");
         workers = Executors.newFixedThreadPool(workerCount);
-
         listeners = Executors.newFixedThreadPool(1);
     }
 
@@ -65,6 +75,9 @@ public class RadiusServerImpl implements RadiusServer {
 
         started = true;
         listeners.submit(new Listener());
+
+        for (int i=0; i<workerCount; i++)
+            workers.submit(new AuthHandler());
     }
 
     public void stop(){
@@ -77,7 +90,7 @@ public class RadiusServerImpl implements RadiusServer {
     private DatagramSocket createAuthSocket(){
         int port = config.getAsInt("radius.authPort");
         String bindAddress = config.getAsStr("radius.authAddress");
-        int timeout = config.getAsInt("radius.authTimeout");
+        int timeout = config.getAsInt("radius.authListenerTimeout");
 
         try {
             InetAddress address = InetAddress.getByName(bindAddress);
@@ -111,5 +124,14 @@ public class RadiusServerImpl implements RadiusServer {
 
     private LogService getLogService(){
         return logService;
+    }
+
+    private DatagramPacket pullAuth(){
+        try {
+            return udpAuthQueue.poll(workerTimeout, TimeUnit.MILLISECONDS);
+        }
+        catch (InterruptedException e){
+            return null;
+        }
     }
 }
