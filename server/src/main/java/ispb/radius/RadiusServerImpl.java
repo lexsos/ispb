@@ -96,7 +96,15 @@ public class RadiusServerImpl implements RadiusServer {
                     continue;
                 }
 
-                RadiusPacket radiusResponse = servlet.handle(radiusRequest, clientAddress, sharedSecret);
+                RadiusPacket radiusResponse;
+                try {
+                    radiusResponse = servlet.service(radiusRequest, clientAddress, sharedSecret);
+                }
+                catch (Throwable e){
+                    getLogService().warn("Error while execute RADIUS servlet for " + clientAddress, e);
+                    continue;
+                }
+
                 if (radiusResponse == null)
                     continue;
 
@@ -175,6 +183,15 @@ public class RadiusServerImpl implements RadiusServer {
             return;
         started = false;
         authSocket.close();
+    }
+
+    public void clearServlets(){
+        servletMap.clear();
+    }
+
+    public void addServlet(InetAddress client, RadiusServlet servlet){
+        if (client != null && servlet !=null)
+            servletMap.put(client, servlet);
     }
 
     private DatagramSocket createAuthSocket(){
