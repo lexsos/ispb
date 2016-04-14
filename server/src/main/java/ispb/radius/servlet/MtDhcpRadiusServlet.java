@@ -13,7 +13,8 @@ public class MtDhcpRadiusServlet extends RadiusServlet {
         RadiusPacket response = makeAccessAccept(request);
 
         response.addAttribute("Mikrotik-Address-List", "Tariff10M");
-        response.addAttribute("Session-Timeout", "10");
+        response.addAttribute("Mikrotik-Address-List", "AllowUsers");
+        response.addAttribute("Session-Timeout", "5");
         response.addAttribute("Framed-IP-Address", "192.168.1.123");
 
         return response;

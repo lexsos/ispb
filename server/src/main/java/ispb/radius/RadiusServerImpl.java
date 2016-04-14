@@ -47,6 +47,8 @@ public class RadiusServerImpl implements RadiusServer {
                     getAuthSocket().receive(packetIn);
                     if (!offerAuthPacket(packetIn))
                         getLogService().info("Discard RADIUS auth packet from " + packetIn.getAddress());
+                    else
+                        getLogService().debug("Receive RADIUS auth packet from " + packetIn.getAddress());
                 }
                 catch (SocketTimeoutException ignored){
                 }
