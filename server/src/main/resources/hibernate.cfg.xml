@@ -29,6 +29,7 @@
         <mapping class="ispb.base.db.dataset.TariffAssignmentDataSet"/>
         <mapping class="ispb.base.db.dataset.CustomerStatusDataSet"/>
         <mapping class="ispb.base.db.dataset.AutoPaymentJournalDataSet"/>
+        <mapping class="ispb.base.db.dataset.TariffRadiusAttributeDataSet"/>
 
         <mapping class="ispb.base.db.view.CustomerSummeryView"/>
 

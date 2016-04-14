@@ -14,8 +14,8 @@ public class MtDhcpRadiusServlet extends RadiusServlet {
 
         response.addAttribute("Mikrotik-Address-List", "Tariff10M");
         response.addAttribute("Mikrotik-Address-List", "AllowUsers");
-        response.addAttribute("Session-Timeout", "5");
-        response.addAttribute("Framed-IP-Address", "192.168.1.123");
+        response.addAttribute("Session-Timeout", "500");
+        response.addAttribute("Framed-IP-Address", "192.168.2.123");
 
         return response;
     }
