@@ -45,6 +45,7 @@ public class BillServer {
         // TODO: delete testing code
         try {
             radiusServer.addServlet(InetAddress.getByName("192.168.1.1"), new MtDhcpRadiusServlet());
+            radiusServer.addServlet(InetAddress.getByName("192.168.1.2"), new MtDhcpRadiusServlet());
         }
         catch (Throwable e){
 

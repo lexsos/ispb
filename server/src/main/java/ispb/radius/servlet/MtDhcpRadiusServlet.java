@@ -2,13 +2,14 @@ package ispb.radius.servlet;
 
 
 import ispb.base.radius.RadiusServlet;
+import org.tinyradius.packet.AccessRequest;
 import org.tinyradius.packet.RadiusPacket;
 
 import java.net.InetAddress;
 
 public class MtDhcpRadiusServlet extends RadiusServlet {
 
-    public RadiusPacket service(RadiusPacket request, InetAddress clientAddress, String sharedSecret){
+    protected RadiusPacket access(AccessRequest request, InetAddress clientAddress, String sharedSecret){
         // TODO: write implementation
         RadiusPacket response = makeAccessAccept(request);
 
