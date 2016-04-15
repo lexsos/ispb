@@ -33,6 +33,7 @@ Ext.application
 
     'tariff.TariffGridCtrl',
     'tariff.EditTariffWindowCtrl',
+    'tariff.EditTariffRadiusAttributeWindowCtrl',
 
     'user.UserGridCtrl',
     'user.EditUserWindowCtrl',

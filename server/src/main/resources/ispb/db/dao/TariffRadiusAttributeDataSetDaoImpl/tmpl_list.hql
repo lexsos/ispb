@@ -1,4 +1,4 @@
 from TariffRadiusAttributeDataSet as tariffRadiusAttribute
-    left join tariffRadiusAttribute.tariff
+    left join fetch tariffRadiusAttribute.tariff
 {where_statement}
 {sort_statement}

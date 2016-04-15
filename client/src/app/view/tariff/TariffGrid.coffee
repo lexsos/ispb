@@ -51,6 +51,12 @@ Ext.define 'ISPBClient.view.tariff.TariffGrid',
         }
         '-'
         {
+          text: 'RADIUS атрибуты'
+          icon:'static/img/application_view_list.png'
+          action: 'attributes'
+        }
+        '-'
+        {
           text: 'Удалить'
           icon: 'static/img/delete.gif'
           action: 'delete'
