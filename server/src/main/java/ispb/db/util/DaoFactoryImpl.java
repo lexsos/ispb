@@ -65,4 +65,8 @@ public class DaoFactoryImpl implements DaoFactory {
     public AutoPaymentJournalDataSetDao getAutoPaymentJournalDataSetDao(){
         return new AutoPaymentJournalDataSetDaoImpl(sessions, resources);
     }
+
+    public TariffRadiusAttributeDataSetDao getTariffRadiusAttributeDataSetDao(){
+        return new TariffRadiusAttributeDataSetDaoImpl(sessions, resources, queryBuilder);
+    }
 }

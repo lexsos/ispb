@@ -1,0 +1,39 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "tariffRadiusAttribute.deleteAt"
+    },
+
+    "tariffId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "tariffRadiusAttribute.tariff.id"
+    },
+
+    "attributeName":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"tariffRadiusAttribute.attributeName",
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "attributeValue":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"tariffRadiusAttribute.attributeValue",
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "condition": {
+      "validOperators":["EQ"],
+      "sortable": true,
+      "hqlFieldName": "tariffRadiusAttribute.condition",
+      "valueTypeName": "ispb.base.db.fieldtype.RadiusAttributeCondition"
+    }
+
+  },
+
+  "defaultSort": "tariffRadiusAttribute.tariff.id, tariffRadiusAttribute.attributeName"
+}

@@ -12,7 +12,8 @@ public interface TariffRadiusAttributeDataSetDao {
 
     long save(TariffRadiusAttributeDataSet attribute);
     void delete(TariffRadiusAttributeDataSet attribute);
-
-    List<TariffRadiusAttributeDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     TariffRadiusAttributeDataSet getById(long id);
+
+    long getCount(DataSetFilter filter);
+    List<TariffRadiusAttributeDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
 }
