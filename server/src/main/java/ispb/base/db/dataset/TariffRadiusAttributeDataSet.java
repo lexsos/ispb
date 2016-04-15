@@ -63,6 +63,10 @@ public class TariffRadiusAttributeDataSet implements DeletedMarkable, Identifiab
         this.tariff = tariff;
     }
 
+    public long getTariffId(){
+        return tariff.getId();
+    }
+
     public String getAttributeName() {
         return attributeName;
     }

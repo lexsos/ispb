@@ -1,12 +1,16 @@
 package ispb.dictionary;
 
 import ispb.base.db.container.TariffContainer;
+import ispb.base.db.container.TariffRadiusAttributeContainer;
 import ispb.base.db.dao.TariffDataSetDao;
+import ispb.base.db.dao.TariffRadiusAttributeDataSetDao;
 import ispb.base.db.dataset.TariffDataSet;
+import ispb.base.db.dataset.TariffRadiusAttributeDataSet;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
+import ispb.base.db.utils.Pagination;
 import ispb.base.service.dictionary.TariffDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.NotFoundException;
@@ -25,6 +29,13 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
     public List<TariffDataSet> getList(DataSetFilter filter, DataSetSort sort){
         TariffDataSetDao dao = daoFactory.getTariffDao();
         return dao.getList(filter, sort, null);
+    }
+
+    public List<TariffRadiusAttributeDataSet> getAttributeList(DataSetFilter filter,
+                                                               DataSetSort sort,
+                                                               Pagination pagination){
+        TariffRadiusAttributeDataSetDao dao = daoFactory.getTariffRadiusAttributeDataSetDao();
+        return dao.getList(filter, sort, pagination);
     }
 
     public TariffDataSet create(TariffContainer container) throws AlreadyExistException{
@@ -55,12 +66,59 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
         return tariff;
     }
 
+    public TariffRadiusAttributeDataSet createAttribute(TariffRadiusAttributeContainer container)
+            throws NotFoundException{
+        TariffDataSetDao tariffDao = daoFactory.getTariffDao();
+        TariffRadiusAttributeDataSetDao attributeDao = daoFactory.getTariffRadiusAttributeDataSetDao();
+
+        TariffDataSet tariff = tariffDao.getById(container.getTariffId());
+        if (tariff == null)
+            throw new NotFoundException();
+
+        TariffRadiusAttributeDataSet attribute = new TariffRadiusAttributeDataSet();
+        attribute.setTariff(tariff);
+        attribute.setAttributeName(container.getAttributeName());
+        attribute.setAttributeValue(container.getAttributeValue());
+        attribute.setCondition(container.getCondition());
+        attributeDao.save(attribute);
+        return attribute;
+    }
+
+    public TariffRadiusAttributeDataSet updateAttribute(long attributeId, TariffRadiusAttributeContainer container)
+            throws NotFoundException{
+        TariffDataSetDao tariffDao = daoFactory.getTariffDao();
+        TariffRadiusAttributeDataSetDao attributeDao = daoFactory.getTariffRadiusAttributeDataSetDao();
+
+        TariffRadiusAttributeDataSet attribute = attributeDao.getById(attributeId);
+        if (attribute == null)
+            throw new NotFoundException();
+
+        TariffDataSet tariff = tariffDao.getById(container.getTariffId());
+        if (tariff == null)
+            throw new NotFoundException();
+
+        attribute.setTariff(tariff);
+        attribute.setAttributeName(container.getAttributeName());
+        attribute.setAttributeValue(container.getAttributeValue());
+        attribute.setCondition(container.getCondition());
+        attributeDao.save(attribute);
+        return attribute;
+    }
+
     public void delete(long tariffId) throws NotFoundException{
         TariffDataSetDao dao = daoFactory.getTariffDao();
         TariffDataSet tariff = dao.getById(tariffId);
         if (tariff == null)
             throw new NotFoundException();
         dao.delete(tariff);
+    }
+
+    public void deleteAttribute(long attributeId) throws NotFoundException{
+        TariffRadiusAttributeDataSetDao dao = daoFactory.getTariffRadiusAttributeDataSetDao();
+        TariffRadiusAttributeDataSet attribute = dao.getById(attributeId);
+        if (attribute == null)
+            throw new NotFoundException();
+        dao.delete(attribute);
     }
 
     public boolean exist(String tariffName){
