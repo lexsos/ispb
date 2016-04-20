@@ -19,7 +19,7 @@ public interface RadiusUserService {
     List<RadiusUserDataSet> getUnRegList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getUnRegCount(DataSetFilter filter);
 
-    RadiusUserDataSet create(RadiusUserContainer container)  throws AlreadyExistException;
+    RadiusUserDataSet create(RadiusUserContainer container)  throws AlreadyExistException, NotFoundException;
     RadiusUserDataSet update(long userId, RadiusUserContainer container)throws AlreadyExistException, NotFoundException;
     void delete(long userId) throws NotFoundException;
 
