@@ -143,8 +143,5 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
         tariff.setAutoDailyPayment(container.isAutoDailyPayment());
         tariff.setDailyPayment(container.getDailyPayment());
         tariff.setOffThreshold(container.getOffThreshold());
-
-        tariff.setDownRate(container.getDownRate());
-        tariff.setUpRate(container.getUpRate());
     }
 }

@@ -27,20 +27,6 @@
       "valueTypeName":"java.lang.Boolean"
     },
 
-    "upRate": {
-      "hqlFieldName": "tariff.upRate",
-      "sortable": true,
-      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
-      "valueTypeName": "java.lang.Double"
-    },
-
-    "downRate": {
-      "hqlFieldName": "tariff.downRate",
-      "sortable": true,
-      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
-      "valueTypeName": "java.lang.Double"
-    },
-
     "offThreshold": {
       "hqlFieldName": "tariff.offThreshold",
       "sortable": true,

@@ -30,12 +30,6 @@ public class TariffDataSet extends BaseDataSet implements DeletedMarkable, Ident
     @Column(name = "auto_daily_payment", nullable = false)
     private boolean autoDailyPayment = false;
 
-    @Column(name = "up_rate", nullable = false)
-    private double upRate = 0;
-
-    @Column(name = "down_rate", nullable = false)
-    private double downRate = 0;
-
     @Column(name = "off_threshold", nullable = false)
     private double offThreshold = 0;
 
@@ -81,22 +75,6 @@ public class TariffDataSet extends BaseDataSet implements DeletedMarkable, Ident
 
     public void setAutoDailyPayment(boolean autoDailyPayment) {
         this.autoDailyPayment = autoDailyPayment;
-    }
-
-    public double getUpRate() {
-        return upRate;
-    }
-
-    public void setUpRate(double upRate) {
-        this.upRate = upRate;
-    }
-
-    public double getDownRate() {
-        return downRate;
-    }
-
-    public void setDownRate(double downRate) {
-        this.downRate = downRate;
     }
 
     public double getOffThreshold() {

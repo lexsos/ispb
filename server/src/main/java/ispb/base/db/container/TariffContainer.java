@@ -9,7 +9,5 @@ public interface TariffContainer {
     String getName();
     double getDailyPayment();
     boolean isAutoDailyPayment();
-    double getUpRate();
-    double getDownRate();
     double getOffThreshold();
 }

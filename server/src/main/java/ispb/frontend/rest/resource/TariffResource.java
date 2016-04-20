@@ -23,8 +23,6 @@ public class TariffResource extends RestResource {
         private double dailyPayment = 0;
         private boolean autoDailyPayment = false;
         private double offThreshold = 0;
-        private double upRate = 0;
-        private double downRate = 0;
 
         public TariffEntity(){}
 
@@ -34,8 +32,6 @@ public class TariffResource extends RestResource {
             setDailyPayment(tariff.getDailyPayment());
             setAutoDailyPayment(tariff.isAutoDailyPayment());
             setOffThreshold(tariff.getOffThreshold());
-            setUpRate(tariff.getUpRate());
-            setDownRate(tariff.getDownRate());
         }
 
         public boolean verify(){
@@ -72,22 +68,6 @@ public class TariffResource extends RestResource {
 
         public void setOffThreshold(double offThreshold) {
             this.offThreshold = offThreshold;
-        }
-
-        public double getUpRate() {
-            return upRate;
-        }
-
-        public void setUpRate(double upRate) {
-            this.upRate = upRate;
-        }
-
-        public double getDownRate() {
-            return downRate;
-        }
-
-        public void setDownRate(double downRate) {
-            this.downRate = downRate;
         }
 
         public Date getDeleteAt(){

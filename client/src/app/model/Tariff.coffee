@@ -7,8 +7,6 @@ Ext.define 'ISPBClient.model.Tariff',
     { name: 'dailyPayment', type: 'float' }
     { name: 'offThreshold', type: 'float' }
     { name: 'autoDailyPayment', type: 'boolean' }
-    { name: 'upRate', type: 'float' }
-    { name: 'downRate', type: 'float' }
   ]
 
   proxy:

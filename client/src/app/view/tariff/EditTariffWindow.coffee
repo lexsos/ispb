@@ -62,24 +62,6 @@ Ext.define 'ISPBClient.view.tariff.EditTariffWindow',
           value: 0
           labelWidth: 150
         }
-        {
-          xtype: 'numberfield'
-          name : 'downRate'
-          fieldLabel: 'Скорость загрузки'
-          margin: '5 5 5 5'
-          value: 0
-          minValue: 0
-          labelWidth: 150
-        }
-        {
-          xtype: 'numberfield'
-          name : 'upRate'
-          fieldLabel: 'Скорость выгрузки'
-          margin: '5 5 5 5'
-          value: 0
-          minValue: 0
-          labelWidth: 150
-        }
       ]
     }
   ]
