@@ -12,6 +12,19 @@ Ext.define 'ISPBClient.view.tariff.EditTariffRadiusAttributeWindow',
     tariff: null
 
 
+  buttons: [
+    {
+      text: 'Сохранить'
+      action: 'save'
+      icon:'static/img/save.gif'
+    }
+    {
+      text: 'Отмена'
+      action: 'cancel'
+      icon:'static/img/cross.gif'
+    }
+  ]
+
   items: [
     {
       xtype: 'panel'
@@ -40,16 +53,47 @@ Ext.define 'ISPBClient.view.tariff.EditTariffRadiusAttributeWindow',
 
       columns: [
         {xtype: 'rownumberer'}
-        {header: 'Атрибут', dataIndex: 'attributeName', flex: 1}
-        {header: 'Значение', dataIndex: 'attributeValue', flex: 1}
-        {header: 'Условие', dataIndex: 'condition', flex: 1}
+        {
+          header: 'Атрибут'
+          dataIndex: 'attributeName'
+          flex: 1
+          editor: {xtype: 'textfield', allowBlank: false}
+        }
+        {
+          header: 'Значение'
+          dataIndex: 'attributeValue'
+          flex: 1
+          editor: {xtype: 'textfield', allowBlank: false}
+        }
+        {
+          header: 'Условие'
+          dataIndex: 'condition'
+          flex: 1
+          editor: {
+            xtype: 'combobox'
+            allowBlank: false
+            displayField: 'name'
+            valueField: 'key'
+            store:
+              fields: ['key', 'name']
+              data : [
+                {'key': 'ON_ACTIVE', name: 'Активен'}
+                {'key': 'ON_INACTIVE', name: 'Отключен'}
+                {'key': 'ALWAYS', name: 'Всегда'}
+              ]
+          }
+        }
+      ]
+
+      plugins: [
+          {ptype:'rowediting', clicksToEdit: 1}
       ]
 
       store:
         model: 'ISPBClient.model.TariffRadiusAttribute'
         autoLoad: false
         remoteFilter: true
-        remoteSort: true
+        remoteSort: false
 
 
       dockedItems: [
