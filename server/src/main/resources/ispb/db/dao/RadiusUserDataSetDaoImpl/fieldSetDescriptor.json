@@ -1,0 +1,58 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName":"radiusUser.deleteAt"
+    },
+
+    "createAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "hqlFieldName":"radiusUser.createAt",
+      "valueTypeName": "java.util.Date",
+      "sortable": true
+    },
+
+    "userName": {
+      "hqlFieldName":"radiusUser.userName",
+      "validOperators":["EQ", "LIKE"],
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "ip4Address": {
+      "hqlFieldName":"radiusUser.ip4Address",
+      "validOperators":["EQ", "LIKE"],
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "contractNumber":{
+      "hqlFieldName":"radiusUser.customer.contractNumber",
+      "validOperators":["EQ", "LIKE"],
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "buildingId": {
+      "hqlFieldName":"radiusUser.customer.building.id",
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long"
+    },
+
+    "streetId": {
+      "hqlFieldName":"radiusUser.customer.building.street.id",
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long"
+    },
+
+    "cityId": {
+      "hqlFieldName":"radiusUser.customer.building.street.city.id",
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long"
+    }
+
+  },
+
+  "defaultSort": "radiusUser.createAt DESC"
+}

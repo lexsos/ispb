@@ -69,4 +69,8 @@ public class DaoFactoryImpl implements DaoFactory {
     public TariffRadiusAttributeDataSetDao getTariffRadiusAttributeDataSetDao(){
         return new TariffRadiusAttributeDataSetDaoImpl(sessions, resources, queryBuilder);
     }
+
+    public RadiusUserDataSetDao getRadiusUserDataSetDao(){
+        return new RadiusUserDataSetDaoImpl(sessions, resources, queryBuilder);
+    }
 }
