@@ -1,6 +1,7 @@
 package ispb.base.db.dataset;
 
 
+import ispb.base.db.container.RadiusUserContainer;
 import ispb.base.db.utils.BaseDataSet;
 import ispb.base.db.utils.CreatedTimestampable;
 import ispb.base.db.utils.DeletedMarkable;
@@ -12,7 +13,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "radius_user")
-public class RadiusUserDataSet extends BaseDataSet implements DeletedMarkable, Identifiable, CreatedTimestampable {
+public class RadiusUserDataSet
+        extends BaseDataSet
+        implements DeletedMarkable, Identifiable, CreatedTimestampable, RadiusUserContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -99,5 +102,11 @@ public class RadiusUserDataSet extends BaseDataSet implements DeletedMarkable, I
 
     public void setCustomer(CustomerDataSet customer) {
         this.customer = customer;
+    }
+
+    public Long getCustomerId(){
+        if (customer != null)
+            return customer.getId();
+        return null;
     }
 }
