@@ -13,11 +13,8 @@ import java.util.List;
 
 public interface RadiusUserService {
 
-    List<RadiusUserDataSet> getUserList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
-    long getUserCount(DataSetFilter filter);
-
-    List<RadiusUserDataSet> getUnRegList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
-    long getUnRegCount(DataSetFilter filter);
+    List<RadiusUserDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
+    long getCount(DataSetFilter filter);
 
     RadiusUserDataSet create(RadiusUserContainer container)  throws AlreadyExistException, NotFoundException;
     RadiusUserDataSet update(long userId, RadiusUserContainer container)throws AlreadyExistException, NotFoundException;
@@ -25,4 +22,5 @@ public interface RadiusUserService {
 
     RadiusUserDataSet getUserByName(String userName);
     boolean userNameExist(String userName);
+    boolean ip4Exist(String ip4Address);
 }

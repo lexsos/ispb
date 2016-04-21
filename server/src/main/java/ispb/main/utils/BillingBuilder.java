@@ -101,6 +101,9 @@ public class BillingBuilder {
         TariffPolicyService tariffPolicyService = new TariffPolicyServiceImpl(application, daoFactory);
         application.addByType(TariffPolicyService.class, tariffPolicyService);
 
+        RadiusUserService radiusUserService = new RadiusUserServiceImpl(daoFactory, application);
+        application.addByType(RadiusUserService.class, radiusUserService);
+
         EventSystem eventSystem = new EventSystemImpl(application, conf);
         application.addByType(EventSystem.class, eventSystem);
 
