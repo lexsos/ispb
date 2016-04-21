@@ -11,6 +11,7 @@ Ext.define 'ISPBClient.view.main.MenuAccounting',
       items: [
         {text: 'Абоненты', widget: 'customer.CustomerList'}
         {text: 'Начисления', widget: 'payment.PaymentList'}
+        {text: 'RADIUS авторизация', widget: 'radiusAuth.RadiusAuthList'}
       ]
     }
   ]
