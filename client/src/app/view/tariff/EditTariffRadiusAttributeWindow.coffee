@@ -77,8 +77,8 @@ Ext.define 'ISPBClient.view.tariff.EditTariffRadiusAttributeWindow',
             store:
               fields: ['key', 'name']
               data : [
-                {'key': 'ON_ACTIVE', name: 'Активен'}
-                {'key': 'ON_INACTIVE', name: 'Отключен'}
+                {'key': 'ON_ACTIVE', name: 'Абонент активен'}
+                {'key': 'ON_INACTIVE', name: 'Абонент отключен'}
                 {'key': 'ALWAYS', name: 'Всегда'}
               ]
           }
