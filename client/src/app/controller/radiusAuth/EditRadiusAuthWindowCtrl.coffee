@@ -62,15 +62,17 @@ Ext.define 'ISPBClient.controller.radiusAuth.EditRadiusAuthWindowCtrl',
       customerIdField.markInvalid('Укажите номер договора')
       return false
 
-    # TODO: make exist check
+    if ip4AddressField.getValue() != "" and not ISPBClient.utils.RpcProcedure.ip4AddressValidate(ip4AddressField.getValue())
+      ip4AddressField.markInvalid('Не верный формат IPv4 адреса')
+      return false
 
-    #if userNameField.isDirty() and
-    #  userNameField.markInvalid('Указанный логин уже существует')
-    #  return false
+    if ip4AddressField.isDirty() and ip4AddressField.getValue() != "" and ISPBClient.utils.RpcProcedure.ip4RadiusExist(ip4AddressField.getValue())
+      ip4AddressField.markInvalid('Указанный адрес уже используется')
+      return false
 
-    #if ip4AddressField.isDirty() and ip4AddressField.getValue() != "" and
-    #  ip4AddressField.markInvalid('Указанный адрес уже используется')
-    #  return false
+    if userNameField.isDirty() and ISPBClient.utils.RpcProcedure.radiusLoginExist(userNameField.getValue())
+      userNameField.markInvalid('Указанный логин уже существует')
+      return false
 
     return true
 

@@ -103,8 +103,11 @@ public class RadiusUserServiceImpl implements RadiusUserService {
     }
 
     private RadiusUserDataSet getUserByIp4(String ip4Address){
+        String normalizedIp = Ip4Address.normalize(ip4Address);
+        if (normalizedIp == null)
+            return null;
         DataSetFilter filter = new DataSetFilter();
-        filter.add("ip4Address", CmpOperator.EQ, ip4Address);
+        filter.add("ip4Address", CmpOperator.EQ, normalizedIp);
         List<RadiusUserDataSet> users = getList(filter, null, null);
         if (!users.isEmpty())
             return users.get(0);

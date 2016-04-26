@@ -80,3 +80,15 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
         customerId: customerId
         dateSuspend: dateSuspend
         dateResume: dateResume
+
+    ip4AddressValidate: (ip4Address) ->
+      this.call "ip4_address_validate",
+        ip4Address: ip4Address
+
+    ip4RadiusExist: (ip4Address) ->
+      this.call "ip4_radius_exist",
+        ip4Address: ip4Address
+
+    radiusLoginExist: (login) ->
+      this.call "radius_login_exist",
+        login: login

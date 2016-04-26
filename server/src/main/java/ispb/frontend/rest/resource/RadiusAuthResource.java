@@ -99,6 +99,7 @@ public class RadiusAuthResource extends RestResource {
 
     private static class RadiusAuthRestResponse extends RestResponse {
 
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         private final List<RadiusAuthEntity> radiusAuthList = new LinkedList<>();
         private final long total;
 
@@ -107,6 +108,7 @@ public class RadiusAuthResource extends RestResource {
             radiusAuthList.add(new RadiusAuthEntity(radiusUser));
         }
 
+        @SuppressWarnings("Convert2streamapi")
         public RadiusAuthRestResponse(List<RadiusUserDataSet> radiusUsers, long total){
             this.total = total;
             for (RadiusUserDataSet user: radiusUsers)
