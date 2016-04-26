@@ -1,17 +1,18 @@
 Ext.define 'ISPBClient.controller.radiusAuth.EditRadiusAuthWindowCtrl',
-  extend: 'ISPBClient.utils.DictionaryEditWindowCtrl'
+  extend: 'Ext.app.Controller'
 
   views: ['radiusAuth.EditRadiusAuthWindow']
   requires: ['ISPBClient.utils.RpcProcedure']
 
-  config:
-    modelClass: 'ISPBClient.model.RadiusAuth'
-    windowWidget: 'editRadiusAuthWindow'
-
   init: ->
-    this.superclass.init.call(this)
-
     this.control
+
+      'editRadiusAuthWindow button[action=cancel]':
+        click: this.onCancelClick
+
+      'editRadiusAuthWindow button[action=save]':
+        click: this.onSaveClick
+
       'editRadiusAuthWindow combobox[name=cityId]':
         change: this.onCityChange
 
@@ -20,6 +21,33 @@ Ext.define 'ISPBClient.controller.radiusAuth.EditRadiusAuthWindowCtrl',
 
       'editRadiusAuthWindow combobox[name=buildingId]':
         change: this.onBuildingChange
+
+
+  onCancelClick: (element) ->
+    element.up('window').close()
+
+  onSaveClick: (element) ->
+    window = element.up('window')
+    form   = window.down('form').getForm()
+    store =  window.getStore()
+    record = form.getRecord()
+    values = form.getValues()
+
+    if !this.validateForm(form, record)
+      return
+
+    if (!record)
+      record = Ext.create('ISPBClient.model.RadiusAuth')
+      record.set(values)
+      store.add(record)
+    else
+      record.set(values)
+
+    record.set('createAt', new Date())
+
+    store.sync failure: (batch) ->
+      Ext.MessageBox.alert 'Ошибка', 'Не удалось сохранить запись!'
+    window.close()
 
   validateForm: (form) ->
     userNameField = form.findField("userName")

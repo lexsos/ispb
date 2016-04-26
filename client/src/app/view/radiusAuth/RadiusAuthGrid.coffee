@@ -4,12 +4,18 @@ Ext.define 'ISPBClient.view.radiusAuth.RadiusAuthGrid',
 
   columns: [
     {xtype: 'rownumberer'}
-    {header: 'Логин', dataIndex: 'comment', flex: 1}
-    {header: 'Номер договора', dataIndex: 'comment', flex: 1}
-    {header: 'ФИО', dataIndex: 'comment', flex: 1}
-    {header: 'Адрес подключения', dataIndex: 'comment', flex: 1}
-    {header: 'IPv4', dataIndex: 'comment', flex: 1}
-    {header: 'Дата создания', dataIndex: 'comment', flex: 1}
+    {header: 'Логин', dataIndex: 'userName', flex: 1}
+    {header: 'Номер договора', dataIndex: 'contractNumber', flex: 1}
+    {header: 'ФИО', dataIndex: 'customerQualifiedName', flex: 1}
+    {header: 'Адрес подключения', dataIndex: 'customerQualifiedAddress', flex: 1}
+    {header: 'IPv4', dataIndex: 'ip4Address', flex: 1}
+    {
+      header: 'Дата создания'
+      dataIndex: 'createAt'
+      flex: 1
+      renderer: (v) ->
+        return Ext.util.Format.date(v, 'd.m.Y H:i:s')
+    }
   ]
 
   store:

@@ -14,7 +14,9 @@ import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.account.RadiusUserService;
 import ispb.base.service.exception.AlreadyExistException;
+import ispb.base.service.exception.InvalidIpAddressException;
 import ispb.base.service.exception.NotFoundException;
+import ispb.base.utils.Ip4Address;
 
 import java.util.List;
 
@@ -39,7 +41,8 @@ public class RadiusUserServiceImpl implements RadiusUserService {
         return dao.getCount(filter);
     }
 
-    public RadiusUserDataSet create(RadiusUserContainer container)  throws AlreadyExistException, NotFoundException{
+    public RadiusUserDataSet create(RadiusUserContainer container)
+            throws AlreadyExistException, NotFoundException, InvalidIpAddressException {
         if (userNameExist(container.getUserName()) || ip4Exist(container.getIp4Address()))
             throw new AlreadyExistException();
 
@@ -52,7 +55,7 @@ public class RadiusUserServiceImpl implements RadiusUserService {
     }
 
     public RadiusUserDataSet update(long userId, RadiusUserContainer container)
-            throws AlreadyExistException, NotFoundException{
+            throws AlreadyExistException, NotFoundException, InvalidIpAddressException{
         RadiusUserDataSetDao userDao = daoFactory.getRadiusUserDataSetDao();
 
         RadiusUserDataSet radiusUser = userDao.getById(userId);
@@ -112,11 +115,20 @@ public class RadiusUserServiceImpl implements RadiusUserService {
         return application.getByType(CustomerAccountService.class);
     }
 
-    private void update(RadiusUserDataSet radiusUser, RadiusUserContainer container) throws NotFoundException {
+    private void update(RadiusUserDataSet radiusUser, RadiusUserContainer container)
+            throws NotFoundException, InvalidIpAddressException {
 
         radiusUser.setUserName(container.getUserName());
         radiusUser.setPassword(container.getPassword());
-        radiusUser.setIp4Address(container.getIp4Address());
+
+        if (container.getIp4Address() != null && container.getIp4Address().length() > 0) {
+            String ip4Address = Ip4Address.normalize(container.getIp4Address());
+            if (ip4Address == null)
+                throw new InvalidIpAddressException();
+            radiusUser.setIp4Address(ip4Address);
+        }
+        else
+            radiusUser.setIp4Address(null);
 
         if (container.getCustomerId() != null) {
             CustomerAccountService customerService = getCustomerService();

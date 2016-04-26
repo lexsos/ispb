@@ -12,6 +12,9 @@ Ext.define 'ISPBClient.model.RadiusAuth',
     { name: 'customerQualifiedName', type: 'string' }
     { name: 'customerQualifiedAddress', type: 'string' }
     { name: 'contractNumber', type: 'string' }
+    { name: 'cityId', type: 'int' }
+    { name: 'streetId', type: 'int' }
+    { name: 'buildingId', type: 'int' }
   ]
 
   proxy:
