@@ -59,7 +59,7 @@ public class TariffRadiusAttributeResource extends RestResource {
     }
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    public static class TariffRadiusAttributeRestResponse extends RestResponse {
+    private static class TariffRadiusAttributeRestResponse extends RestResponse {
 
         private final List<TariffRadiusAttributeEntity> tariffAttributeList = new LinkedList<>();
 

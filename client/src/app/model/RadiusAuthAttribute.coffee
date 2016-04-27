@@ -12,4 +12,4 @@ Ext.define 'ISPBClient.model.RadiusAuthAttribute',
   proxy:
     type: 'rest'
     url : '/api/rest/radius_auth_attribute'
-    reader: {type: 'json', root: 'RadiusAuthAttributeList'}
+    reader: {type: 'json', root: 'radiusAuthAttributeList'}
