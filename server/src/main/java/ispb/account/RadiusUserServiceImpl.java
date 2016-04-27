@@ -2,8 +2,11 @@ package ispb.account;
 
 
 import ispb.base.Application;
+import ispb.base.db.container.RadiusUserAttributeContainer;
 import ispb.base.db.container.RadiusUserContainer;
+import ispb.base.db.dao.RadiusUserAttributeDataSetDao;
 import ispb.base.db.dao.RadiusUserDataSetDao;
+import ispb.base.db.dataset.RadiusUserAttributeDataSet;
 import ispb.base.db.dataset.RadiusUserDataSet;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
@@ -100,6 +103,65 @@ public class RadiusUserServiceImpl implements RadiusUserService {
 
     public boolean ip4Exist(String ip4Address){
         return getUserByIp4(ip4Address) != null;
+    }
+
+    public List<RadiusUserAttributeDataSet> getAttributeList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
+        RadiusUserAttributeDataSetDao dao = daoFactory.getRadiusUserAttributeDataSetDao();
+        return dao.getList(filter, sort, pagination);
+    }
+
+    public long getAttributeCount(DataSetFilter filter){
+        RadiusUserAttributeDataSetDao dao = daoFactory.getRadiusUserAttributeDataSetDao();
+        return dao.getCount(filter);
+    }
+
+    public RadiusUserAttributeDataSet createAttribute(RadiusUserAttributeContainer container)
+            throws NotFoundException{
+        RadiusUserDataSetDao userDao = daoFactory.getRadiusUserDataSetDao();
+        RadiusUserAttributeDataSetDao attributeDao = daoFactory.getRadiusUserAttributeDataSetDao();
+
+        RadiusUserDataSet user = userDao.getById(container.getUserId());
+        if (user == null)
+            throw new NotFoundException();
+
+        RadiusUserAttributeDataSet attribute = new RadiusUserAttributeDataSet();
+        attribute.setUser(user);
+        attribute.setAttributeName(container.getAttributeName());
+        attribute.setAttributeValue(container.getAttributeValue());
+        attribute.setCondition(container.getCondition());
+
+        attributeDao.save(attribute);
+        return attribute;
+    }
+
+    public RadiusUserAttributeDataSet updateAttribute(long attributeId, RadiusUserAttributeContainer container)
+            throws NotFoundException{
+        RadiusUserDataSetDao userDao = daoFactory.getRadiusUserDataSetDao();
+        RadiusUserAttributeDataSetDao attributeDao = daoFactory.getRadiusUserAttributeDataSetDao();
+
+        RadiusUserAttributeDataSet attribute = attributeDao.getById(attributeId);
+        if (attribute == null)
+            throw new NotFoundException();
+
+        RadiusUserDataSet user = userDao.getById(container.getUserId());
+        if (user == null)
+            throw new NotFoundException();
+
+        attribute.setUser(user);
+        attribute.setAttributeName(container.getAttributeName());
+        attribute.setAttributeValue(container.getAttributeValue());
+        attribute.setCondition(container.getCondition());
+
+        attributeDao.save(attribute);
+        return attribute;
+    }
+
+    public void deleteAttribute(long attributeId) throws NotFoundException {
+        RadiusUserAttributeDataSetDao dao = daoFactory.getRadiusUserAttributeDataSetDao();
+        RadiusUserAttributeDataSet attribute = dao.getById(attributeId);
+        if (attribute == null)
+            throw new NotFoundException();
+        dao.delete(attribute);
     }
 
     private RadiusUserDataSet getUserByIp4(String ip4Address){

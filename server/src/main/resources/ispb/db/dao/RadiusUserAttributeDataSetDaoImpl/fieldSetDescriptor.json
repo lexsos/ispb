@@ -1,0 +1,39 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "radiusUserAttribute.deleteAt"
+    },
+
+    "userId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "radiusUserAttribute.user.id"
+    },
+
+    "attributeName":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"radiusUserAttribute.attributeName",
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "attributeValue":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"radiusUserAttribute.attributeValue",
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "condition": {
+      "validOperators":["EQ"],
+      "sortable": true,
+      "hqlFieldName": "radiusUserAttribute.condition",
+      "valueTypeName": "ispb.base.db.fieldtype.RadiusAttributeCondition"
+    }
+
+  },
+
+  "defaultSort": "radiusUserAttribute.user.id, radiusUserAttribute.attributeName"
+}

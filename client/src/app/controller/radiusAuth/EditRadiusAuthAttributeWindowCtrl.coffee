@@ -28,10 +28,10 @@ Ext.define 'ISPBClient.controller.radiusAuth.EditRadiusAuthAttributeWindowCtrl',
 
   onAddClick: (element) ->
     store = element.up('grid').getStore()
-    radiusAuthId = element.up('window').getRadiusAuth().getId()
+    userId = element.up('window').getRadiusAuth().getId()
 
     record = Ext.create('ISPBClient.model.RadiusAuthAttribute')
-    record.set('radiusAuthId', radiusAuthId)
+    record.set('userId', userId)
     record.set('attributeName', 'name')
     record.set('attributeValue', 'value')
     record.set('condition', 'ALWAYS')

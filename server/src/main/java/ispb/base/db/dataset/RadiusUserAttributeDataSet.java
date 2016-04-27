@@ -1,6 +1,7 @@
 package ispb.base.db.dataset;
 
 
+import ispb.base.db.container.RadiusUserAttributeContainer;
 import ispb.base.db.fieldtype.RadiusAttributeCondition;
 import ispb.base.db.utils.DeletedMarkable;
 import ispb.base.db.utils.Identifiable;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "radius_user_attribute")
-public class RadiusUserAttributeDataSet implements DeletedMarkable, Identifiable {
+public class RadiusUserAttributeDataSet implements DeletedMarkable, Identifiable, RadiusUserAttributeContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,5 +86,9 @@ public class RadiusUserAttributeDataSet implements DeletedMarkable, Identifiable
 
     public void setCondition(RadiusAttributeCondition condition) {
         this.condition = condition;
+    }
+
+    public long getUserId(){
+        return user.getId();
     }
 }

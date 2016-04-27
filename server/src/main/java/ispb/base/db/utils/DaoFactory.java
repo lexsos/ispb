@@ -18,4 +18,5 @@ public interface DaoFactory {
     AutoPaymentJournalDataSetDao getAutoPaymentJournalDataSetDao();
     TariffRadiusAttributeDataSetDao getTariffRadiusAttributeDataSetDao();
     RadiusUserDataSetDao getRadiusUserDataSetDao();
+    RadiusUserAttributeDataSetDao getRadiusUserAttributeDataSetDao();
 }

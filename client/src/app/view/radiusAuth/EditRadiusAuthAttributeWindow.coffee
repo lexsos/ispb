@@ -138,6 +138,6 @@ Ext.define 'ISPBClient.view.radiusAuth.EditRadiusAuthAttributeWindow',
       element.down('displayfield[name=contractNumberLabel]').setValue(radiusAuth.get('contractNumber'))
       element.down('displayfield[name=customerQualifiedNameLabel]').setValue(radiusAuth.get('customerQualifiedName'))
       store = element.down('gridpanel').getStore()
-      store.filter("radiusAuthId__eq", radiusAuth.get('id'))
+      store.filter("userId__eq", radiusAuth.get('id'))
 
 

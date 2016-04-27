@@ -1,7 +1,9 @@
 package ispb.base.service.account;
 
 
+import ispb.base.db.container.RadiusUserAttributeContainer;
 import ispb.base.db.container.RadiusUserContainer;
+import ispb.base.db.dataset.RadiusUserAttributeDataSet;
 import ispb.base.db.dataset.RadiusUserDataSet;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
@@ -26,4 +28,10 @@ public interface RadiusUserService {
     RadiusUserDataSet getUserByName(String userName);
     boolean userNameExist(String userName);
     boolean ip4Exist(String ip4Address);
+
+    List<RadiusUserAttributeDataSet> getAttributeList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
+    long getAttributeCount(DataSetFilter filter);
+    RadiusUserAttributeDataSet createAttribute(RadiusUserAttributeContainer container) throws NotFoundException;
+    RadiusUserAttributeDataSet updateAttribute(long attributeId, RadiusUserAttributeContainer container) throws NotFoundException;
+    void deleteAttribute(long attributeId) throws NotFoundException;
 }
