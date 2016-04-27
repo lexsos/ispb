@@ -56,6 +56,7 @@ public class RadiusAuthAttributeResource extends RestResource {
 
     private static class TariffRadiusAttributeRestResponse extends RestResponse {
 
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         private final List<TariffRadiusAttributeEntity> radiusAuthAttributeList = new LinkedList<>();
 
         public TariffRadiusAttributeRestResponse(RadiusUserAttributeDataSet attribute){
