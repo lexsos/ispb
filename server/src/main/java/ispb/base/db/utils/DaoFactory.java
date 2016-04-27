@@ -19,4 +19,5 @@ public interface DaoFactory {
     TariffRadiusAttributeDataSetDao getTariffRadiusAttributeDataSetDao();
     RadiusUserDataSetDao getRadiusUserDataSetDao();
     RadiusUserAttributeDataSetDao getRadiusUserAttributeDataSetDao();
+    RadiusClientDataSetDao getRadiusClientDataSetDao();
 }

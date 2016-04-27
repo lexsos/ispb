@@ -1,0 +1,39 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "radiusClient.deleteAt"
+    },
+
+    "ip4Address":{
+      "validOperators":["EQ", "LIKE"],
+      "hqlFieldName":"radiusClient.ip4Address",
+      "valueTypeName":"java.lang.String",
+      "sortable": true
+    },
+
+    "addAuthRequest": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Boolean",
+      "hqlFieldName": "radiusClient.addAuthRequest",
+      "sortable": true
+    },
+
+    "rejectInactive": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Boolean",
+      "hqlFieldName": "radiusClient.rejectInactive",
+      "sortable": true
+    },
+
+    "clientType": {
+      "validOperators":["EQ"],
+      "sortable": true,
+      "hqlFieldName": "radiusClient.clientType",
+      "valueTypeName": "ispb.base.db.fieldtype.RadiusClientType"
+    }
+  },
+
+  "defaultSort": "radiusClient.id"
+}
