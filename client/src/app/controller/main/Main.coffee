@@ -17,6 +17,7 @@ Ext.define 'ISPBClient.controller.main.Main',
         'tariff.TariffList',
         'user.UserList',
         'radiusAuth.RadiusAuthList',
+        'radiusClient.RadiusClientList',
     ]
 
     init: ->

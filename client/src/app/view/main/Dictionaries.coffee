@@ -14,6 +14,7 @@ Ext.define 'ISPBClient.view.main.Dictionaries',
                 {text: 'Здания', widget: 'building.BuildingList'}
                 {text: 'Тарифы', widget: 'tariff.TariffList'}
                 {text: 'Пользователи', widget: 'user.UserList'}
+                {text: 'Клиенты RADIUS', widget: 'radiusClient.RadiusClientList'}
             ]
         }
     ]

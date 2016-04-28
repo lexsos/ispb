@@ -41,6 +41,9 @@ Ext.application
     'radiusAuth.RadiusAuthGridCtrl',
     'radiusAuth.EditRadiusAuthWindowCtrl',
     'radiusAuth.EditRadiusAuthAttributeWindowCtrl',
+
+    'radiusClient.RadiusClientGridCtrl',
+    'radiusClient.EditRadiusClientWindowCtrl',
   ]
 
   launch: ->
