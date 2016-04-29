@@ -1,6 +1,8 @@
 package ispb.radius;
 
 
+import ispb.base.db.dataset.RadiusClientDataSet;
+import ispb.base.radius.RadiusServer;
 import ispb.base.radius.RadiusServlet;
 import ispb.base.service.LogService;
 import org.tinyradius.attribute.RadiusAttribute;
@@ -38,13 +40,14 @@ public class RadiusWorker implements Runnable {
             InetAddress clientAddress = requestDatagram.getAddress();
             int clientPort = requestDatagram.getPort();
 
-            RadiusServlet servlet = server.getServlet(clientAddress);
+            RadiusServlet servlet = server.getServletByClientIp(clientAddress);
             if (servlet == null) {
                 logService.info("Discard RADIUS packet, not found servlet for RADIUS client " + clientAddress);
                 continue;
             }
 
-            String sharedSecret = servlet.getSharedSecret(clientAddress);
+            RadiusClientDataSet clientDataSet = server.getClientParameters(clientAddress);
+            String sharedSecret = servlet.getSharedSecret(clientDataSet);
             if (sharedSecret == null || sharedSecret.length() == 0){
                 logService.info("Discard RADIUS packet, shared secret is empty for " + clientAddress);
                 continue;
@@ -64,9 +67,10 @@ public class RadiusWorker implements Runnable {
                 continue;
             }
 
+
             RadiusPacket radiusResponse;
             try {
-                radiusResponse = servlet.service(radiusRequest, clientAddress, sharedSecret);
+                radiusResponse = servlet.service(radiusRequest, clientDataSet);
             }
             catch (Throwable e){
                 logService.warn("Error while execute RADIUS servlet for " + clientAddress, e);

@@ -35,6 +35,10 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
         return dao.getList(filter, sort, pagination);
     }
 
+    public List<RadiusClientDataSet> getRadiusClientList(){
+        return getList(null, null, null);
+    }
+
     public RadiusClientDataSet create(RadiusClientContainer container) throws AlreadyExistException, InvalidIpAddressException {
 
         if (ip4exist(container.getIp4Address()))

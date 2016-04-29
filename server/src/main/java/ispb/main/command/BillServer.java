@@ -8,9 +8,6 @@ import ispb.base.eventsys.EventSystem;
 import ispb.base.frontend.HttpServer;
 import ispb.base.service.LogService;
 import ispb.main.utils.BillingBuilder;
-import ispb.radius.servlet.MtDhcpRadiusServlet;
-
-import java.net.InetAddress;
 
 
 public class BillServer {
@@ -41,15 +38,6 @@ public class BillServer {
 
         logService.info("Starting RADIUS server");
         radiusServer.start();
-
-        // TODO: delete testing code
-        try {
-            radiusServer.addServlet(InetAddress.getByName("192.168.1.1"), new MtDhcpRadiusServlet());
-            radiusServer.addServlet(InetAddress.getByName("192.168.1.2"), new MtDhcpRadiusServlet());
-        }
-        catch (Throwable e){
-
-        }
 
         try {
             server.join();

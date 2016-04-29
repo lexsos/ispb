@@ -1,5 +1,7 @@
 package ispb.radius;
 
+import ispb.base.db.dataset.RadiusClientDataSet;
+import ispb.base.db.fieldtype.RadiusClientType;
 import ispb.base.radius.RadiusServer;
 import ispb.base.radius.RadiusServlet;
 import ispb.base.resources.Config;
@@ -7,6 +9,7 @@ import ispb.base.service.LogService;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -25,7 +28,8 @@ public class RadiusServerImpl implements RadiusServer {
     private final int workerCount;
     private final ExecutorService listeners;
 
-    private final Map<InetAddress, RadiusServlet> servletMap = new ConcurrentHashMap<>();
+    private final Map<RadiusClientType, RadiusServlet> servletByType = new ConcurrentHashMap<>();
+    private final Map<InetAddress, RadiusClientDataSet> clientByIp = new ConcurrentHashMap<>();
 
     public RadiusServerImpl(Config config, LogService logService){
         this.config = config;
@@ -63,17 +67,34 @@ public class RadiusServerImpl implements RadiusServer {
         accountingSocket.close();
     }
 
-    public void clearServlets(){
-        servletMap.clear();
+    public void addServletType(RadiusClientType type, RadiusServlet servlet){
+        servletByType.put(type, servlet);
     }
 
-    public void addServlet(InetAddress client, RadiusServlet servlet){
-        if (client != null && servlet !=null)
-            servletMap.put(client, servlet);
+    public void loadRadiusClient(List<RadiusClientDataSet> clientList){
+        clientByIp.clear();
+        for (RadiusClientDataSet client: clientList)
+            try {
+                InetAddress ip4address = InetAddress.getByName(client.getIp4Address());
+                clientByIp.put(ip4address, client);
+            }
+            catch (Throwable e){
+                logService.warn("Can't add RADIUS client", e);
+            }
     }
 
-    public RadiusServlet getServlet(InetAddress remoteAddress){
-        return servletMap.get(remoteAddress);
+    public RadiusServlet getServletByClientIp(InetAddress address){
+        RadiusClientDataSet client = clientByIp.get(address);
+        if (client == null)
+            return null;
+        RadiusClientType clientType = client.getClientType();
+        if (clientType == null)
+            return null;
+        return servletByType.get(clientType);
+    }
+
+    public RadiusClientDataSet getClientParameters(InetAddress address){
+        return clientByIp.get(address);
     }
 
     public boolean isStarted(){

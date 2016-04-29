@@ -15,6 +15,7 @@ import java.util.List;
 public interface RadiusClientDictionaryService {
     long getCount(DataSetFilter filter);
     List<RadiusClientDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
+    List<RadiusClientDataSet> getRadiusClientList();
 
     RadiusClientDataSet create(RadiusClientContainer container)
             throws AlreadyExistException, InvalidIpAddressException;
