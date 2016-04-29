@@ -92,3 +92,7 @@ Ext.define 'ISPBClient.utils.RpcProcedure',
     radiusLoginExist: (login) ->
       this.call "radius_login_exist",
         login: login
+
+    radiusClientIp4Exist: (ip4Address) ->
+      this.call "radius_client_ip4_exist",
+        ip4Address: ip4Address
