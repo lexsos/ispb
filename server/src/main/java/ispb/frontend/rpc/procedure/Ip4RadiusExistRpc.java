@@ -1,6 +1,7 @@
 package ispb.frontend.rpc.procedure;
 
 import ispb.base.Application;
+import ispb.base.frontend.rpc.Ip4AddressArgs;
 import ispb.base.frontend.rpc.RpcArg;
 import ispb.base.frontend.rpc.RpcProcedure;
 import ispb.base.frontend.utils.AccessLevel;
@@ -13,19 +14,6 @@ import java.io.IOException;
 
 
 public class Ip4RadiusExistRpc extends RpcProcedure {
-
-    private static class Ip4AddressArgs extends RpcArg {
-
-        private String ip4Address;
-
-        public boolean verify() {
-            return getIp4Address() != null;
-        }
-
-        public String getIp4Address() {
-            return ip4Address;
-        }
-    }
 
     public int getAccessLevel(){
         return AccessLevel.MIN;

@@ -21,11 +21,11 @@ public class RadiusClientResource extends RestResource {
 
     private static class RadiusClientEntity extends RestEntity implements RadiusClientContainer {
 
-        private String ip4Address;
-        private String secret;
-        private boolean addAuthRequest;
-        private boolean rejectInactive;
-        private RadiusClientType clientType;
+        private final String ip4Address;
+        private final String secret;
+        private final boolean addAuthRequest;
+        private final boolean rejectInactive;
+        private final RadiusClientType clientType;
 
         public RadiusClientEntity(RadiusClientDataSet client){
             setId(client.getId());
@@ -64,6 +64,8 @@ public class RadiusClientResource extends RestResource {
     private static class RadiusClientRestResponse extends RestResponse {
 
         private final long total;
+
+        @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
         private final List<RadiusClientEntity> radiusClientList = new LinkedList<>();
 
         public RadiusClientRestResponse(RadiusClientDataSet client){
@@ -71,6 +73,7 @@ public class RadiusClientResource extends RestResource {
             radiusClientList.add(new RadiusClientEntity(client));
         }
 
+        @SuppressWarnings("Convert2streamapi")
         public RadiusClientRestResponse(List<RadiusClientDataSet> clientSet, long total){
             this.total = total;
             for (RadiusClientDataSet client: clientSet)
