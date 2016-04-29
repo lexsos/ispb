@@ -1,6 +1,7 @@
 package ispb.base.db.dataset;
 
 
+import ispb.base.db.container.RadiusClientContainer;
 import ispb.base.db.fieldtype.RadiusClientType;
 import ispb.base.db.utils.BaseDataSet;
 import ispb.base.db.utils.DeletedMarkable;
@@ -11,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "radius_client")
-public class RadiusClientDataSet extends BaseDataSet implements DeletedMarkable, Identifiable {
+public class RadiusClientDataSet extends BaseDataSet implements DeletedMarkable, Identifiable, RadiusClientContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -11,6 +11,8 @@ import ispb.base.db.utils.QueryBuilder;
 import ispb.base.radius.RadiusServer;
 import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
+import ispb.base.service.dictionary.*;
+import ispb.dictionary.*;
 import ispb.eventsys.handler.AddDailyPaymentHandler;
 import ispb.eventsys.handler.CheckCustomerStatusHandler;
 import ispb.eventsys.handler.CheckPaymentHandler;
@@ -25,18 +27,10 @@ import ispb.base.resources.Config;
 import ispb.base.service.DBService;
 import ispb.base.service.LogService;
 import ispb.base.service.account.*;
-import ispb.base.service.dictionary.BuildingDictionaryService;
-import ispb.base.service.dictionary.CityDictionaryService;
-import ispb.base.service.dictionary.StreetDictionaryService;
-import ispb.base.service.dictionary.TariffDictionaryService;
 import ispb.db.DBServiceImpl;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
 import ispb.db.util.WhereBuilderImpl;
-import ispb.dictionary.BuildingDictionaryServiceImpl;
-import ispb.dictionary.CityDictionaryServiceImpl;
-import ispb.dictionary.StreetDictionaryServiceImpl;
-import ispb.dictionary.TariffDictionaryServiceImpl;
 import ispb.radius.RadiusServerImpl;
 import ispb.scheduler.EventSchedulerImpl;
 import ispb.eventsys.EventSystemImpl;
@@ -103,6 +97,9 @@ public class BillingBuilder {
 
         RadiusUserService radiusUserService = new RadiusUserServiceImpl(daoFactory, application);
         application.addByType(RadiusUserService.class, radiusUserService);
+
+        RadiusClientDictionaryService radiusClientDictionaryService = new RadiusClientDictionaryServiceImpl(daoFactory);
+        application.addByType(RadiusClientDictionaryService.class, radiusClientDictionaryService);
 
         EventSystem eventSystem = new EventSystemImpl(application, conf);
         application.addByType(EventSystem.class, eventSystem);
