@@ -1,6 +1,7 @@
 package ispb.dictionary;
 
 
+import ispb.base.Application;
 import ispb.base.db.container.RadiusClientContainer;
 import ispb.base.db.dao.RadiusClientDataSetDao;
 import ispb.base.db.dataset.RadiusClientDataSet;
@@ -9,6 +10,9 @@ import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.Pagination;
+import ispb.base.eventsys.EventMessage;
+import ispb.base.eventsys.EventSystem;
+import ispb.base.eventsys.message.RadiusClientUpdatedMsq;
 import ispb.base.service.dictionary.RadiusClientDictionaryService;
 import ispb.base.service.exception.AlreadyExistException;
 import ispb.base.service.exception.InvalidIpAddressException;
@@ -20,9 +24,11 @@ import java.util.List;
 public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionaryService {
 
     private final DaoFactory daoFactory;
+    private final Application application;
 
-    public RadiusClientDictionaryServiceImpl(DaoFactory daoFactory){
+    public RadiusClientDictionaryServiceImpl(DaoFactory daoFactory, Application application){
         this.daoFactory = daoFactory;
+        this.application = application;
     }
 
     public long getCount(DataSetFilter filter){
@@ -49,6 +55,7 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
         RadiusClientDataSet client = new RadiusClientDataSet();
         update(client, container);
         dao.save(client);
+        sendMsg(new RadiusClientUpdatedMsq());
         return client;
     }
 
@@ -66,6 +73,7 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
 
         update(client, container);
         dao.save(client);
+        sendMsg(new RadiusClientUpdatedMsq());
         return client;
     }
 
@@ -75,6 +83,7 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
         if (client == null)
             throw new NotFoundException();
         dao.delete(client);
+        sendMsg(new RadiusClientUpdatedMsq());
     }
 
     public boolean ip4exist(String ip4Address){
@@ -106,5 +115,11 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
         client.setAddAuthRequest(container.isAddAuthRequest());
         client.setRejectInactive(container.isRejectInactive());
         client.setClientType(container.getClientType());
+    }
+
+    private void sendMsg(EventMessage message){
+        EventSystem eventSystem = application.getByType(EventSystem.class);
+        if (eventSystem != null)
+            eventSystem.pushMessage(message);
     }
 }

@@ -9,19 +9,13 @@ import ispb.base.db.filter.WhereBuilder;
 import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
+import ispb.base.eventsys.message.*;
 import ispb.base.radius.RadiusServer;
 import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.service.dictionary.*;
 import ispb.dictionary.*;
-import ispb.eventsys.handler.AddDailyPaymentHandler;
-import ispb.eventsys.handler.CheckCustomerStatusHandler;
-import ispb.eventsys.handler.CheckPaymentHandler;
-import ispb.eventsys.handler.CheckTariffAssignmentHandler;
-import ispb.base.eventsys.message.AddDailyPaymentMsg;
-import ispb.base.eventsys.message.CheckCustomerStatusMsg;
-import ispb.base.eventsys.message.CheckPaymentMsg;
-import ispb.base.eventsys.message.CheckTariffAssignmentMsg;
+import ispb.eventsys.handler.*;
 import ispb.base.frontend.HttpServer;
 import ispb.base.resources.AppResources;
 import ispb.base.resources.Config;
@@ -100,7 +94,7 @@ public class BillingBuilder {
         RadiusUserService radiusUserService = new RadiusUserServiceImpl(daoFactory, application);
         application.addByType(RadiusUserService.class, radiusUserService);
 
-        RadiusClientDictionaryService radiusClientDictionaryService = new RadiusClientDictionaryServiceImpl(daoFactory);
+        RadiusClientDictionaryService radiusClientDictionaryService = new RadiusClientDictionaryServiceImpl(daoFactory, application);
         application.addByType(RadiusClientDictionaryService.class, radiusClientDictionaryService);
 
         EventSystem eventSystem = new EventSystemImpl(application, conf);
@@ -110,6 +104,8 @@ public class BillingBuilder {
         eventSystem.addHandler(new CheckCustomerStatusHandler(), CheckCustomerStatusMsg.class);
         eventSystem.addHandler(new CheckPaymentHandler(), CheckPaymentMsg.class);
         eventSystem.addHandler(new AddDailyPaymentHandler(), AddDailyPaymentMsg.class);
+        eventSystem.addHandler(new LoadRadiusClientHandler(), RadiusClientUpdatedMsq.class);
+
 
         EventScheduler eventScheduler = new EventSchedulerImpl(logService, application);
         application.addByType(EventScheduler.class, eventScheduler);
