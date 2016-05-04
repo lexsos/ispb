@@ -2,6 +2,10 @@ package ispb.base.utils;
 
 public class Ip4Address {
     public static String normalize(String ipAddress){
+
+        if (ipAddress == null)
+            return null;
+
         String[] ipAddressInArray = ipAddress.trim().split("\\.");
 
         if (ipAddressInArray.length != 4)

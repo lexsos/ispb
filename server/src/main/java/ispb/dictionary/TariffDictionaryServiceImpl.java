@@ -7,6 +7,7 @@ import ispb.base.db.dao.TariffRadiusAttributeDataSetDao;
 import ispb.base.db.dataset.TariffDataSet;
 import ispb.base.db.dataset.TariffRadiusAttributeDataSet;
 import ispb.base.db.field.CmpOperator;
+import ispb.base.db.fieldtype.RadiusAttributeCondition;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
@@ -36,6 +37,13 @@ public class TariffDictionaryServiceImpl implements TariffDictionaryService {
                                                                Pagination pagination){
         TariffRadiusAttributeDataSetDao dao = daoFactory.getTariffRadiusAttributeDataSetDao();
         return dao.getList(filter, sort, pagination);
+    }
+
+    public List<TariffRadiusAttributeDataSet> getAttributeList(long tariffId, RadiusAttributeCondition condition){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("tariffId", CmpOperator.EQ, tariffId);
+        filter.add("condition", CmpOperator.EQ, condition);
+        return getAttributeList(filter, null, null);
     }
 
     public TariffDataSet create(TariffContainer container) throws AlreadyExistException{

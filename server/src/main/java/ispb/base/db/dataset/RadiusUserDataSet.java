@@ -30,10 +30,10 @@ public class RadiusUserDataSet
     private Date createAt;
 
     @Column(nullable = false)
-    private String userName;
+    private String userName = "";
 
     @Column(nullable = false)
-    private String password;
+    private String password = "";
 
     @Column(nullable = true)
     private String ip4Address;

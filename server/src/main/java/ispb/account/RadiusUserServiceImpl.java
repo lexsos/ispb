@@ -9,6 +9,7 @@ import ispb.base.db.dao.RadiusUserDataSetDao;
 import ispb.base.db.dataset.RadiusUserAttributeDataSet;
 import ispb.base.db.dataset.RadiusUserDataSet;
 import ispb.base.db.field.CmpOperator;
+import ispb.base.db.fieldtype.RadiusAttributeCondition;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.DaoFactory;
@@ -108,6 +109,13 @@ public class RadiusUserServiceImpl implements RadiusUserService {
     public List<RadiusUserAttributeDataSet> getAttributeList(DataSetFilter filter, DataSetSort sort, Pagination pagination){
         RadiusUserAttributeDataSetDao dao = daoFactory.getRadiusUserAttributeDataSetDao();
         return dao.getList(filter, sort, pagination);
+    }
+
+    public List<RadiusUserAttributeDataSet> getAttributeList(long userId, RadiusAttributeCondition condition){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("userId", CmpOperator.EQ, userId);
+        filter.add("condition", CmpOperator.EQ, condition);
+        return getAttributeList(filter, null, null);
     }
 
     public long getAttributeCount(DataSetFilter filter){

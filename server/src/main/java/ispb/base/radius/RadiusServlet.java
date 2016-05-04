@@ -2,13 +2,21 @@ package ispb.base.radius;
 
 
 import ispb.base.db.dataset.RadiusClientDataSet;
+import ispb.base.service.LogService;
 import org.tinyradius.packet.AccessRequest;
 import org.tinyradius.packet.AccountingRequest;
 import org.tinyradius.packet.RadiusPacket;
 
 import java.net.InetAddress;
+import java.util.List;
 
 public class RadiusServlet {
+
+    private final LogService logService;
+
+    public RadiusServlet(LogService logService){
+        this.logService = logService;
+    }
 
     public RadiusPacket service(RadiusPacket request, RadiusClientDataSet clientDataSet){
 
@@ -22,6 +30,10 @@ public class RadiusServlet {
 
     public String getSharedSecret(RadiusClientDataSet clientDataSet){
         return clientDataSet.getSecret();
+    }
+
+    protected LogService getLogService(){
+        return logService;
     }
 
     protected RadiusPacket access(AccessRequest request, RadiusClientDataSet clientDataSet){
@@ -42,5 +54,15 @@ public class RadiusServlet {
 
     protected RadiusPacket makeAccountingResponse(RadiusPacket request){
         return new RadiusPacket(RadiusPacket.ACCOUNTING_RESPONSE, request.getPacketIdentifier());
+    }
+
+    protected void addAttributes(RadiusPacket radiusPacket, List<? extends RadiusAttribute> attributeList){
+        for (RadiusAttribute attribute: attributeList)
+            try {
+                radiusPacket.addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
+            }
+            catch (Throwable e){
+                getLogService().warn("Error while add RADIUS attribute " + attribute.getAttributeName() + " to RADIUS packet", e);
+            }
     }
 }

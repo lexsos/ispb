@@ -122,7 +122,11 @@ public class BillingBuilder {
 
         radiusServer.loadRadiusClient(radiusClientDictionaryService.getRadiusClientList());
 
-        DefaultRadiusServlet defaultRadiusServlet = new DefaultRadiusServlet(radiusUserService);
+        DefaultRadiusServlet defaultRadiusServlet = new DefaultRadiusServlet(
+                radiusUserService,
+                logService,
+                customerAccountService,
+                tariffDictionaryService);
         radiusServer.addServletType(RadiusClientType.DEFAULT, defaultRadiusServlet);
 
         return application;
