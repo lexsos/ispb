@@ -14,4 +14,5 @@ public interface RadiusUserDataSetDao {
     List<RadiusUserDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getCount(DataSetFilter filter);
     RadiusUserDataSet getById(long id);
+    void clearAuthRequest();
 }

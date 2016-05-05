@@ -25,6 +25,7 @@ public interface RadiusUserService {
     RadiusUserDataSet update(long userId, RadiusUserContainer container)
             throws AlreadyExistException, NotFoundException, InvalidIpAddressException;
     void delete(long userId) throws NotFoundException;
+    void clearAuthRequest();
 
     RadiusUserDataSet getUserByName(String userName);
     boolean userNameExist(String userName);

@@ -3,7 +3,9 @@ package ispb.frontend.rest.resource;
 import ispb.base.db.container.RadiusUserContainer;
 import ispb.base.db.dataset.CustomerDataSet;
 import ispb.base.db.dataset.RadiusUserDataSet;
+import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
+import ispb.base.db.filter.DataSetFilterItem;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
 import ispb.base.frontend.rest.*;
@@ -185,6 +187,28 @@ public class RadiusAuthResource extends RestResource {
         catch (NotFoundException e){
             return ErrorRestResponse.notFound();
         }
+    }
+
+    protected DataSetFilterItem restToDataSetFilter(RestFilterItem restItem){
+        if (restItem.propertyEquals("contractNumber__like")) {
+            return new DataSetFilterItem("contractNumber", CmpOperator.LIKE, restItem.getValue());
+        }
+        else if (restItem.propertyEquals("customer__is_null")) {
+            return new DataSetFilterItem("customer", CmpOperator.IS_NULL, null);
+        }
+        else if (restItem.propertyEquals("customer__is_not_null")) {
+            return new DataSetFilterItem("customer", CmpOperator.IS_NOT_NULL, null);
+        }
+        else if (restItem.propertyEquals("buildingId__eq")) {
+            return new DataSetFilterItem("buildingId", CmpOperator.EQ, restItem.asLong());
+        }
+        else if (restItem.propertyEquals("streetId__eq")) {
+            return new DataSetFilterItem("streetId", CmpOperator.EQ, restItem.asLong());
+        }
+        else if (restItem.propertyEquals("cityId__eq")) {
+            return new DataSetFilterItem("cityId", CmpOperator.EQ, restItem.asLong());
+        }
+        return null;
     }
 
     private RadiusUserService getRadiusUserService(RestContext restContext){

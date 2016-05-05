@@ -89,6 +89,11 @@ public class RadiusUserServiceImpl implements RadiusUserService {
         userDao.delete(radiusUser);
     }
 
+    public void clearAuthRequest(){
+        RadiusUserDataSetDao userDao = daoFactory.getRadiusUserDataSetDao();
+        userDao.clearAuthRequest();
+    }
+
     public RadiusUserDataSet getUserByName(String userName){
         DataSetFilter filter = new DataSetFilter();
         filter.add("userName", CmpOperator.EQ, userName);

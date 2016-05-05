@@ -6,6 +6,11 @@
       "hqlFieldName":"radiusUser.deleteAt"
     },
 
+    "customer": {
+      "validOperators":["IS_NULL", "IS_NOT_NULL"],
+      "hqlFieldName":"radiusUser.customer"
+    },
+
     "createAt": {
       "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
       "hqlFieldName":"radiusUser.createAt",

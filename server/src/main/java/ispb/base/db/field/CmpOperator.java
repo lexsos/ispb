@@ -34,6 +34,10 @@ public enum CmpOperator {
     IS_NULL {
         public String toHql(){ return "is null"; }
         public boolean hasArgument() { return false; }
+    },
+    IS_NOT_NULL {
+        public String toHql(){ return "is not null"; }
+        public boolean hasArgument() { return false; }
     }
     ;
 

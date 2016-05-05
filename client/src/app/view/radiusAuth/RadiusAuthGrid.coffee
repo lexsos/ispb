@@ -58,8 +58,15 @@ Ext.define 'ISPBClient.view.radiusAuth.RadiusAuthGrid',
           icon: 'static/img/delete.gif'
           action: 'delete'
         }
+        '-'
+        {
+          text: 'Удалить запросы'
+          icon: 'static/img/cross.gif'
+          action: 'clearReq'
+        }
       ]
     }
+
     {
       xtype: 'pagingtoolbar',
       dock: 'bottom',
@@ -72,5 +79,132 @@ Ext.define 'ISPBClient.view.radiusAuth.RadiusAuthGrid',
         added: (element) ->
           store = element.up('grid').getStore()
           element.bindStore(store)
+    }
+
+
+    {
+      xtype: 'toolbar'
+      dock: 'top'
+      items: [
+
+        {
+          fieldLabel: 'Фильтровать по'
+          xtype: 'combobox'
+          queryMode: 'local'
+          displayField: 'name'
+          valueField: 'key'
+          action: 'filterBy'
+          store:
+            fields: ['key', 'name']
+            data:[
+              {'key': null, 'name':'Без фильтрации'}
+              {'key':'address', 'name':'адресу'}
+              {'key':'contractNumber', 'name':'номеру договора'}
+              {'key':'authType', 'name':'по типу'}
+            ]
+        }
+
+        # Фильтр по адресу
+        {
+          xtype: 'toolbar'
+          hidden: true
+          border: false
+          filterType: 'address'
+          items: [
+            {
+              xtype: 'combobox'
+              width: 100
+              displayField: 'name'
+              valueField: 'id'
+              filterField: 'cityIdValue'
+              store:
+                model: 'ISPBClient.model.City'
+                autoLoad: false
+                remoteFilter: true
+            }
+            '-'
+            {
+              xtype: 'combobox'
+              width: 150
+              displayField: 'name'
+              valueField: 'id'
+              filterField: 'streetIdValue'
+              store:
+                model: 'ISPBClient.model.Street'
+                autoLoad: false
+                remoteFilter: true
+            }
+            '-'
+            {
+              xtype: 'combobox'
+              width: 60
+              displayField: 'name'
+              valueField: 'id'
+              filterField: 'buildingIdValue'
+              store:
+                model: 'ISPBClient.model.Building'
+                autoLoad: false
+                remoteFilter: true
+            }
+            '-'
+            {
+              text: 'Применить'
+              icon: 'static/img/filtered.gif'
+              action: 'filterApply'
+            }
+          ]
+        }
+
+        # Фильтр по номеру договора
+        {
+          xtype: 'toolbar'
+          hidden: true
+          border: false
+          filterType: 'contractNumber'
+          items: [
+            {
+              xtype: 'textfield'
+              width: 130
+              filterField: 'contractNumberValue'
+            }
+            '-'
+            {
+              text: 'Применить'
+              icon: 'static/img/filtered.gif'
+              action: 'filterApply'
+            }
+          ]
+        }
+
+        # Фильтр по типу
+        {
+          xtype: 'toolbar'
+          hidden: true
+          border: false
+          filterType: 'authType'
+          items: [
+            {
+              xtype: 'combobox'
+              queryMode: 'local'
+              displayField: 'name'
+              valueField: 'key'
+              filterField: 'authTypeValue'
+              store:
+                fields: ['key', 'name']
+                data:[
+                  {'key':'user', 'name':'Пользователь'}
+                  {'key':'req', 'name':'Запрос авторизации'}
+                ]
+            }
+            '-'
+            {
+              text: 'Применить'
+              icon: 'static/img/filtered.gif'
+              action: 'filterApply'
+            }
+          ]
+        }
+
+      ]
     }
   ]

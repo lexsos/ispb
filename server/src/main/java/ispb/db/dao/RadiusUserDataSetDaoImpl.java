@@ -12,6 +12,7 @@ import ispb.base.resources.AppResources;
 import ispb.db.util.BaseDao;
 import org.hibernate.SessionFactory;
 
+import java.util.Date;
 import java.util.List;
 
 public class RadiusUserDataSetDaoImpl extends BaseDao implements RadiusUserDataSetDao {
@@ -19,6 +20,7 @@ public class RadiusUserDataSetDaoImpl extends BaseDao implements RadiusUserDataS
     private final QueryBuilder queryBuilder;
     private final String hqlListTmpl;
     private final String hqlCountTmpl;
+    private final String hqlClearAuthRequest;
     private final FieldSetDescriptor fieldsDescriptor;
 
     public RadiusUserDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
@@ -27,6 +29,7 @@ public class RadiusUserDataSetDaoImpl extends BaseDao implements RadiusUserDataS
 
         hqlListTmpl = resources.getAsString(this.getClass(), "RadiusUserDataSetDaoImpl/tmpl_list.hql");
         hqlCountTmpl = resources.getAsString(this.getClass(), "RadiusUserDataSetDaoImpl/tmpl_count.hql");
+        hqlClearAuthRequest = resources.getAsString(this.getClass(), "RadiusUserDataSetDaoImpl/clear_auth_request.hql");
         fieldsDescriptor = loadFieldDescriptor(resources, "RadiusUserDataSetDaoImpl/fieldSetDescriptor.json");
     }
 
@@ -50,5 +53,12 @@ public class RadiusUserDataSetDaoImpl extends BaseDao implements RadiusUserDataS
 
     public RadiusUserDataSet getById(long id){
         return getEntityById(RadiusUserDataSet.class, id);
+    }
+
+    public void clearAuthRequest(){
+        this.doTransaction(
+                (session, transaction) ->
+                        session.createQuery(hqlClearAuthRequest).setParameter("deleteAt", new Date()).executeUpdate()
+        );
     }
 }
