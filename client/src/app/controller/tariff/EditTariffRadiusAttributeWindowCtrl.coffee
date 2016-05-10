@@ -2,7 +2,7 @@ Ext.define 'ISPBClient.controller.tariff.EditTariffRadiusAttributeWindowCtrl',
   extend: 'Ext.app.Controller'
 
   views: ['tariff.EditTariffRadiusAttributeWindow']
-  models: ['TariffRadiusAttribute']
+  models: ['TariffRadiusAttribute', 'RadiusDictionary']
 
   init: ->
     this.control

@@ -10,6 +10,7 @@ package org.tinyradius.dictionary;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * A dictionary that keeps the values and names in hash maps
@@ -146,14 +147,17 @@ public class MemoryDictionary implements WritableRadiusDictionary {
 
 		attributesByName.put(attributeName, attributeType);
 		vendorAttributes.put(typeCode, attributeType);
+
+		attributeNames.add(attributeName);
 	}
 
 	public Set<String> getAttributeNamesSet(){
-		return attributesByName.keySet();
+		return attributeNames;
 	}
 
 	private final Map<Integer, String> vendorsByCode = new ConcurrentHashMap<>(); // <Integer, String>
 	private final Map<Integer, Map<Integer, AttributeType>> attributesByCode = new ConcurrentHashMap<>(); // <Integer, <Integer, AttributeType>>
 	private final Map<String, AttributeType> attributesByName = new ConcurrentHashMap<>(); // <String, AttributeType>
+	private final Set<String> attributeNames = new ConcurrentSkipListSet<>();
 
 }

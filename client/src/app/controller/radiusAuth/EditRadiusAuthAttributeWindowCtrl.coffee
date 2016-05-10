@@ -2,7 +2,7 @@ Ext.define 'ISPBClient.controller.radiusAuth.EditRadiusAuthAttributeWindowCtrl',
   extend: 'Ext.app.Controller'
 
   views: ['radiusAuth.EditRadiusAuthAttributeWindow']
-  models: ['RadiusAuthAttribute']
+  models: ['RadiusAuthAttribute', 'RadiusDictionary']
 
 
   init: ->

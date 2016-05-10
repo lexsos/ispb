@@ -4,7 +4,7 @@ Ext.define 'ISPBClient.view.tariff.EditTariffRadiusAttributeWindow',
 
   title: 'Атрибуты RADIUS'
   height: 400
-  width: 500
+  width: 600
   layout:'border'
   autoShow: false
 
@@ -57,18 +57,27 @@ Ext.define 'ISPBClient.view.tariff.EditTariffRadiusAttributeWindow',
           header: 'Атрибут'
           dataIndex: 'attributeName'
           flex: 1
-          editor: {xtype: 'textfield', allowBlank: false}
+          editor: {
+            xtype: 'combobox'
+            allowBlank: false
+            displayField: 'attributeName'
+            valueField: 'attributeName'
+            typeAhead: true
+            store:
+              model: 'ISPBClient.model.RadiusDictionary'
+              autoLoad: true
+          }
         }
         {
           header: 'Значение'
           dataIndex: 'attributeValue'
-          flex: 1
+          width: 150
           editor: {xtype: 'textfield', allowBlank: false}
         }
         {
           header: 'Условие'
           dataIndex: 'condition'
-          flex: 1
+          width: 150
           editor: {
             xtype: 'combobox'
             allowBlank: false
