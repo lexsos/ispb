@@ -9,8 +9,8 @@
 package org.tinyradius.attribute;
 
 import org.tinyradius.dictionary.AttributeType;
-import org.tinyradius.dictionary.DefaultDictionary;
-import org.tinyradius.dictionary.Dictionary;
+import org.tinyradius.dictionary.DefaultRadiusDictionary;
+import org.tinyradius.dictionary.RadiusDictionary;
 import org.tinyradius.util.RadiusException;
 import org.tinyradius.util.RadiusUtil;
 
@@ -129,9 +129,9 @@ public class RadiusAttribute {
 	/**
 	 * Returns the dictionary this Radius attribute uses.
 	 * 
-	 * @return Dictionary instance
+	 * @return RadiusDictionary instance
 	 */
-	public Dictionary getDictionary() {
+	public RadiusDictionary getDictionary() {
 		return dictionary;
 	}
 
@@ -140,10 +140,10 @@ public class RadiusAttribute {
 	 * the default dictionary is used.
 	 * 
 	 * @param dictionary
-	 *            Dictionary class to use
-	 * @see DefaultDictionary
+	 *            RadiusDictionary class to use
+	 * @see DefaultRadiusDictionary
 	 */
-	public void setDictionary(Dictionary dictionary) {
+	public void setDictionary(RadiusDictionary dictionary) {
 		this.dictionary = dictionary;
 	}
 
@@ -221,14 +221,14 @@ public class RadiusAttribute {
 	 * Creates a RadiusAttribute object of the appropriate type.
 	 * 
 	 * @param dictionary
-	 *            Dictionary to use
+	 *            RadiusDictionary to use
 	 * @param vendorId
 	 *            vendor ID or -1
 	 * @param attributeType
 	 *            attribute type
 	 * @return RadiusAttribute object
 	 */
-	public static RadiusAttribute createRadiusAttribute(Dictionary dictionary, int vendorId, int attributeType) {
+	public static RadiusAttribute createRadiusAttribute(RadiusDictionary dictionary, int vendorId, int attributeType) {
 		RadiusAttribute attribute = new RadiusAttribute();
 
 		AttributeType at = dictionary.getAttributeTypeByCode(vendorId, attributeType);
@@ -258,7 +258,7 @@ public class RadiusAttribute {
 	 * @return RadiusAttribute instance
 	 */
 	public static RadiusAttribute createRadiusAttribute(int vendorId, int attributeType) {
-		Dictionary dictionary = DefaultDictionary.getDefaultDictionary();
+		RadiusDictionary dictionary = DefaultRadiusDictionary.getDefaultDictionary();
 		return createRadiusAttribute(dictionary, vendorId, attributeType);
 	}
 
@@ -271,14 +271,14 @@ public class RadiusAttribute {
 	 * @return RadiusAttribute instance
 	 */
 	public static RadiusAttribute createRadiusAttribute(int attributeType) {
-		Dictionary dictionary = DefaultDictionary.getDefaultDictionary();
+		RadiusDictionary dictionary = DefaultRadiusDictionary.getDefaultDictionary();
 		return createRadiusAttribute(dictionary, -1, attributeType);
 	}
 
 	/**
-	 * Dictionary to look up attribute names.
+	 * RadiusDictionary to look up attribute names.
 	 */
-	private Dictionary dictionary = DefaultDictionary.getDefaultDictionary();
+	private RadiusDictionary dictionary = DefaultRadiusDictionary.getDefaultDictionary();
 
 	/**
 	 * Attribute type

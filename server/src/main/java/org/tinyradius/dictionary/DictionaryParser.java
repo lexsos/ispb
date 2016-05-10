@@ -22,7 +22,7 @@ import org.tinyradius.attribute.VendorSpecificAttribute;
 
 /**
  * Parses a dictionary in "Radiator format" and fills a
- * WritableDictionary.
+ * WritableRadiusDictionary.
  */
 public class DictionaryParser {
 
@@ -35,8 +35,8 @@ public class DictionaryParser {
 	 * @return dictionary object
 	 * @throws IOException
 	 */
-	public static Dictionary parseDictionary(InputStream source) throws IOException {
-		WritableDictionary d = new MemoryDictionary();
+	public static RadiusDictionary parseDictionary(InputStream source) throws IOException {
+		WritableRadiusDictionary d = new MemoryDictionary();
 		parseDictionary(source, d);
 		return d;
 	}
@@ -53,7 +53,7 @@ public class DictionaryParser {
 	 * @throws RuntimeException
 	 *             syntax errors
 	 */
-	public static void parseDictionary(InputStream source, WritableDictionary dictionary) throws IOException {
+	public static void parseDictionary(InputStream source, WritableRadiusDictionary dictionary) throws IOException {
 		// read each line separately
 		BufferedReader in = new BufferedReader(new InputStreamReader(source));
 
@@ -90,7 +90,7 @@ public class DictionaryParser {
 	/**
 	 * Parse a line that declares an attribute.
 	 */
-	private static void parseAttributeLine(WritableDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
+	private static void parseAttributeLine(WritableRadiusDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
 		if (tok.countTokens() != 3)
 			throw new IOException("syntax error on line " + lineNum);
 
@@ -113,7 +113,7 @@ public class DictionaryParser {
 	/**
 	 * Parses a VALUE line containing an enumeration value.
 	 */
-	private static void parseValueLine(WritableDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
+	private static void parseValueLine(WritableRadiusDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
 		if (tok.countTokens() != 3)
 			throw new IOException("syntax error on line " + lineNum);
 
@@ -132,7 +132,7 @@ public class DictionaryParser {
 	/**
 	 * Parses a line that declares a Vendor-Specific attribute.
 	 */
-	private static void parseVendorAttributeLine(WritableDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
+	private static void parseVendorAttributeLine(WritableRadiusDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
 		if (tok.countTokens() != 4)
 			throw new IOException("syntax error on line " + lineNum);
 
@@ -149,7 +149,7 @@ public class DictionaryParser {
 	/**
 	 * Parses a line containing a vendor declaration.
 	 */
-	private static void parseVendorLine(WritableDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
+	private static void parseVendorLine(WritableRadiusDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
 		if (tok.countTokens() != 2)
 			throw new IOException("syntax error on line " + lineNum);
 
@@ -162,7 +162,7 @@ public class DictionaryParser {
 	/**
 	 * Includes a dictionary file.
 	 */
-	private static void includeDictionaryFile(WritableDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
+	private static void includeDictionaryFile(WritableRadiusDictionary dictionary, StringTokenizer tok, int lineNum) throws IOException {
 		if (tok.countTokens() != 1)
 			throw new IOException("syntax error on line " + lineNum);
 		String includeFile = tok.nextToken();

@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.tinyradius.dictionary.AttributeType;
-import org.tinyradius.dictionary.Dictionary;
+import org.tinyradius.dictionary.RadiusDictionary;
 import org.tinyradius.util.RadiusException;
 
 /**
@@ -69,9 +69,9 @@ public class VendorSpecificAttribute extends RadiusAttribute {
 	 * 
 	 * @param dictionary
 	 *            dictionary to set
-	 * @see org.tinyradius.attribute.RadiusAttribute#setDictionary(org.tinyradius.dictionary.Dictionary)
+	 * @see org.tinyradius.attribute.RadiusAttribute#setDictionary(RadiusDictionary)
 	 */
-	public void setDictionary(Dictionary dictionary) {
+	public void setDictionary(RadiusDictionary dictionary) {
 		super.setDictionary(dictionary);
 		for (Iterator i = subAttributes.iterator(); i.hasNext();) {
 			RadiusAttribute attr = (RadiusAttribute) i.next();

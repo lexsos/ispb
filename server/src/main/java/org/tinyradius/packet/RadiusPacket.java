@@ -23,8 +23,8 @@ import java.util.List;
 import org.tinyradius.attribute.RadiusAttribute;
 import org.tinyradius.attribute.VendorSpecificAttribute;
 import org.tinyradius.dictionary.AttributeType;
-import org.tinyradius.dictionary.DefaultDictionary;
-import org.tinyradius.dictionary.Dictionary;
+import org.tinyradius.dictionary.DefaultRadiusDictionary;
+import org.tinyradius.dictionary.RadiusDictionary;
 import org.tinyradius.util.RadiusException;
 import org.tinyradius.util.RadiusUtil;
 
@@ -624,7 +624,7 @@ public class RadiusPacket {
 	 *                malformed packet
 	 */
 	public static RadiusPacket decodeRequestPacket(InputStream in, String sharedSecret) throws IOException, RadiusException {
-		return decodePacket(DefaultDictionary.getDefaultDictionary(), in, sharedSecret, null);
+		return decodePacket(DefaultRadiusDictionary.getDefaultDictionary(), in, sharedSecret, null);
 	}
 
 	/**
@@ -646,7 +646,7 @@ public class RadiusPacket {
 	public static RadiusPacket decodeResponsePacket(InputStream in, String sharedSecret, RadiusPacket request) throws IOException, RadiusException {
 		if (request == null)
 			throw new NullPointerException("request may not be null");
-		return decodePacket(DefaultDictionary.getDefaultDictionary(), in, sharedSecret, request);
+		return decodePacket(DefaultRadiusDictionary.getDefaultDictionary(), in, sharedSecret, request);
 	}
 
 	/**
@@ -667,7 +667,7 @@ public class RadiusPacket {
 	 * @exception RadiusException
 	 *                malformed packet
 	 */
-	public static RadiusPacket decodeRequestPacket(Dictionary dictionary, InputStream in, String sharedSecret) throws IOException, RadiusException {
+	public static RadiusPacket decodeRequestPacket(RadiusDictionary dictionary, InputStream in, String sharedSecret) throws IOException, RadiusException {
 		return decodePacket(dictionary, in, sharedSecret, null);
 	}
 
@@ -691,7 +691,7 @@ public class RadiusPacket {
 	 * @exception RadiusException
 	 *                malformed packet
 	 */
-	public static RadiusPacket decodeResponsePacket(Dictionary dictionary, InputStream in, String sharedSecret, RadiusPacket request)
+	public static RadiusPacket decodeResponsePacket(RadiusDictionary dictionary, InputStream in, String sharedSecret, RadiusPacket request)
 	        throws IOException, RadiusException {
 		if (request == null)
 			throw new NullPointerException("request may not be null");
@@ -789,9 +789,9 @@ public class RadiusPacket {
 	/**
 	 * Returns the dictionary this Radius packet uses.
 	 * 
-	 * @return Dictionary instance
+	 * @return RadiusDictionary instance
 	 */
-	public Dictionary getDictionary() {
+	public RadiusDictionary getDictionary() {
 		return dictionary;
 	}
 
@@ -801,10 +801,10 @@ public class RadiusPacket {
 	 * Also copies the dictionary to the attributes.
 	 * 
 	 * @param dictionary
-	 *            Dictionary class to use
-	 * @see DefaultDictionary
+	 *            RadiusDictionary class to use
+	 * @see DefaultRadiusDictionary
 	 */
-	public void setDictionary(Dictionary dictionary) {
+	public void setDictionary(RadiusDictionary dictionary) {
 		this.dictionary = dictionary;
 		for (Iterator i = attributes.iterator(); i.hasNext();) {
 			RadiusAttribute attr = (RadiusAttribute) i.next();
@@ -962,7 +962,7 @@ public class RadiusPacket {
 	 * @exception RadiusException
 	 *                if the Radius packet is malformed
 	 */
-	protected static RadiusPacket decodePacket(Dictionary dictionary, InputStream in, String sharedSecret, RadiusPacket request) throws IOException,
+	protected static RadiusPacket decodePacket(RadiusDictionary dictionary, InputStream in, String sharedSecret, RadiusPacket request) throws IOException,
 	        RadiusException {
 		// check shared secret
 		if (sharedSecret == null || sharedSecret.length() == 0)
@@ -1147,9 +1147,9 @@ public class RadiusPacket {
 	private byte[] authenticator = null;
 
 	/**
-	 * Dictionary to look up attribute names.
+	 * RadiusDictionary to look up attribute names.
 	 */
-	private Dictionary dictionary = DefaultDictionary.getDefaultDictionary();
+	private RadiusDictionary dictionary = DefaultRadiusDictionary.getDefaultDictionary();
 
 	/**
 	 * Next packet identifier.

@@ -1,5 +1,5 @@
 /**
- * $Id: DefaultDictionary.java,v 1.1 2005/09/04 22:11:00 wuttke Exp $
+ * $Id: DefaultRadiusDictionary.java,v 1.1 2005/09/04 22:11:00 wuttke Exp $
  * Created on 28.08.2005
  * @author mw
  * @version $Revision: 1.1 $
@@ -18,18 +18,18 @@ import java.io.InputStream;
  * classpath resource
  * <code>org.tinyradius.dictionary.default_dictionary</code>.
  */
-public class DefaultDictionary
+public class DefaultRadiusDictionary
 extends MemoryDictionary{
 
 	/**
 	 * Returns the singleton instance of this object.
-	 * @return DefaultDictionary instance
+	 * @return DefaultRadiusDictionary instance
 	 */
-	public static WritableDictionary getDefaultDictionary() {
+	public static WritableRadiusDictionary getDefaultDictionary() {
 		if (instance == null){
 			try {
-				instance = new DefaultDictionary();
-				InputStream source = DefaultDictionary.class.getClassLoader().getResourceAsStream(DICTIONARY_RESOURCE);
+				instance = new DefaultRadiusDictionary();
+				InputStream source = DefaultRadiusDictionary.class.getClassLoader().getResourceAsStream(DICTIONARY_RESOURCE);
 				DictionaryParser.parseDictionary(source, instance);
 			} catch (IOException e) {
 				throw new RuntimeException("default dictionary unavailable", e);
@@ -48,12 +48,12 @@ extends MemoryDictionary{
 	}
 	
 	/**
-	 * Make constructor private so that a DefaultDictionary
+	 * Make constructor private so that a DefaultRadiusDictionary
 	 * cannot be constructed by other classes. 
 	 */
-	private DefaultDictionary() {
+	private DefaultRadiusDictionary() {
 	}
 	
 	private static final String DICTIONARY_RESOURCE = "org/tinyradius/dictionary/default_dictionary";
-	private static DefaultDictionary instance = null;
+	private static DefaultRadiusDictionary instance = null;
 }

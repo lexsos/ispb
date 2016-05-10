@@ -34,7 +34,8 @@ import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
-import org.tinyradius.dictionary.DefaultDictionary;
+import org.tinyradius.dictionary.DefaultRadiusDictionary;
+import org.tinyradius.dictionary.WritableRadiusDictionary;
 
 import java.io.IOException;
 
@@ -118,11 +119,14 @@ public class BillingBuilder {
         String radiusDictionaryFile = conf.getAsStr("radius.dictionaryFile");
         try {
             if (radiusDictionaryFile != null)
-                DefaultDictionary.addFromFile(radiusDictionaryFile);
+                DefaultRadiusDictionary.addFromFile(radiusDictionaryFile);
         }
         catch (IOException e){
             logService.warn(e.getMessage(), e);
         }
+
+        WritableRadiusDictionary radiusDictionary = DefaultRadiusDictionary.getDefaultDictionary();
+        application.addByType(WritableRadiusDictionary.class, radiusDictionary);
 
         RadiusServer radiusServer = new RadiusServerImpl(conf, logService);
         application.addByType(RadiusServer.class, radiusServer);
