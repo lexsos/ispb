@@ -1,0 +1,57 @@
+#       Wi-Fi Alliance - Wireless ISP Roaming - Best Current Practices v1,
+#       Feb 2003, p 14
+#       http://www.weca.net/OpenSection/downloads/WISPr_V1.0.pdf
+
+VENDOR			14122	WISPr
+
+VENDORATTR      14122   WISPr-Location-ID             1       string
+VENDORATTR      14122   WISPr-Location-Name           2       string
+VENDORATTR      14122   WISPr-Logoff-URL              3       string
+VENDORATTR      14122   WISPr-Redirection-URL         4       string
+VENDORATTR      14122   WISPr-Bandwidth-Min-Up         5       integer
+VENDORATTR      14122   WISPr-Bandwidth-Min-Down       6       integer
+VENDORATTR      14122   WISPr-Bandwidth-Max-Up         7       integer
+VENDORATTR      14122   WISPr-Bandwidth-Max-Down       8       integer
+VENDORATTR      14122   WISPr-Session-Terminate-Time  9       string
+VENDORATTR      14122   WISPr-Session-Terminate-End-Of-Day    10      integer
+VENDORATTR      14122   WISPr-Billing-Class-Of-Service        11      string
+
+# MikroTik vendor specific dictionary
+
+VENDOR          14988   Mikrotik
+
+VENDORATTR      14988   Mikrotik-Recv-Limit             1   integer
+VENDORATTR      14988   Mikrotik-Xmit-Limit             2   integer
+VENDORATTR      14988   Mikrotik-Group                  3   string
+VENDORATTR      14988   Mikrotik-Wireless-Forward       4   integer
+VENDORATTR      14988   Mikrotik-Wireless-Skip-Dot1x    5   integer
+VENDORATTR      14988   Mikrotik-Wireless-Enc-Algo      6   integer
+VENDORATTR      14988   Mikrotik-Wireless-Enc-Key       7   string
+VENDORATTR      14988   Mikrotik-Rate-Limit             8   string
+VENDORATTR      14988   Mikrotik-Realm                  9   string
+VENDORATTR      14988   Mikrotik-Host-IP                10  ipaddr
+VENDORATTR      14988   Mikrotik-Mark-Id                11  string
+VENDORATTR      14988   Mikrotik-Advertise-URL          12  string
+VENDORATTR      14988   Mikrotik-Advertise-Interval     13  integer
+VENDORATTR      14988   Mikrotik-Recv-Limit-Gigawords   14  integer
+VENDORATTR      14988   Mikrotik-Xmit-Limit-Gigawords   15  integer
+VENDORATTR      14988   Mikrotik-Wireless-PSK           16  string
+VENDORATTR      14988   Mikrotik-Total-Limit            17  integer
+VENDORATTR      14988   Mikrotik-Total-Limit-Gigawords  18  integer
+VENDORATTR      14988   Mikrotik-Address-List           19  string
+VENDORATTR      14988   Mikrotik-Wireless-MPKey         20  string
+VENDORATTR      14988   Mikrotik-Wireless-Comment       21  string
+VENDORATTR      14988   Mikrotik-Delegated-IPv6-Pool    22  string
+VENDORATTR      14988   Mikrotik_DHCP_Option_Set        23  string
+VENDORATTR      14988   Mikrotik_DHCP_Option_Param_STR1 24  string
+VENDORATTR      14988   Mikortik_DHCP_Option_Param_STR2 25  string
+VENDORATTR      14988   Mikrotik_Wireless_VLANID        26  integer
+VENDORATTR      14988   Mikrotik_Wireless_VLANIDtype    27  integer
+VENDORATTR      14988   Mikrotik_Wireless_Minsignal     28  string
+VENDORATTR      14988   Mikrotik_Wireless_Maxsignal     29  string
+
+VALUE           Mikrotik-Wireless-Enc-Algo            No-encryption                  0
+VALUE           Mikrotik-Wireless-Enc-Algo            40-bit-WEP                     1
+VALUE           Mikrotik-Wireless-Enc-Algo            104-bit-WEP                    2
+VALUE           Mikrotik-Wireless-Enc-Algo            AES-CCM                        3
+VALUE           Mikrotik-Wireless-Enc-Algo            TKIP                           4

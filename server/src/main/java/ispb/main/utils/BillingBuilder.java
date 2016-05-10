@@ -34,6 +34,9 @@ import ispb.frontend.HttpServerImpl;
 import ispb.log.LogServiceImpl;
 import ispb.resources.AppResourcesImpl;
 import ispb.resources.ConfigImpl;
+import org.tinyradius.dictionary.DefaultDictionary;
+
+import java.io.IOException;
 
 public class BillingBuilder {
 
@@ -106,12 +109,20 @@ public class BillingBuilder {
         eventSystem.addHandler(new AddDailyPaymentHandler(), AddDailyPaymentMsg.class);
         eventSystem.addHandler(new LoadRadiusClientHandler(), RadiusClientUpdatedMsq.class);
 
-
         EventScheduler eventScheduler = new EventSchedulerImpl(logService, application);
         application.addByType(EventScheduler.class, eventScheduler);
 
         HttpServer server = new HttpServerImpl(conf);
         application.addByType(HttpServer.class, server);
+
+        String radiusDictionaryFile = conf.getAsStr("radius.dictionaryFile");
+        try {
+            if (radiusDictionaryFile != null)
+                DefaultDictionary.addFromFile(radiusDictionaryFile);
+        }
+        catch (IOException e){
+            logService.warn(e.getMessage(), e);
+        }
 
         RadiusServer radiusServer = new RadiusServerImpl(conf, logService);
         application.addByType(RadiusServer.class, radiusServer);

@@ -6,6 +6,8 @@
  */
 package org.tinyradius.dictionary;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,7 +25,7 @@ extends MemoryDictionary{
 	 * Returns the singleton instance of this object.
 	 * @return DefaultDictionary instance
 	 */
-	public static Dictionary getDefaultDictionary() {
+	public static WritableDictionary getDefaultDictionary() {
 		if (instance == null){
 			try {
 				instance = new DefaultDictionary();
@@ -34,6 +36,15 @@ extends MemoryDictionary{
 			}
 		}
 		return instance;
+	}
+
+	public static void addFromFile(String fileName) throws IOException {
+		File file = new File(fileName);
+		if (!file.exists())
+			throw new IOException("inclueded file '" + fileName + "' not found");
+
+		FileInputStream fis = new FileInputStream(file);
+		DictionaryParser.parseDictionary(fis, getDefaultDictionary());
 	}
 	
 	/**
