@@ -3,6 +3,7 @@ package ispb.base.radius;
 
 import java.util.*;
 
+@SuppressWarnings("WeakerAccess")
 public class RadiusAttributeList implements Iterable<RadiusAttribute> {
 
     private final Map<String, List<String>> attributes = new HashMap<>();
@@ -71,6 +72,10 @@ public class RadiusAttributeList implements Iterable<RadiusAttribute> {
     public void addAttributeList(List<? extends RadiusAttribute> attributeList){
         for (RadiusAttribute attribute: attributeList)
             addAttribute(attribute);
+    }
+
+    public boolean containsAttribute(String attributeName){
+        return attributes.containsKey(attributeName);
     }
 
     public Iterator<RadiusAttribute> iterator(){

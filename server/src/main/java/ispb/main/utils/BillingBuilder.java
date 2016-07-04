@@ -142,10 +142,11 @@ public class BillingBuilder {
         application.addByType(RadiusAttributeListBuilder.class, radiusAttributeListBuilder);
 
         DefaultRadiusServlet defaultRadiusServlet = new DefaultRadiusServlet(
-                radiusUserService,
                 logService,
+                radiusAttributeListBuilder,
+                radiusUserService,
                 customerAccountService,
-                radiusAttributeListBuilder);
+                conf);
         radiusServer.addServletType(RadiusClientType.DEFAULT, defaultRadiusServlet);
 
         return application;
