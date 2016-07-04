@@ -145,7 +145,6 @@ public class BillingBuilder {
                 radiusUserService,
                 logService,
                 customerAccountService,
-                tariffDictionaryService,
                 radiusAttributeListBuilder);
         radiusServer.addServletType(RadiusClientType.DEFAULT, defaultRadiusServlet);
 
