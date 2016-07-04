@@ -7,9 +7,6 @@ import org.tinyradius.packet.AccessRequest;
 import org.tinyradius.packet.AccountingRequest;
 import org.tinyradius.packet.RadiusPacket;
 
-import java.net.InetAddress;
-import java.util.List;
-
 public class RadiusServlet {
 
     private final LogService logService;
@@ -56,7 +53,7 @@ public class RadiusServlet {
         return new RadiusPacket(RadiusPacket.ACCOUNTING_RESPONSE, request.getPacketIdentifier());
     }
 
-    protected void addAttributes(RadiusPacket radiusPacket, List<? extends RadiusAttribute> attributeList){
+    protected void addAttributes(RadiusPacket radiusPacket, Iterable<? extends RadiusAttribute> attributeList){
         for (RadiusAttribute attribute: attributeList)
             try {
                 radiusPacket.addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());

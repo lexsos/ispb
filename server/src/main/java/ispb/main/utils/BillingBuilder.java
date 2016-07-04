@@ -10,6 +10,7 @@ import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.eventsys.message.*;
+import ispb.base.radius.RadiusAttributeListBuilder;
 import ispb.base.radius.RadiusServer;
 import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
@@ -26,6 +27,7 @@ import ispb.db.DBServiceImpl;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
 import ispb.db.util.WhereBuilderImpl;
+import ispb.radius.RadiusAttributeListBuilderImpl;
 import ispb.radius.RadiusServerImpl;
 import ispb.radius.servlet.DefaultRadiusServlet;
 import ispb.scheduler.EventSchedulerImpl;
@@ -133,11 +135,18 @@ public class BillingBuilder {
 
         radiusServer.loadRadiusClient(radiusClientDictionaryService.getRadiusClientList());
 
+        RadiusAttributeListBuilder radiusAttributeListBuilder = new RadiusAttributeListBuilderImpl(
+                customerAccountService,
+                tariffDictionaryService,
+                radiusUserService);
+        application.addByType(RadiusAttributeListBuilder.class, radiusAttributeListBuilder);
+
         DefaultRadiusServlet defaultRadiusServlet = new DefaultRadiusServlet(
                 radiusUserService,
                 logService,
                 customerAccountService,
-                tariffDictionaryService);
+                tariffDictionaryService,
+                radiusAttributeListBuilder);
         radiusServer.addServletType(RadiusClientType.DEFAULT, defaultRadiusServlet);
 
         return application;
