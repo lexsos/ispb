@@ -1,8 +1,6 @@
 package ispb.base.radius.dictionary;
 
-
 import ispb.base.radius.attribute.RadiusAttribute;
-import ispb.base.radius.attribute.RadiusVendorAttribute;
 
 import java.util.Set;
 
@@ -24,8 +22,8 @@ public interface RadiusDictionary {
     Set<String> getAttributeNames();
 
     void addAttribute(String name, int type, Class<? extends RadiusAttribute> clazz);
-    void addValue(String name, String value);
+    void addValue(String attrName, String valueName, String value);
     void addVendor(String name, int vendorId);
-    void addVendorAttribute(String name, int vendorId, int type, Class<? extends RadiusVendorAttribute> clazz);
+    void addVendorAttribute(String name, int vendorId, int type, Class<? extends RadiusAttribute> clazz);
 }
 
