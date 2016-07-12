@@ -8,19 +8,11 @@ public class RadiusIp4Attr extends RadiusOctetAttr {
 
     public static final int DATA_LENGTH = 4;
 
-    public RadiusIp4Attr(int type){
-        super(type);
-    }
-
-    public String getValue() throws RadiusBadValue {
+    public String getValue()  {
         if (data == null || data.length != DATA_LENGTH)
-            throw new RadiusBadValue();
+            return null;
 
-        String result = Ip4Address.fromBytes(data);
-        if (result == null)
-            throw new RadiusBadValue();
-
-        return result;
+        return Ip4Address.fromBytes(data);
     }
 
     public void setValue(String value) throws RadiusBadValue {

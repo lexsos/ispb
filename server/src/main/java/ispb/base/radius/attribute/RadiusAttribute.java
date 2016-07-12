@@ -9,10 +9,13 @@ public interface RadiusAttribute {
     void setDictionary(RadiusDictionary dictionary);
 
     String getName();
-    int getType();
     int getLength();
 
-    String getValue() throws RadiusBadValue;
+    int getType();
+    void setType(int type);
+
+
+    String getValue();
     void setValue(String value) throws RadiusBadValue;
 
     byte[] getRawValue();

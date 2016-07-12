@@ -7,15 +7,11 @@ public class RadiusIntegerAttr extends RadiusOctetAttr {
 
     public static final int DATA_LENGTH = 4;
 
-    public RadiusIntegerAttr(int type){
-        super(type);
-    }
-
-    public String getValue() throws RadiusBadValue {
+    public String getValue(){
         if (data == null || data.length != DATA_LENGTH)
-            throw new RadiusBadValue();
+            return null;
 
-        long i = ((data[0] & 0x0ff) << 24) | ((data[1] & 0x0ff) << 16) | ((data[2] & 0x0ff) << 8) | (data[0] & 0x0ff);
+        long i = ((data[0] & 0x0ff) << 24) | ((data[1] & 0x0ff) << 16) | ((data[2] & 0x0ff) << 8) | (data[3] & 0x0ff);
         return Long.toString(i);
     }
 

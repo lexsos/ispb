@@ -7,13 +7,9 @@ import java.io.UnsupportedEncodingException;
 
 public class RadiusStringAttr extends RadiusOctetAttr {
 
-    public RadiusStringAttr(int type){
-        super(type);
-    }
-
-    public String getValue() throws RadiusBadValue {
+    public String getValue(){
         if (data == null || data.length == 0)
-            throw new RadiusBadValue();
+            return null;
 
         try {
             return new String(data, "UTF-8");

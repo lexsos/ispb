@@ -13,10 +13,6 @@ public class RadiusOctetAttr implements RadiusAttribute {
     protected int type;
     protected RadiusDictionary dictionary;
 
-    public RadiusOctetAttr(int type){
-        this.type = 0;
-    }
-
     public void setDictionary(RadiusDictionary dictionary){
         this.dictionary = dictionary;
     }
@@ -29,13 +25,17 @@ public class RadiusOctetAttr implements RadiusAttribute {
         return type;
     }
 
+    public void setType(int type){
+        this.type = type;
+    }
+
     public int getLength(){
         if (data == null)
             return HEADER_LENGTH;
         return HEADER_LENGTH + data.length;
     }
 
-    public String getValue() throws RadiusBadValue {
+    public String getValue(){
         return HexCodec.byteToHex(data);
     }
 
@@ -53,7 +53,7 @@ public class RadiusOctetAttr implements RadiusAttribute {
 
     public void readValue(int pos, int len, byte[] data){
         if (this.data == null || this.data.length != len)
-            data = new byte[len];
+            this.data = new byte[len];
 
         System.arraycopy(data, pos, this.data, 0, len);
     }
