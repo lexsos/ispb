@@ -36,7 +36,8 @@ public class Ip4Address {
 
         String result = "";
         for (int i=0; i<data.length; i++){
-            result += Integer.toString(data[i]);
+            int octet = data[i] & 0x0ff;
+            result += Integer.toString(octet);
             if (i + 1 < data.length)
                 result += ".";
         }
@@ -45,32 +46,7 @@ public class Ip4Address {
 
 
     public static String normalize(String ipAddress){
-
-        if (ipAddress == null)
-            return null;
-
-        String[] ipAddressInArray = ipAddress.trim().split("\\.");
-
-        if (ipAddressInArray.length != 4)
-            return null;
-
-        String result = "";
-
-        for (int i=0; i<ipAddressInArray.length; i++){
-            try {
-                int octet = Integer.parseInt(ipAddressInArray[i]);
-                if (0 <= octet && octet <= 255)
-                    result += octet;
-                else
-                    return null;
-
-                if (i + 1 < ipAddressInArray.length)
-                    result += ".";
-            }
-            catch (Throwable e){
-                return null;
-            }
-        }
-        return result;
+        byte[] data = asBytes(ipAddress);
+        return fromBytes(data);
     }
 }

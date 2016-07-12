@@ -31,6 +31,9 @@ public class HexCodec {
             int a = Character.digit(hex.charAt(ia), 16);
             int b = Character.digit(hex.charAt(ib), 16);
 
+            if (a < 0 || a > 15 || b < 0 || b > 15)
+                return null;
+
             data[i] = (byte)( ((a & 0x0f) << 4) + (b & 0x0f));
         }
         return data;
