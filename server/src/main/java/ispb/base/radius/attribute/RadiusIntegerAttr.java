@@ -3,6 +3,7 @@ package ispb.base.radius.attribute;
 
 import ispb.base.radius.exception.RadiusBadValue;
 
+@SuppressWarnings("WeakerAccess")
 public class RadiusIntegerAttr extends RadiusOctetAttr {
 
     public static final int DATA_LENGTH = 4;

@@ -12,6 +12,10 @@ import ispb.base.db.utils.QueryBuilder;
 import ispb.base.eventsys.message.*;
 import ispb.base.radius.RadiusAttributeListBuilder;
 import ispb.base.radius.RadiusServer;
+import ispb.base.radius.dictionary.RadiusDictionary;
+import ispb.base.radius.dictionary.RadiusDictionaryReader;
+import ispb.base.radius.dictionary.RadiusDictionaryReaderImpl;
+import ispb.base.radius.dictionary.RadiusMemoryDictionary;
 import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.service.dictionary.*;
@@ -42,6 +46,22 @@ import org.tinyradius.dictionary.WritableRadiusDictionary;
 import java.io.IOException;
 
 public class BillingBuilder {
+
+    private static void buildRadius(Application application){
+        LogService logService = application.getByType(LogService.class);
+        Config conf = application.getByType(Config.class);
+
+        RadiusDictionaryReader radiusDictionaryReader = new RadiusDictionaryReaderImpl(logService);
+        application.addByType(RadiusDictionaryReader.class, radiusDictionaryReader);
+
+        RadiusDictionary radiusDictionary = new RadiusMemoryDictionary();
+        radiusDictionaryReader.readDefaultDictionary(radiusDictionary);
+        application.addByType(RadiusDictionary.class, radiusDictionary);
+
+        String radiusDictionaryFile = conf.getAsStr("radius.dictionaryFile");
+        if (radiusDictionaryFile != null)
+            radiusDictionaryReader.readDictionary(radiusDictionaryFile, radiusDictionary);
+    }
 
     public static Application build(String configFile){
         Application application = ApplicationImpl.getApplication();
@@ -148,6 +168,8 @@ public class BillingBuilder {
                 customerAccountService,
                 conf);
         radiusServer.addServletType(RadiusClientType.DEFAULT, defaultRadiusServlet);
+
+        buildRadius(application);
 
         return application;
     }

@@ -13,7 +13,7 @@ public class VendorAttributeType extends AttributeType {
         this.vendorId = vendorId;
     }
 
-    public int getVendorId(){
+    private int getVendorId(){
         return vendorId;
     }
 

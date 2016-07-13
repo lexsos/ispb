@@ -10,7 +10,7 @@ import ispb.base.radius.packet.RadiusPacket;
 
 public class RadiusPacketSerializer implements RadiusPacketReader, RadiusPacketWriter {
 
-    private RadiusDictionary dictionary;
+    private final RadiusDictionary dictionary;
 
     public RadiusPacketSerializer(RadiusDictionary dictionary){
         this.dictionary = dictionary;

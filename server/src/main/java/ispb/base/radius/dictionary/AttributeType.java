@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("WeakerAccess")
 public class AttributeType {
 
     protected final Class<? extends RadiusAttribute> clazz;

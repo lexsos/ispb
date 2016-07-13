@@ -1,11 +1,11 @@
 package ispb.base.radius.attribute;
 
 import ispb.base.radius.dictionary.AttributeType;
-import ispb.base.radius.dictionary.RadiusDictionary;
 import ispb.base.radius.exception.RadiusBadValue;
 import ispb.base.utils.HexCodec;
 
 
+@SuppressWarnings("WeakerAccess")
 public class RadiusOctetAttr implements RadiusAttribute {
 
     public final static int HEADER_LENGTH = 2;

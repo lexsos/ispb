@@ -2,9 +2,9 @@ package ispb.base.radius.attribute;
 
 
 import ispb.base.radius.dictionary.AttributeType;
-import ispb.base.radius.dictionary.RadiusDictionary;
 import ispb.base.radius.exception.RadiusBadValue;
 
+@SuppressWarnings("WeakerAccess")
 public class RadiusVendorAttr implements RadiusAttribute {
 
     public static final int VENDOR_SPECIFIC_TYPE = 26;

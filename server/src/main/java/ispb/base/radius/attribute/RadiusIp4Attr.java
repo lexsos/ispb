@@ -4,6 +4,7 @@ package ispb.base.radius.attribute;
 import ispb.base.radius.exception.RadiusBadValue;
 import ispb.base.utils.Ip4Address;
 
+@SuppressWarnings("WeakerAccess")
 public class RadiusIp4Attr extends RadiusOctetAttr {
 
     public static final int DATA_LENGTH = 4;
