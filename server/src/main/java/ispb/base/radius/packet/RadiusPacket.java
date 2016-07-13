@@ -46,9 +46,17 @@ public class RadiusPacket {
     private List<RadiusAttribute> attributeList = new  LinkedList<>();
     private static final Random random = new SecureRandom();
 
+
+    public RadiusPacket(){
+        packetType = 0;
+        identifier = 0;
+        setZeroAuth();
+    }
+
     public RadiusPacket(int type, int identifier){
         packetType = type;
         this.identifier = identifier;
+        setZeroAuth();
     }
 
     public void setRandomAuth(){
@@ -65,6 +73,10 @@ public class RadiusPacket {
             throw new RadiusBadAuthenticator();
 
         System.arraycopy(auth, 0, authenticator, 0, authenticator.length);
+    }
+
+    public byte[] getAuthenticator(){
+        return authenticator;
     }
 
     public int getPacketType(){

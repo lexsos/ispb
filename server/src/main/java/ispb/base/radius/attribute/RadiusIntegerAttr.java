@@ -11,7 +11,11 @@ public class RadiusIntegerAttr extends RadiusOctetAttr {
         if (data == null || data.length != DATA_LENGTH)
             return null;
 
-        long i = ((data[0] & 0x0ff) << 24) | ((data[1] & 0x0ff) << 16) | ((data[2] & 0x0ff) << 8) | (data[3] & 0x0ff);
+        long i = 0;
+        i |= (long)(data[0] & 0x0ff) << 24;
+        i |= (long)(data[1] & 0x0ff) << 16;
+        i |= (long)(data[2] & 0x0ff) << 8;
+        i |= (long)(data[3] & 0x0ff);
         return Long.toString(i);
     }
 
