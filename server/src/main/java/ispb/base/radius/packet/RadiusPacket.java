@@ -4,10 +4,8 @@ package ispb.base.radius.packet;
 import ispb.base.radius.attribute.RadiusAttribute;
 import ispb.base.radius.exception.RadiusBadAuthenticator;
 
-import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 @SuppressWarnings("unused")
 public class RadiusPacket {
@@ -40,32 +38,20 @@ public class RadiusPacket {
     public static final int STATUS_REJECT = 48;
     public static final int RESERVED = 255;
 
-    private final int packetType;
-    private final int identifier;
+    private int packetType;
+    private int identifier;
     private final byte[] authenticator = new byte[AUTH_LENGTH];
     private List<RadiusAttribute> attributeList = new  LinkedList<>();
-    private static final Random random = new SecureRandom();
 
 
     public RadiusPacket(){
         packetType = 0;
         identifier = 0;
-        setZeroAuth();
     }
 
     public RadiusPacket(int type, int identifier){
         packetType = type;
         this.identifier = identifier;
-        setZeroAuth();
-    }
-
-    public void setRandomAuth(){
-        random.nextBytes(authenticator);
-    }
-
-    public void setZeroAuth(){
-        for (int i=0; i<authenticator.length; i++)
-            authenticator[i] = 0;
     }
 
     public void setAuth(byte[] auth) throws RadiusBadAuthenticator{
@@ -83,8 +69,16 @@ public class RadiusPacket {
         return packetType;
     }
 
+    public void setPacketType(int packetType) {
+        this.packetType = packetType;
+    }
+
     public int getIdentifier(){
         return identifier;
+    }
+
+    public void setIdentifier(int identifier){
+        this.identifier = identifier;
     }
 
     public int getLength(){
