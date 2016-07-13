@@ -5,4 +5,5 @@ import java.io.InputStream;
 
 public interface RadiusDictionaryReader {
     void readDictionary(InputStream in, RadiusDictionary dictionary);
+    void readDictionary(String inFile, RadiusDictionary dictionary);
 }

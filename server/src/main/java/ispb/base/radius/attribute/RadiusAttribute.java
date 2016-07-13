@@ -1,19 +1,19 @@
 package ispb.base.radius.attribute;
 
 
-import ispb.base.radius.dictionary.RadiusDictionary;
+import ispb.base.radius.dictionary.AttributeType;
 import ispb.base.radius.exception.RadiusBadValue;
 
 public interface RadiusAttribute {
 
-    void setDictionary(RadiusDictionary dictionary);
+    void setAttributeType(AttributeType attributeType);
+    AttributeType getAttributeType();
 
     String getName();
     int getLength();
 
     int getType();
     void setType(int type);
-
 
     String getValue();
     void setValue(String value) throws RadiusBadValue;

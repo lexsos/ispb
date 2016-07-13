@@ -1,5 +1,6 @@
 package ispb.base.radius.attribute;
 
+import ispb.base.radius.dictionary.AttributeType;
 import ispb.base.radius.dictionary.RadiusDictionary;
 import ispb.base.radius.exception.RadiusBadValue;
 import ispb.base.utils.HexCodec;
@@ -10,15 +11,19 @@ public class RadiusOctetAttr implements RadiusAttribute {
     public final static int HEADER_LENGTH = 2;
 
     protected byte[] data;
-    protected int type;
-    protected RadiusDictionary dictionary;
+    protected int type; // TODO: refactoring - get from attributeType
+    protected AttributeType attributeType;
 
-    public void setDictionary(RadiusDictionary dictionary){
-        this.dictionary = dictionary;
+    public void setAttributeType(AttributeType attributeType){
+        this.attributeType = attributeType;
+    }
+
+    public AttributeType getAttributeType(){
+        return attributeType;
     }
 
     public String getName(){
-        return dictionary.getAttributeName(type);
+        return attributeType.getAttributeName();
     }
 
     public int getType(){

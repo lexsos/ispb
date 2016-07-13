@@ -1,6 +1,7 @@
 package ispb.base.radius.attribute;
 
 
+import ispb.base.radius.dictionary.AttributeType;
 import ispb.base.radius.dictionary.RadiusDictionary;
 import ispb.base.radius.exception.RadiusBadValue;
 
@@ -9,21 +10,25 @@ public class RadiusVendorAttr implements RadiusAttribute {
     public static final int VENDOR_SPECIFIC_TYPE = 26;
     public static final int VENDOR_HEADER_LENGTH = 6;
 
-    private int vendorId;
-    private RadiusAttribute innerAttr;
-    RadiusDictionary dictionary;
+    private final int vendorId;
+    private final RadiusAttribute innerAttr;
+    private AttributeType attributeType;
 
     public RadiusVendorAttr(int vendorId, RadiusAttribute innerAttr){
         this.vendorId = vendorId;
         this.innerAttr = innerAttr;
     }
 
-    public void setDictionary(RadiusDictionary dictionary){
-        this.dictionary = dictionary;
+    public void setAttributeType(AttributeType attributeType){
+        this.attributeType = attributeType;
+    }
+
+    public AttributeType getAttributeType(){
+        return attributeType;
     }
 
     public String getName(){
-        return dictionary.getVendorAttributeName(vendorId, innerAttr.getType());
+        return attributeType.getAttributeName();
     }
 
     public int getLength(){
