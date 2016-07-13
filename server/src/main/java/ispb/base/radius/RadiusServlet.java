@@ -6,6 +6,7 @@ import ispb.base.db.dataset.RadiusClientDataSet;
 import ispb.base.db.dataset.RadiusUserDataSet;
 import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.db.view.CustomerSummeryView;
+import ispb.base.radius.attribute.RadiusAttributeContainer;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;
 import ispb.base.service.account.CustomerAccountService;
@@ -154,8 +155,8 @@ public class RadiusServlet {
         return true;
     }
 
-    protected void addAttributes(RadiusPacket radiusPacket, Iterable<? extends RadiusAttribute> attributeList){
-        for (RadiusAttribute attribute: attributeList)
+    protected void addAttributes(RadiusPacket radiusPacket, Iterable<? extends RadiusAttributeContainer> attributeList){
+        for (RadiusAttributeContainer attribute: attributeList)
             try {
                 radiusPacket.addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
             }

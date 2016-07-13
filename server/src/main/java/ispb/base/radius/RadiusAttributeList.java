@@ -1,20 +1,22 @@
 package ispb.base.radius;
 
 
+import ispb.base.radius.attribute.RadiusAttributeContainer;
+
 import java.util.*;
 
 @SuppressWarnings("WeakerAccess")
-public class RadiusAttributeList implements Iterable<RadiusAttribute> {
+public class RadiusAttributeList implements Iterable<RadiusAttributeContainer> {
 
     private final Map<String, List<String>> attributes = new HashMap<>();
 
-    private class RadiusAttributeListIterator implements Iterator<RadiusAttribute> {
+    private class RadiusAttributeListIterator implements Iterator<RadiusAttributeContainer> {
 
         private final Iterator<String> names;
         private Iterator<String> values;
         private String currentName;
 
-        private class Attribute implements RadiusAttribute {
+        private class Attribute implements RadiusAttributeContainer {
 
             private final String name;
             private final String value;
@@ -51,7 +53,7 @@ public class RadiusAttributeList implements Iterable<RadiusAttribute> {
             return false;
         }
 
-        public RadiusAttribute next(){
+        public RadiusAttributeContainer next(){
             if (hasNext())
                 return new Attribute(currentName, values.next());
             throw new NoSuchElementException();
@@ -64,13 +66,13 @@ public class RadiusAttributeList implements Iterable<RadiusAttribute> {
         attributes.get(attributeName).add(attributeValue);
     }
 
-    public void addAttribute(RadiusAttribute attribute){
+    public void addAttribute(RadiusAttributeContainer attribute){
         addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
     }
 
     @SuppressWarnings("Convert2streamapi")
-    public void addAttributeList(List<? extends RadiusAttribute> attributeList){
-        for (RadiusAttribute attribute: attributeList)
+    public void addAttributeList(List<? extends RadiusAttributeContainer> attributeList){
+        for (RadiusAttributeContainer attribute: attributeList)
             addAttribute(attribute);
     }
 
@@ -78,7 +80,7 @@ public class RadiusAttributeList implements Iterable<RadiusAttribute> {
         return attributes.containsKey(attributeName);
     }
 
-    public Iterator<RadiusAttribute> iterator(){
+    public Iterator<RadiusAttributeContainer> iterator(){
         return new RadiusAttributeListIterator();
     }
 }

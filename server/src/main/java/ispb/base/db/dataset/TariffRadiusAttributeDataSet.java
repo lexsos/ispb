@@ -5,14 +5,14 @@ import ispb.base.db.container.TariffRadiusAttributeContainer;
 import ispb.base.db.fieldtype.RadiusAttributeCondition;
 import ispb.base.db.utils.DeletedMarkable;
 import ispb.base.db.utils.Identifiable;
-import ispb.base.radius.RadiusAttribute;
+import ispb.base.radius.attribute.RadiusAttributeContainer;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "tariff_radius_attribute")
-public class TariffRadiusAttributeDataSet implements DeletedMarkable, Identifiable, TariffRadiusAttributeContainer, RadiusAttribute {
+public class TariffRadiusAttributeDataSet implements DeletedMarkable, Identifiable, TariffRadiusAttributeContainer, RadiusAttributeContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

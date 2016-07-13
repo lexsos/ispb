@@ -5,14 +5,14 @@ import ispb.base.db.container.RadiusUserAttributeContainer;
 import ispb.base.db.fieldtype.RadiusAttributeCondition;
 import ispb.base.db.utils.DeletedMarkable;
 import ispb.base.db.utils.Identifiable;
-import ispb.base.radius.RadiusAttribute;
+import ispb.base.radius.attribute.RadiusAttributeContainer;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "radius_user_attribute")
-public class RadiusUserAttributeDataSet implements DeletedMarkable, Identifiable, RadiusUserAttributeContainer, RadiusAttribute {
+public class RadiusUserAttributeDataSet implements DeletedMarkable, Identifiable, RadiusUserAttributeContainer, RadiusAttributeContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

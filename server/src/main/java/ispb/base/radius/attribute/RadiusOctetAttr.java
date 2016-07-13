@@ -6,7 +6,7 @@ import ispb.base.utils.HexCodec;
 
 
 @SuppressWarnings("WeakerAccess")
-public class RadiusOctetAttr implements RadiusAttribute {
+public class RadiusOctetAttr implements RadiusAttribute, RadiusAttributeContainer {
 
     public final static int HEADER_LENGTH = 2;
 
@@ -71,5 +71,13 @@ public class RadiusOctetAttr implements RadiusAttribute {
             System.arraycopy(this.data, 0, data, pos + 2, this.data.length);
 
         return getLength();
+    }
+
+    public String getAttributeName(){
+        return getName();
+    }
+
+    public String getAttributeValue(){
+        return getValue();
     }
 }

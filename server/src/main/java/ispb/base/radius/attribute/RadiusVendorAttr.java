@@ -5,7 +5,7 @@ import ispb.base.radius.dictionary.AttributeType;
 import ispb.base.radius.exception.RadiusBadValue;
 
 @SuppressWarnings("WeakerAccess")
-public class RadiusVendorAttr implements RadiusAttribute {
+public class RadiusVendorAttr implements RadiusAttribute, RadiusAttributeContainer {
 
     public static final int VENDOR_SPECIFIC_TYPE = 26;
     public static final int VENDOR_HEADER_LENGTH = 6;
@@ -74,6 +74,14 @@ public class RadiusVendorAttr implements RadiusAttribute {
         innerAttr.write(pos, data);
 
         return getLength();
+    }
+
+    public String getAttributeName(){
+        return getName();
+    }
+
+    public String getAttributeValue(){
+        return getValue();
     }
 
 }
