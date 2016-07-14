@@ -38,6 +38,10 @@ public class RadiusPacket {
     public static final int STATUS_REJECT = 48;
     public static final int RESERVED = 255;
 
+    public static final int ATTRIBUTE_USER_PASSWORD = 2;
+    public static final int ATTRIBUTE_CHAP_PASSWORD = 3;
+    public static final int ATTRIBUTE_CHAP_CHALLENGE = 60;
+
     private int packetType;
     private int identifier;
     private final byte[] authenticator = new byte[AUTH_LENGTH];
