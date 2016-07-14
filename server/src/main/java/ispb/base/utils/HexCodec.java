@@ -1,6 +1,8 @@
 package ispb.base.utils;
 
 
+import java.io.UnsupportedEncodingException;
+
 public class HexCodec {
 
     public static String byteToHex(byte[] data){
@@ -37,5 +39,21 @@ public class HexCodec {
             data[i] = (byte)( ((a & 0x0f) << 4) + (b & 0x0f));
         }
         return data;
+    }
+
+    public static String byteToString(byte[] data){
+        try {
+            return new String(data, "UTF-8");
+        } catch (UnsupportedEncodingException uee) {
+            return new String(data);
+        }
+    }
+
+    public static byte[] stringToByte(String str){
+        try {
+            return str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException uee) {
+            return str.getBytes();
+        }
     }
 }
