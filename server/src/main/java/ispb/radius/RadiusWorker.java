@@ -2,8 +2,7 @@ package ispb.radius;
 
 
 import ispb.base.db.dataset.RadiusClientDataSet;
-import ispb.base.radius.RadiusServer;
-import ispb.base.radius.RadiusServlet;
+import ispb.base.radius.server.RadiusServlet;
 import ispb.base.service.LogService;
 import org.tinyradius.attribute.RadiusAttribute;
 import org.tinyradius.packet.RadiusPacket;

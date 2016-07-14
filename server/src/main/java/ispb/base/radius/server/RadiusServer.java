@@ -1,10 +1,9 @@
-package ispb.base.radius;
+package ispb.base.radius.server;
 
 
 import ispb.base.db.dataset.RadiusClientDataSet;
 import ispb.base.db.fieldtype.RadiusClientType;
 
-import java.net.InetAddress;
 import java.util.List;
 
 public interface RadiusServer {

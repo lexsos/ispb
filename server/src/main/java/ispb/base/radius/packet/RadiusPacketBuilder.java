@@ -24,11 +24,11 @@ public class RadiusPacketBuilder {
         return packet;
     }
 
-    public static RadiusPacket getAccessAccept (){
-        return new RadiusPacket(RadiusPacket.ACCESS_ACCEPT, 0);
+    public static RadiusPacket getAccessAccept (RadiusPacket request){
+        return new RadiusPacket(RadiusPacket.ACCESS_ACCEPT, request.getIdentifier());
      }
 
-    public static RadiusPacket getAccessReject (){
-        return new RadiusPacket(RadiusPacket.ACCESS_REJECT, 0);
+    public static RadiusPacket getAccessReject (RadiusPacket request){
+        return new RadiusPacket(RadiusPacket.ACCESS_REJECT, request.getIdentifier());
     }
 }

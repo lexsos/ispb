@@ -3,7 +3,7 @@ package ispb.eventsys.handler;
 import ispb.base.Application;
 import ispb.base.eventsys.EventHandler;
 import ispb.base.eventsys.EventMessage;
-import ispb.base.radius.RadiusServer;
+import ispb.base.radius.server.RadiusServer;
 import ispb.base.service.dictionary.RadiusClientDictionaryService;
 
 public class LoadRadiusClientHandler implements EventHandler {

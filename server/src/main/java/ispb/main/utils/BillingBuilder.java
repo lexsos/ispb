@@ -11,7 +11,7 @@ import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.eventsys.message.*;
 import ispb.base.radius.RadiusAttributeListBuilder;
-import ispb.base.radius.RadiusServer;
+import ispb.base.radius.server.RadiusServer;
 import ispb.base.radius.dictionary.RadiusDictionary;
 import ispb.base.radius.dictionary.RadiusDictionaryReader;
 import ispb.base.radius.dictionary.RadiusDictionaryReaderImpl;

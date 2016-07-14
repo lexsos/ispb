@@ -1,4 +1,4 @@
-package ispb.base.radius;
+package ispb.base.radius.server;
 
 
 import ispb.base.db.dataset.CustomerDataSet;
@@ -6,6 +6,8 @@ import ispb.base.db.dataset.RadiusClientDataSet;
 import ispb.base.db.dataset.RadiusUserDataSet;
 import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.db.view.CustomerSummeryView;
+import ispb.base.radius.RadiusAttributeList;
+import ispb.base.radius.RadiusAttributeListBuilder;
 import ispb.base.radius.attribute.RadiusAttributeContainer;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;

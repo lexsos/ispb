@@ -1,7 +1,7 @@
 package ispb.radius.servlet;
 
 import ispb.base.radius.RadiusAttributeListBuilder;
-import ispb.base.radius.RadiusServlet;
+import ispb.base.radius.server.RadiusServlet;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;
 import ispb.base.service.account.CustomerAccountService;
