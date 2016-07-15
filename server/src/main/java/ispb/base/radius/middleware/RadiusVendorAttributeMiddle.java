@@ -53,7 +53,8 @@ public class RadiusVendorAttributeMiddle implements RadiusMiddleIn {
             RadiusAttribute attribute = attributeList.get(i);
             if (attribute.getType() == RadiusPacket.ATTRIBUTE_VENDOR_SPECIFIC){
                 RadiusAttribute vendorAttribute = readVendorAttribute(attribute);
-                attributeList.set(i, vendorAttribute);
+                if (vendorAttribute != null)
+                    attributeList.set(i, vendorAttribute);
             }
         }
     }
