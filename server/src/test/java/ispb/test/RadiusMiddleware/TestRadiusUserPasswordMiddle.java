@@ -5,7 +5,7 @@ import ispb.base.utils.HexCodec;
 import junit.framework.TestCase;
 
 
-public class TestRadiusUserPasswordMiddle  extends TestCase {
+public class TestRadiusUserPasswordMiddle extends TestCase {
 
     private RadiusUserPasswordMiddle middle = new RadiusUserPasswordMiddle();
 

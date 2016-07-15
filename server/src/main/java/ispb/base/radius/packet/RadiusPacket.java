@@ -4,7 +4,7 @@ package ispb.base.radius.packet;
 import ispb.base.radius.attribute.RadiusAttribute;
 import ispb.base.radius.exception.RadiusBadAuthenticator;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -41,11 +41,12 @@ public class RadiusPacket {
     public static final int ATTRIBUTE_USER_PASSWORD = 2;
     public static final int ATTRIBUTE_CHAP_PASSWORD = 3;
     public static final int ATTRIBUTE_CHAP_CHALLENGE = 60;
+    public static final int ATTRIBUTE_VENDOR_SPECIFIC = 23;
 
     private int packetType;
     private int identifier;
     private final byte[] authenticator = new byte[AUTH_LENGTH];
-    private List<RadiusAttribute> attributeList = new  LinkedList<>();
+    private List<RadiusAttribute> attributeList = new ArrayList<>();
 
 
     public RadiusPacket(){

@@ -42,7 +42,7 @@ public class RadiusChapAuth implements RadiusAuth {
 
         byte[] chapHash = md5.digest();
 
-        if (chapHash.length != chapPassword.length + 1)
+        if (chapHash.length != chapPassword.length - 1)
             return false;
 
         for (int i = 0; i < chapHash.length; i++)
