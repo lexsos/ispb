@@ -7,8 +7,9 @@ import ispb.base.radius.packet.RadiusPacket;
 
 public class RadiusProxyStateMiddle implements RadiusMiddleOut {
 
-    public static int TYPE_PROXY_STATE = 33;
+    public static final int TYPE_PROXY_STATE = 33;
 
+    @SuppressWarnings("Convert2streamapi")
     public void out(RadiusPacket request, RadiusPacket reply, byte[] secret) throws RadiusException {
         for (RadiusAttribute attribute: request.getAttributeList())
             if (attribute.getType() == TYPE_PROXY_STATE)

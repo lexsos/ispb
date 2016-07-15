@@ -1,6 +1,7 @@
 package ispb.base.radius.dictionary;
 
 import ispb.base.radius.attribute.RadiusAttribute;
+import ispb.base.radius.attribute.RadiusOctetAttr;
 import ispb.base.radius.exception.RadiusAttrAlreadyExist;
 import ispb.base.radius.exception.RadiusAttrNotExist;
 import ispb.base.radius.exception.RadiusVendorAlreadyExist;
@@ -9,6 +10,7 @@ import ispb.base.radius.exception.RadiusVendorNotExist;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class RadiusMemoryDictionary implements RadiusDictionary {
 
@@ -18,6 +20,10 @@ public class RadiusMemoryDictionary implements RadiusDictionary {
     private final Map<Integer, Map<Integer, AttributeType>> vendorAttributes; // <VendorId, <VendorTypeId, AttributeType>>
     private final Map<String, Integer> vendors; // <VendorName, VendorId>
 
+    private final Set<String> attributeNames = new ConcurrentSkipListSet<>();
+
+    private final AttributeType defaultType = new AttributeType("Unknown", 0, RadiusOctetAttr.class);
+
     public RadiusMemoryDictionary(){
         attributeTypeByName = new ConcurrentHashMap<>();
         stdAttributes = new ConcurrentHashMap<>();
@@ -26,7 +32,7 @@ public class RadiusMemoryDictionary implements RadiusDictionary {
     }
 
     public Set<String> getAttributeNames(){
-        return attributeTypeByName.keySet();
+        return attributeNames;
     }
 
     public AttributeType getType(int attributeType){
@@ -43,6 +49,10 @@ public class RadiusMemoryDictionary implements RadiusDictionary {
         return attributeTypeByName.get(attributeName);
     }
 
+    public AttributeType getDefault(){
+        return defaultType;
+    }
+
     public void addAttribute(String attributeName, int attributeType, Class<? extends RadiusAttribute> attributeClazz)
             throws RadiusAttrAlreadyExist{
 
@@ -52,6 +62,7 @@ public class RadiusMemoryDictionary implements RadiusDictionary {
         AttributeType type =  new AttributeType(attributeName, attributeType, attributeClazz);
         attributeTypeByName.put(attributeName, type);
         stdAttributes.put(attributeType, type);
+        attributeNames.add(attributeName);
     }
 
     public void addValue(String attributeName, String valueName, String value) throws RadiusAttrNotExist{
@@ -81,6 +92,7 @@ public class RadiusMemoryDictionary implements RadiusDictionary {
         if (!vendorAttributes.containsKey(vendorId))
             vendorAttributes.put(vendorId, new ConcurrentHashMap<>());
         vendorAttributes.get(vendorId).put(attributeType, type);
+        attributeNames.add(attributeName);
     }
 
     public void addVendorAttribute(String attributeName, String vendorName, int attributeType, Class<? extends RadiusAttribute> clazz)

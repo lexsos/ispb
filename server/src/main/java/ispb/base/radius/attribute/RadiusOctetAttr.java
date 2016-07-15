@@ -80,4 +80,8 @@ public class RadiusOctetAttr implements RadiusAttribute, RadiusAttributeContaine
     public String getAttributeValue(){
         return getValue();
     }
+
+    public String toString(){
+        return getName() + ": " + getValue();
+    }
 }

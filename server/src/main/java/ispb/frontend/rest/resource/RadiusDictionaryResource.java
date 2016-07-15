@@ -6,7 +6,7 @@ import ispb.base.frontend.rest.RestEntity;
 import ispb.base.frontend.rest.RestResource;
 import ispb.base.frontend.rest.RestResponse;
 import ispb.base.frontend.utils.AccessLevel;
-import org.tinyradius.dictionary.WritableRadiusDictionary;
+import ispb.base.radius.dictionary.RadiusDictionary;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,11 +53,11 @@ public class RadiusDictionaryResource extends RestResource {
     }
 
     public RestResponse getEntityList(RestContext restContext){
-        WritableRadiusDictionary radiusDictionary = getRadiusDictionary(restContext);
-        return new RadiusDictionaryRestResponse(radiusDictionary.getAttributeNamesSet());
+        RadiusDictionary radiusDictionary = getRadiusDictionary(restContext);
+        return new RadiusDictionaryRestResponse(radiusDictionary.getAttributeNames());
     }
 
-    private WritableRadiusDictionary getRadiusDictionary(RestContext restContext){
-        return restContext.getApplication().getByType(WritableRadiusDictionary.class);
+    private RadiusDictionary getRadiusDictionary(RestContext restContext){
+        return restContext.getApplication().getByType(RadiusDictionary.class);
     }
 }

@@ -12,11 +12,9 @@ import java.security.NoSuchAlgorithmException;
 
 public class RadiusUserPasswordMiddle implements RadiusMiddleIn, RadiusMiddleOut {
 
-    public static int TYPE_USER_PASSWORD = 2;
+    public static final int TYPE_USER_PASSWORD = 2;
 
-    public String decodePapPassword(byte[] encryptedPass, byte[] sharedSecret, byte[] authenticator) throws RadiusException {
-        if (encryptedPass == null || encryptedPass.length < 16)
-            throw new RadiusPacketInvalidLength();
+    private void md5Crypt(byte[] encryptedPass, byte[] sharedSecret, byte[] authenticator)  throws RadiusException {
 
         MessageDigest md5;
         try {
@@ -39,6 +37,13 @@ public class RadiusUserPasswordMiddle implements RadiusMiddleIn, RadiusMiddleOut
             for (int j = 0; j < 16; j++)
                 encryptedPass[i + j] = (byte) (bn[j] ^ encryptedPass[i + j]);
         }
+    }
+
+    public String decodePapPassword(byte[] encryptedPass, byte[] sharedSecret, byte[] authenticator) throws RadiusException {
+        if (encryptedPass == null || encryptedPass.length < 16)
+            throw new RadiusPacketInvalidLength();
+
+        md5Crypt(encryptedPass, sharedSecret, authenticator);
 
         int len = encryptedPass.length;
         while (len > 0 && encryptedPass[len - 1] == 0)
@@ -51,7 +56,7 @@ public class RadiusUserPasswordMiddle implements RadiusMiddleIn, RadiusMiddleOut
 
     public byte[] encodePapPassword(final byte[] userPass, byte[] sharedSecret, byte[] authenticator) throws RadiusException {
 
-        byte[] userPassBytes = null;
+        byte[] userPassBytes;
         if (userPass.length > 128) {
             userPassBytes = new byte[128];
             System.arraycopy(userPass, 0, userPassBytes, 0, 128);
@@ -59,7 +64,7 @@ public class RadiusUserPasswordMiddle implements RadiusMiddleIn, RadiusMiddleOut
         else
             userPassBytes = userPass;
 
-        byte[] encryptedPass = null;
+        byte[] encryptedPass;
         if (userPassBytes.length < 128)
             if (userPassBytes.length % 16 == 0 && userPassBytes.length > 0)
                 encryptedPass = new byte[userPassBytes.length];
@@ -72,26 +77,7 @@ public class RadiusUserPasswordMiddle implements RadiusMiddleIn, RadiusMiddleOut
         for (int i = userPassBytes.length; i < encryptedPass.length; i++)
             encryptedPass[i] = 0;
 
-        MessageDigest md5;
-        try {
-            md5 = MessageDigest.getInstance("MD5");
-        }
-        catch (NoSuchAlgorithmException e){
-            throw new RadiusException();
-        }
-        byte[] lastBlock = new byte[16];
-
-        for (int i = 0; i < encryptedPass.length; i += 16) {
-            md5.reset();
-            md5.update(sharedSecret);
-            md5.update(i == 0 ? authenticator : lastBlock);
-            byte bn[] = md5.digest();
-
-            System.arraycopy(encryptedPass, i, lastBlock, 0, 16);
-
-            for (int j = 0; j < 16; j++)
-                encryptedPass[i + j] = (byte) (bn[j] ^ encryptedPass[i + j]);
-        }
+        md5Crypt(encryptedPass, sharedSecret, authenticator);
 
         return encryptedPass;
     }

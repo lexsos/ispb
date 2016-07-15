@@ -1,40 +1,42 @@
-package ispb.radius;
+package ispb.radius.server;
 
 
+import ispb.base.radius.packet.RadiusPacket;
 import ispb.base.service.LogService;
-import org.tinyradius.packet.RadiusPacket;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
+import java.util.concurrent.BlockingQueue;
 
 public class RadiusListener implements Runnable {
 
     private final DatagramSocket serverSocket;
     private final LogService logService;
-    private final RadiusServerImpl server;
+    private final BlockingQueue<PacketSocket> requestQueue;
 
-    public RadiusListener(DatagramSocket serverSocket, RadiusServerImpl server, LogService logService) {
+    public RadiusListener(DatagramSocket serverSocket, LogService logService, BlockingQueue<PacketSocket> requestQueue){
         this.serverSocket = serverSocket;
-        this.server = server;
         this.logService = logService;
+        this.requestQueue = requestQueue;
     }
 
     public void run(){
 
-        while (!serverSocket.isClosed() && server.isStarted()){
+        while (!serverSocket.isClosed()){
 
-            DatagramPacket datagram = new DatagramPacket(new byte[RadiusPacket.MAX_PACKET_LENGTH], RadiusPacket.MAX_PACKET_LENGTH);
+            DatagramPacket datagram = new DatagramPacket(new byte[RadiusPacket.MAX_LENGTH], RadiusPacket.MAX_LENGTH);
 
             try {
                 serverSocket.receive(datagram);
-
                 PacketSocket packetSocket = new PacketSocket(datagram, serverSocket);
-
-                if (server.offerPacket(packetSocket))
+                try {
+                    requestQueue.offer(packetSocket);
                     logService.debug("Receive RADIUS packet from " + datagram.getAddress());
-                else
+                }
+                catch (Throwable e){
                     logService.info("Discard RADIUS auth packet from " + datagram.getAddress());
+                }
             }
             catch (SocketTimeoutException ignored){
             }
@@ -44,5 +46,3 @@ public class RadiusListener implements Runnable {
         }
     }
 }
-
-

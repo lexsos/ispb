@@ -1,7 +1,9 @@
 package ispb.base.radius;
 
 
+import ispb.base.radius.attribute.RadiusAttribute;
 import ispb.base.radius.attribute.RadiusAttributeContainer;
+import ispb.base.radius.packet.RadiusPacket;
 
 import java.util.*;
 
@@ -60,6 +62,16 @@ public class RadiusAttributeList implements Iterable<RadiusAttributeContainer> {
         }
     }
 
+    public RadiusAttributeList(){
+
+    }
+
+    @SuppressWarnings("Convert2streamapi")
+    public RadiusAttributeList(RadiusPacket packet){
+        for (RadiusAttribute attribute: packet.getAttributeList())
+            addAttribute(attribute);
+    }
+
     public void addAttribute(String attributeName, String attributeValue){
         if (!attributes.containsKey(attributeName))
             attributes.put(attributeName, new LinkedList<>());
@@ -68,6 +80,10 @@ public class RadiusAttributeList implements Iterable<RadiusAttributeContainer> {
 
     public void addAttribute(RadiusAttributeContainer attribute){
         addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
+    }
+
+    public void addAttribute(RadiusAttribute attribute){
+        addAttribute(attribute.getName(), attribute.getValue());
     }
 
     @SuppressWarnings("Convert2streamapi")
@@ -82,5 +98,11 @@ public class RadiusAttributeList implements Iterable<RadiusAttributeContainer> {
 
     public Iterator<RadiusAttributeContainer> iterator(){
         return new RadiusAttributeListIterator();
+    }
+
+    public String getFirstValue(String attributeName){
+        if (attributes.containsKey(attributeName))
+            return attributes.get(attributeName).get(0);
+        return null;
     }
 }

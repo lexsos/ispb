@@ -15,6 +15,7 @@ public interface RadiusDictionary {
     AttributeType getType(int attributeType);
     AttributeType getType(int vendorId, int attributeType);
     AttributeType getType(String attributeName);
+    AttributeType getDefault();
 
     void addAttribute(String attributeName, int attributeType, Class<? extends RadiusAttribute> attributeClazz)
             throws RadiusAttrAlreadyExist;

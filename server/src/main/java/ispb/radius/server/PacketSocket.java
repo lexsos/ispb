@@ -1,4 +1,4 @@
-package ispb.radius;
+package ispb.radius.server;
 
 
 import java.net.DatagramPacket;

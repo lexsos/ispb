@@ -9,8 +9,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RadiusMiddleProcessor implements RadiusMiddleIn, RadiusMiddleOut {
 
-    private List<RadiusMiddleIn> inMiddlewareList = new CopyOnWriteArrayList<>();
-    private List<RadiusMiddleOut> outMiddlewareList = new CopyOnWriteArrayList<>();
+    private final List<RadiusMiddleIn> inMiddlewareList = new CopyOnWriteArrayList<>();
+    private final List<RadiusMiddleOut> outMiddlewareList = new CopyOnWriteArrayList<>();
 
 
     public void in(RadiusPacket request, byte[] secret) throws RadiusException{

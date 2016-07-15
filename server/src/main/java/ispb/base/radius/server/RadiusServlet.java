@@ -8,24 +8,21 @@ import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.db.view.CustomerSummeryView;
 import ispb.base.radius.RadiusAttributeList;
 import ispb.base.radius.RadiusAttributeListBuilder;
+import ispb.base.radius.attribute.RadiusAttribute;
 import ispb.base.radius.attribute.RadiusAttributeContainer;
+import ispb.base.radius.auth.RadiusAuthProcessor;
+import ispb.base.radius.dictionary.AttributeType;
+import ispb.base.radius.dictionary.RadiusDictionary;
+import ispb.base.radius.exception.RadiusBadValue;
+import ispb.base.radius.packet.RadiusPacket;
+import ispb.base.radius.packet.RadiusPacketBuilder;
 import ispb.base.resources.Config;
-import ispb.base.service.LogService;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.account.RadiusUserService;
 import ispb.base.service.exception.ServiceException;
-import org.tinyradius.packet.AccessRequest;
-import org.tinyradius.packet.AccountingRequest;
-import org.tinyradius.packet.RadiusPacket;
-import org.tinyradius.util.RadiusException;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+
 public class RadiusServlet {
-
-    private final LogService logService;
-    private final RadiusAttributeListBuilder attributeBuilder;
-    private final RadiusUserService userService;
-    private final CustomerAccountService customerService;
 
     private final boolean addSessionTimeout;
     private final String defaultSessionTimeout;
@@ -34,16 +31,7 @@ public class RadiusServlet {
     private final boolean addIpv4Addr;
     private final String ipv4AddrAttribute;
 
-    public RadiusServlet(
-            LogService logService,
-            RadiusAttributeListBuilder attributeBuilder,
-            RadiusUserService userService,
-            CustomerAccountService customerService,
-            Config config){
-        this.logService = logService;
-        this.attributeBuilder = attributeBuilder;
-        this.userService = userService;
-        this.customerService = customerService;
+    public RadiusServlet(Config config){
 
         addSessionTimeout = config.getAsBool("radius.addSessionTimeout");
         defaultSessionTimeout = config.getAsStr("radius.defaultSessionTimeout");
@@ -53,123 +41,106 @@ public class RadiusServlet {
         ipv4AddrAttribute= config.getAsStr("radius.ipv4AddrAttribute");
     }
 
-    public RadiusPacket service(RadiusPacket request, RadiusClientDataSet clientDataSet){
-
-        if (request instanceof AccessRequest)
-            return access((AccessRequest)request, clientDataSet);
-        else if (request instanceof AccountingRequest)
-            return accounting((AccountingRequest)request, clientDataSet);
-
-        return null;
-    }
-
-    protected RadiusPacket access(AccessRequest request, RadiusClientDataSet radiusClient){
-
-        String userName = getUserName(request, radiusClient);
-        RadiusUserDataSet user = getUserService().getUserByName(userName);
-
-        if (user != null)
-            return userAuth(request, radiusClient, user);
-        else
-            return unknownUser(request, radiusClient, userName);
-    }
-
-    protected RadiusPacket unknownUser(AccessRequest request, RadiusClientDataSet radiusClient, String userName){
-        if (radiusClient.isAddAuthRequest()){
-            RadiusUserDataSet user = new RadiusUserDataSet();
-            user.setUserName(userName);
-            try {
-                getUserService().create(user);
-            }
-            catch (ServiceException e){
-                getLogService().warn("Can't add new RADIUS auth request for user " + userName, e);
-            }
-        }
-        return makeAccessReject(request);
-    }
-
-    protected RadiusPacket userAuth(AccessRequest request, RadiusClientDataSet radiusClient, RadiusUserDataSet user){
-
-        CustomerDataSet customer = user.getCustomer();
-        if (customer == null)
-            return makeAccessReject(request);
-
-        if (!checkPassword(request, user))
-            return makeAccessReject(request);
-
-        CustomerSummeryView summery = customerService.getSummeryById(customer.getId());
-        if (summery.getStatus() == CustomerStatus.INACTIVE && radiusClient.isRejectInactive())
-            return makeAccessReject(request);
-
-        RadiusPacket response = makeAccessAccept(request);
-        addAttributes(response, makeAttributeList(user));
-
-        return response;
-    }
-
-    @SuppressWarnings({"WeakerAccess", "UnusedParameters"})
-    protected String getUserName(AccessRequest request, RadiusClientDataSet radiusClient){
-        return request.getUserName();
-    }
-
     public String getSharedSecret(RadiusClientDataSet clientDataSet){
         return clientDataSet.getSecret();
     }
 
-    protected LogService getLogService(){
-        return logService;
-    }
+    public RadiusPacket service(RadiusServletContext context){
+        RadiusPacket request = context.getRequest();
 
-    protected RadiusUserService getUserService(){
-        return userService;
-    }
+        if (request.getPacketType() == RadiusPacket.ACCESS_REQUEST)
+            return access(context);
+        else if (request.getPacketType() == RadiusPacket.ACCOUNTING_REQUEST)
+            return accounting(context);
 
-    protected RadiusAttributeListBuilder getAttributeBuilder(){
-        return attributeBuilder;
-    }
-
-    @SuppressWarnings({"WeakerAccess", "SameReturnValue", "UnusedParameters"})
-    protected RadiusPacket accounting(AccountingRequest request, RadiusClientDataSet clientDataSet){
         return null;
     }
 
-    protected RadiusPacket makeAccessAccept(RadiusPacket request){
-        return new RadiusPacket(RadiusPacket.ACCESS_ACCEPT, request.getPacketIdentifier());
+    @SuppressWarnings({"SameReturnValue", "UnusedParameters"})
+    protected RadiusPacket accounting(RadiusServletContext context){
+        return null;
     }
 
-    protected RadiusPacket makeAccessReject(RadiusPacket request){
-        return new RadiusPacket(RadiusPacket.ACCESS_REJECT, request.getPacketIdentifier());
+    protected RadiusPacket access(RadiusServletContext context){
+        String userName = getUserName(context);
+        if (userName == null)
+            return null;
+
+        RadiusUserDataSet user = getUserService(context).getUserByName(userName);
+        if (user != null)
+            return userAuth(context, user);
+        else
+            return unknownUser(context, userName);
     }
 
-    protected RadiusPacket makeAccountingResponse(RadiusPacket request){
-        return new RadiusPacket(RadiusPacket.ACCOUNTING_RESPONSE, request.getPacketIdentifier());
+    protected String getUserName(RadiusServletContext context){
+        return context.getAttributeList().getFirstValue("User-Name");
     }
 
-    protected boolean checkPassword(AccessRequest request, RadiusUserDataSet user){
-        String password = user.getPassword();
-        try {
-            if (password != null && password.length() > 0 && !request.verifyPassword(password))
-                return false;
-        } catch (RadiusException e) {
-            getLogService().warn("Can't validate password for RADIUS user " + user.getUserName(), e);
-            return false;
-        }
-        return true;
+    protected RadiusUserService getUserService(RadiusServletContext context){
+        return context.getApplication().getByType(RadiusUserService.class);
     }
 
-    protected void addAttributes(RadiusPacket radiusPacket, Iterable<? extends RadiusAttributeContainer> attributeList){
-        for (RadiusAttributeContainer attribute: attributeList)
+    protected CustomerAccountService getCustomerService(RadiusServletContext context){
+        return context.getApplication().getByType(CustomerAccountService.class);
+    }
+
+    protected RadiusPacket userAuth(RadiusServletContext context, RadiusUserDataSet user){
+        CustomerDataSet customer = user.getCustomer();
+        if (customer == null)
+            return RadiusPacketBuilder.getAccessReject(context.getRequest());
+
+        if (!checkPassword(context, user))
+            return RadiusPacketBuilder.getAccessReject(context.getRequest());
+
+        CustomerSummeryView summery = getCustomerService(context).getSummeryById(customer.getId());
+        if (summery.getStatus() == CustomerStatus.INACTIVE && context.getClient().isRejectInactive())
+            return RadiusPacketBuilder.getAccessReject(context.getRequest());
+
+        RadiusPacket response = RadiusPacketBuilder.getAccessAccept(context.getRequest());
+        addAttributes(response, user, context);
+        return response;
+    }
+
+    protected RadiusPacket unknownUser(RadiusServletContext context, String userName){
+        if (context.getClient().isAddAuthRequest()){
+            RadiusUserDataSet user = new RadiusUserDataSet();
+            user.setUserName(userName);
             try {
-                radiusPacket.addAttribute(attribute.getAttributeName(), attribute.getAttributeValue());
+                getUserService(context).create(user);
             }
-            catch (Throwable e){
-                getLogService().warn("Error while add RADIUS attribute " + attribute.getAttributeName() + " to RADIUS packet", e);
+            catch (ServiceException e){
+                context.getLogService().warn("Can't add new RADIUS auth request for user " + userName, e);
             }
+        }
+        return RadiusPacketBuilder.getAccessReject(context.getRequest());
     }
 
-    protected RadiusAttributeList makeAttributeList(RadiusUserDataSet user){
+    private RadiusAuthProcessor getAuth(RadiusServletContext context){
+        return context.getApplication().getByType(RadiusAuthProcessor.class);
+    }
 
-        RadiusAttributeList attrList = getAttributeBuilder().getAttributeList(user);
+    @SuppressWarnings("SimplifiableIfStatement")
+    protected boolean checkPassword(RadiusServletContext context, RadiusUserDataSet user){
+        String password = user.getPassword();
+        RadiusAuthProcessor auth = getAuth(context);
+
+        if (password == null || password.length() == 0)
+            return true;
+        return auth.checkPassword(context.getRequest(), password);
+    }
+
+    protected RadiusAttributeListBuilder getAttributeBuilder(RadiusServletContext context){
+        return context.getApplication().getByType(RadiusAttributeListBuilder.class);
+    }
+
+    protected RadiusDictionary getDictionary(RadiusServletContext context){
+        return context.getApplication().getByType(RadiusDictionary.class);
+    }
+
+    protected void addAttributes(RadiusPacket response, RadiusUserDataSet user, RadiusServletContext context){
+        RadiusAttributeList attrList = getAttributeBuilder(context).getAttributeList(user);
+        RadiusDictionary dictionary = getDictionary(context);
 
         if (addIpv4Addr && user.getIp4Address() != null)
             attrList.addAttribute(ipv4AddrAttribute, user.getIp4Address());
@@ -177,6 +148,24 @@ public class RadiusServlet {
         if (addSessionTimeout && !attrList.containsAttribute(sessionTimeoutAttribute))
             attrList.addAttribute(sessionTimeoutAttribute, defaultSessionTimeout);
 
-        return attrList;
+        for (RadiusAttributeContainer container: attrList) {
+            AttributeType type = dictionary.getType(container.getAttributeName());
+
+            if (type == null) {
+                context.getLogService().warn("RADIUS unknown attribute " + container.getAttributeName());
+                continue;
+            }
+
+            RadiusAttribute attribute = type.newInstance();
+            try {
+                attribute.setValue(container.getAttributeValue());
+            }
+            catch (RadiusBadValue e){
+                context.getLogService().warn("RADIUS bad value: " + container.getAttributeValue() + " for attribute: " + container.getAttributeName());
+                continue;
+            }
+            response.addAttribute(attribute);
+        }
     }
+
 }

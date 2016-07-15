@@ -4,7 +4,6 @@ package ispb.base.radius.io;
 import ispb.base.radius.attribute.RadiusAttribute;
 import ispb.base.radius.dictionary.AttributeType;
 import ispb.base.radius.dictionary.RadiusDictionary;
-import ispb.base.radius.exception.RadiusAttrNotExist;
 import ispb.base.radius.exception.RadiusPacketInvalidLength;
 import ispb.base.radius.packet.RadiusPacket;
 
@@ -16,7 +15,7 @@ public class RadiusPacketSerializer implements RadiusPacketReader, RadiusPacketW
         this.dictionary = dictionary;
     }
 
-    public RadiusPacket read(byte[] data) throws RadiusPacketInvalidLength, RadiusAttrNotExist {
+    public RadiusPacket read(byte[] data) throws RadiusPacketInvalidLength {
 
         if (data.length < RadiusPacket.HEADER_LENGTH)
             throw new RadiusPacketInvalidLength();
@@ -28,14 +27,14 @@ public class RadiusPacketSerializer implements RadiusPacketReader, RadiusPacketW
         length = (data[pos++] & 0x0ff) << 8;
         length = length | (data[pos++] & 0x0ff);
 
-        if (length != data.length)
+        if (length > data.length)
             throw new RadiusPacketInvalidLength();
 
         RadiusPacket packet = new RadiusPacket(code, identifier);
         System.arraycopy(data, pos, packet.getAuthenticator(), 0, RadiusPacket.AUTH_LENGTH);
         pos += RadiusPacket.AUTH_LENGTH;
 
-        while (pos < data.length){
+        while (pos < length){
 
             if (pos >= data.length - 2)
                 throw new RadiusPacketInvalidLength();
@@ -53,9 +52,10 @@ public class RadiusPacketSerializer implements RadiusPacketReader, RadiusPacketW
             AttributeType attrType = dictionary.getType(attributeType);
 
             if (attrType == null)
-                throw new RadiusAttrNotExist();
+                attrType = dictionary.getDefault();
 
             RadiusAttribute attribute = attrType.newInstance();
+            attribute.setType(attributeType);
             attribute.readValue(pos, dataLength, data);
             packet.addAttribute(attribute);
             pos += dataLength;
