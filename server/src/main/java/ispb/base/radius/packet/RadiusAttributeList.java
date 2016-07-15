@@ -1,4 +1,4 @@
-package ispb.base.radius;
+package ispb.base.radius.packet;
 
 
 import ispb.base.radius.attribute.RadiusAttribute;

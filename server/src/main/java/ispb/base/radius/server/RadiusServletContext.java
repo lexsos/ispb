@@ -3,7 +3,7 @@ package ispb.base.radius.server;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.RadiusClientDataSet;
-import ispb.base.radius.RadiusAttributeList;
+import ispb.base.radius.packet.RadiusAttributeList;
 import ispb.base.radius.packet.RadiusPacket;
 import ispb.base.service.LogService;
 

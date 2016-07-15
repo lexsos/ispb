@@ -1,4 +1,4 @@
-package ispb.radius;
+package ispb.radius.server;
 
 
 import ispb.base.db.dataset.CustomerDataSet;
@@ -6,8 +6,8 @@ import ispb.base.db.dataset.RadiusUserDataSet;
 import ispb.base.db.fieldtype.CustomerStatus;
 import ispb.base.db.fieldtype.RadiusAttributeCondition;
 import ispb.base.db.view.CustomerSummeryView;
-import ispb.base.radius.RadiusAttributeList;
-import ispb.base.radius.RadiusAttributeListBuilder;
+import ispb.base.radius.packet.RadiusAttributeList;
+import ispb.base.radius.server.RadiusAttributeListBuilder;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.account.RadiusUserService;
 import ispb.base.service.dictionary.TariffDictionaryService;
