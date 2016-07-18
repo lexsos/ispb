@@ -13,7 +13,7 @@ public class RadiusChapAuth implements RadiusAuth {
     public boolean checkPassword(RadiusPacket packet, String plainPassword){
 
         byte[] chapPassword = null;
-        byte[] chapChallenge = null;
+        byte[] chapChallenge = packet.getAuthenticator();
 
         for (RadiusAttribute attribute: packet.getAttributeList()){
             if (attribute.getType() == RadiusPacket.ATTRIBUTE_CHAP_PASSWORD)
