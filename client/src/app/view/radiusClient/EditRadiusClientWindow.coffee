@@ -78,6 +78,7 @@ Ext.define 'ISPBClient.view.radiusClient.EditRadiusClientWindow',
             fields: ['key', 'name']
             data : [
               {'key': 'DEFAULT', name: 'Default'}
+              {'key': 'DHCP', name: 'DHCP'}
             ]
         }
       ]

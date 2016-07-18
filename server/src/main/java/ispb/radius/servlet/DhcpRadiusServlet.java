@@ -5,15 +5,15 @@ import ispb.base.radius.server.RadiusAuthStrategy;
 import ispb.base.radius.server.RadiusServlet;
 import ispb.base.radius.server.RadiusServletContext;
 import ispb.base.resources.Config;
-import ispb.radius.strategy.RadiusDefaultAuthStrategy;
+import ispb.radius.strategy.RadiusDhcpAuthStrategy;
 
 
-public class DefaultRadiusServlet extends RadiusServlet {
+public class DhcpRadiusServlet extends RadiusServlet {
 
     private final RadiusAuthStrategy authStrategy;
 
-    public DefaultRadiusServlet(Config config){
-        authStrategy = new RadiusDefaultAuthStrategy(config);
+    public DhcpRadiusServlet(Config config){
+        authStrategy = new RadiusDhcpAuthStrategy(config);
     }
 
     protected RadiusPacket access(RadiusServletContext context){

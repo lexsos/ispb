@@ -2,5 +2,6 @@ package ispb.base.db.fieldtype;
 
 
 public enum RadiusClientType {
-    DEFAULT
+    DEFAULT,
+    DHCP
 }

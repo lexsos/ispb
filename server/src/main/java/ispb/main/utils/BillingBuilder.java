@@ -44,6 +44,7 @@ import ispb.db.util.WhereBuilderImpl;
 import ispb.radius.server.RadiusAttributeListBuilderImpl;
 import ispb.radius.server.RadiusServerImpl;
 import ispb.radius.servlet.DefaultRadiusServlet;
+import ispb.radius.servlet.DhcpRadiusServlet;
 import ispb.scheduler.EventSchedulerImpl;
 import ispb.eventsys.EventSystemImpl;
 import ispb.frontend.HttpServerImpl;
@@ -100,6 +101,7 @@ public class BillingBuilder {
         application.addByType(RadiusServer.class, radiusServer);
 
         radiusServer.addServletType(RadiusClientType.DEFAULT, new DefaultRadiusServlet(conf));
+        radiusServer.addServletType(RadiusClientType.DHCP, new DhcpRadiusServlet(conf));
 
         radiusServer.loadRadiusClient(radiusClientDictionaryService.getRadiusClientList());
     }
