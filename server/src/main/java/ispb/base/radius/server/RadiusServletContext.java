@@ -7,6 +7,8 @@ import ispb.base.radius.packet.RadiusAttributeList;
 import ispb.base.radius.packet.RadiusPacket;
 import ispb.base.service.LogService;
 
+import java.net.InetAddress;
+
 public class RadiusServletContext {
 
     private Application application;
@@ -14,6 +16,8 @@ public class RadiusServletContext {
     private RadiusClientDataSet client;
     private RadiusAttributeList attributeList;
     private LogService logService;
+    private InetAddress clientAddress;
+    private int clientPort;
 
 
     public RadiusPacket getRequest() {
@@ -54,5 +58,21 @@ public class RadiusServletContext {
 
     public void setLogService(LogService logService) {
         this.logService = logService;
+    }
+
+    public InetAddress getClientAddress() {
+        return clientAddress;
+    }
+
+    public void setClientAddress(InetAddress clientAddress) {
+        this.clientAddress = clientAddress;
+    }
+
+    public int getClientPort() {
+        return clientPort;
+    }
+
+    public void setClientPort(int clientPort) {
+        this.clientPort = clientPort;
     }
 }

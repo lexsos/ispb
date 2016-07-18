@@ -97,6 +97,8 @@ public class RadiusWorker implements Runnable {
             context.setApplication(application);
             context.setRequest(request);
             context.setClient(client);
+            context.setClientAddress(clientAddress);
+            context.setClientPort(clientPort);
             context.setLogService(logService);
             context.setAttributeList(new RadiusAttributeList(request));
             try {
