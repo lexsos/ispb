@@ -44,6 +44,7 @@ Ext.application
 
     'radiusClient.RadiusClientGridCtrl',
     'radiusClient.EditRadiusClientWindowCtrl',
+    'radiusClient.EditRadiusClientParametersWindowCtrl',
   ]
 
   launch: ->

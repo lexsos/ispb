@@ -36,6 +36,12 @@ Ext.define 'ISPBClient.view.radiusClient.RadiusClientGrid',
         }
         '-'
         {
+          text: 'Настройки'
+          icon:'static/img/cog.gif'
+          action: 'parameters'
+        }
+        '-'
+        {
           text: 'Удалить'
           icon: 'static/img/delete.gif'
           action: 'delete'
