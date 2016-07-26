@@ -188,33 +188,6 @@ public class BillingBuilder {
         HttpServer server = new HttpServerImpl(conf);
         application.addByType(HttpServer.class, server);
 
-        /*String radiusDictionaryFile = conf.getAsStr("radius.dictionaryFile");
-        try {
-            if (radiusDictionaryFile != null)
-                DefaultRadiusDictionary.addFromFile(radiusDictionaryFile);
-        }
-        catch (IOException e){
-            logService.warn(e.getMessage(), e);
-        }*/
-
-        //WritableRadiusDictionary radiusDictionary = DefaultRadiusDictionary.getDefaultDictionary();
-        //application.addByType(WritableRadiusDictionary.class, radiusDictionary);
-
-        //RadiusServer radiusServer = new RadiusServerImpl(conf, logService);
-        //application.addByType(RadiusServer.class, radiusServer);
-
-        //radiusServer.loadRadiusClient(radiusClientDictionaryService.getRadiusClientList());
-
-
-
-        /*DefaultRadiusServlet defaultRadiusServlet = new DefaultRadiusServlet(
-                logService,
-                radiusAttributeListBuilder,
-                radiusUserService,
-                customerAccountService,
-                conf);
-        radiusServer.addServletType(RadiusClientType.DEFAULT, defaultRadiusServlet);*/
-
         buildRadius(application);
 
         return application;
