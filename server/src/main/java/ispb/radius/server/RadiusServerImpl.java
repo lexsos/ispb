@@ -2,17 +2,14 @@ package ispb.radius.server;
 
 
 import ispb.base.Application;
-import ispb.base.db.dataset.RadiusClientDataSet;
-import ispb.base.db.fieldtype.RadiusClientType;
 import ispb.base.radius.server.RadiusServer;
-import ispb.base.radius.server.RadiusServlet;
+import ispb.base.radius.servlet.RadiusClientRepository;
 import ispb.base.resources.Config;
 import ispb.base.service.LogService;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.*;
 
 public class RadiusServerImpl implements RadiusServer {
@@ -24,8 +21,7 @@ public class RadiusServerImpl implements RadiusServer {
 
     private volatile boolean started = false;
 
-    private final Map<RadiusClientType, RadiusServlet> servletMap = new ConcurrentHashMap<>();
-    private final Map<InetAddress, RadiusClientDataSet> clientMap = new ConcurrentHashMap<>();
+    private RadiusClientRepository clientRepository;
 
     private final List<DatagramSocket> serverSocketList = new CopyOnWriteArrayList<>();
 
@@ -71,36 +67,13 @@ public class RadiusServerImpl implements RadiusServer {
         return started;
     }
 
-    public void addServletType(RadiusClientType type, RadiusServlet servlet){
-        servletMap.put(type, servlet);
+    public void setClientRepository(RadiusClientRepository repository){
+        clientRepository = repository;
     }
 
-    public void loadRadiusClient(List<RadiusClientDataSet> clientList){
-        clientMap.clear();
-        for (RadiusClientDataSet client: clientList)
-            try {
-                InetAddress ip4address = InetAddress.getByName(client.getIp4Address());
-                clientMap.put(ip4address, client);
-            }
-            catch (Throwable e){
-                logService.warn("Can't add RADIUS client", e);
-            }
+    public RadiusClientRepository getClientRepository(){
+        return clientRepository;
     }
-
-    public RadiusServlet getServlet(InetAddress address){
-        RadiusClientDataSet client = clientMap.get(address);
-        if (client == null)
-            return null;
-        RadiusClientType clientType = client.getClientType();
-        if (clientType == null)
-            return null;
-        return servletMap.get(clientType);
-    }
-
-    public RadiusClientDataSet getClient(InetAddress address){
-        return clientMap.get(address);
-    }
-
 
     private boolean initSocketList(){
         String[] bindList = config.getAsStr("radius.bindAddress").split(";");

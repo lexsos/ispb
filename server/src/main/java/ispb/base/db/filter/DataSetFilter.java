@@ -6,6 +6,7 @@ import ispb.base.db.field.CmpOperator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class DataSetFilter implements Iterable<DataSetFilterItem> {
 
@@ -34,5 +35,13 @@ public class DataSetFilter implements Iterable<DataSetFilterItem> {
 
     public DataSetFilter getCopy(){
         return new DataSetFilter(new LinkedList<>(filterItems));
+    }
+
+    public DataSetFilterItem getFirst(String fieldName){
+        for (DataSetFilterItem item: filterItems){
+            if (Objects.equals(item.getFieldName(), fieldName))
+                return item;
+        }
+        return null;
     }
 }

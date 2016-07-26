@@ -15,7 +15,7 @@ import ispb.base.radius.packet.RadiusPacket;
 import ispb.base.radius.packet.RadiusPacketBuilder;
 import ispb.base.radius.server.RadiusAttributeListBuilder;
 import ispb.base.radius.server.RadiusAuthStrategy;
-import ispb.base.radius.server.RadiusServletContext;
+import ispb.base.radius.servlet.RadiusServletContext;
 import ispb.base.resources.Config;
 import ispb.base.service.account.CustomerAccountService;
 import ispb.base.service.account.RadiusUserService;

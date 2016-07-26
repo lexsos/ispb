@@ -26,6 +26,8 @@ import ispb.base.radius.middleware.RadiusProxyStateMiddle;
 import ispb.base.radius.middleware.RadiusResponseAuthenticatorMiddle;
 import ispb.base.radius.middleware.RadiusUserPasswordMiddle;
 import ispb.base.radius.server.RadiusServer;
+import ispb.base.radius.servlet.RadiusClientRepository;
+import ispb.base.radius.servlet.RadiusClientRepositoryBuilder;
 import ispb.base.scheduler.EventScheduler;
 import ispb.base.eventsys.EventSystem;
 import ispb.base.service.dictionary.*;
@@ -41,6 +43,7 @@ import ispb.db.DBServiceImpl;
 import ispb.db.util.QueryBuilderImpl;
 import ispb.db.util.SortBuilderImpl;
 import ispb.db.util.WhereBuilderImpl;
+import ispb.radius.RadiusClientRepositoryBuilderImpl;
 import ispb.radius.server.RadiusAttributeListBuilderImpl;
 import ispb.radius.server.RadiusServerImpl;
 import ispb.radius.servlet.DefaultRadiusServlet;
@@ -97,13 +100,17 @@ public class BillingBuilder {
                 radiusUserService);
         application.addByType(RadiusAttributeListBuilder.class, radiusAttributeListBuilder);
 
+
+        RadiusClientRepositoryBuilder repositoryBuilder = new RadiusClientRepositoryBuilderImpl(logService, application);
+        repositoryBuilder.addServletType(RadiusClientType.DEFAULT, DefaultRadiusServlet.class);
+        repositoryBuilder.addServletType(RadiusClientType.DHCP, DhcpRadiusServlet.class);
+        application.addByType(RadiusClientRepositoryBuilder.class, repositoryBuilder);
+
+        RadiusClientRepository repository = repositoryBuilder.buildRepository();
+
         RadiusServer radiusServer = new RadiusServerImpl(application);
+        radiusServer.setClientRepository(repository);
         application.addByType(RadiusServer.class, radiusServer);
-
-        radiusServer.addServletType(RadiusClientType.DEFAULT, new DefaultRadiusServlet(conf));
-        radiusServer.addServletType(RadiusClientType.DHCP, new DhcpRadiusServlet(conf));
-
-        radiusServer.loadRadiusClient(radiusClientDictionaryService.getRadiusClientList());
     }
 
     public static Application build(String configFile){

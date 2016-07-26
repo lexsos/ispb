@@ -4,7 +4,7 @@ package ispb.radius.strategy;
 import ispb.base.db.dataset.RadiusUserDataSet;
 import ispb.base.radius.packet.RadiusPacket;
 import ispb.base.radius.packet.RadiusPacketBuilder;
-import ispb.base.radius.server.RadiusServletContext;
+import ispb.base.radius.servlet.RadiusServletContext;
 import ispb.base.resources.Config;
 import ispb.base.service.exception.ServiceException;
 

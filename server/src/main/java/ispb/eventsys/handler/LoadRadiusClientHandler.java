@@ -4,21 +4,23 @@ import ispb.base.Application;
 import ispb.base.eventsys.EventHandler;
 import ispb.base.eventsys.EventMessage;
 import ispb.base.radius.server.RadiusServer;
+import ispb.base.radius.servlet.RadiusClientRepositoryBuilder;
 import ispb.base.service.dictionary.RadiusClientDictionaryService;
 
 public class LoadRadiusClientHandler implements EventHandler {
 
     public void run(Application application, EventMessage message){
-        RadiusClientDictionaryService clientService = getClientService(application);
+        RadiusClientRepositoryBuilder repositoryBuilder = getRepositoryBuilder(application);
         RadiusServer radiusServer = getRadiusServer(application);
-        radiusServer.loadRadiusClient(clientService.getRadiusClientList());
+
+        radiusServer.setClientRepository(repositoryBuilder.buildRepository());
     }
 
     private RadiusServer getRadiusServer(Application application){
         return application.getByType(RadiusServer.class);
     }
 
-    private RadiusClientDictionaryService getClientService(Application application){
-        return application.getByType(RadiusClientDictionaryService.class);
+    private RadiusClientRepositoryBuilder getRepositoryBuilder(Application application){
+        return application.getByType(RadiusClientRepositoryBuilder.class);
     }
 }

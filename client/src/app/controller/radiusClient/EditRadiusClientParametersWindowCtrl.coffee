@@ -18,6 +18,15 @@ Ext.define 'ISPBClient.controller.radiusClient.EditRadiusClientParametersWindowC
       'editRadiusClientParametersWindow button[action=cancel]':
         click: this.onCancelClick
 
+      'editRadiusClientParametersWindow button[action=change]':
+        click: this.onChangeClick
+
+      'editRadiusClientParametersWindow combobox[name=parameterName]':
+        change: this.onParameterNameChange
+
+      'editRadiusClientParametersWindow grid':
+        cellclick: this.onGridClick
+
   getSelectedRecord: (control) ->
     grid = control.up('grid')
     s = grid.getSelectionModel().getSelection()
@@ -53,14 +62,30 @@ Ext.define 'ISPBClient.controller.radiusClient.EditRadiusClientParametersWindowC
   onCancelClick: (element) ->
     element.up('window').close()
 
-  onParameterNameChange: (combobox, newValue) ->
+  onParameterNameChange: (element, newValue) ->
+    clientIp = element.up('window').getRadiusClient().get('ip4Address')
     store = element.up('window').down("combobox[name=parameterValue]").getStore()
-    servletType = combobox.up('window').getRadiusClient().get("clientType")
-    store.filter(
-      {property: "servletType", value: servletType}
-      {property: "servletParameter", value: newValue}
-    )
-    store.reload()
+
+    store.clearFilter(true);
+    store.filter([
+      {property: "clientIp__eq", value: clientIp}
+      {property: "parameterName__eq", value: newValue}
+    ])
+
+  onChangeClick: (element) ->
+    record = this.getSelectedRecord(element)
+    parameterName = element.up('window').down("combobox[name=parameterName]").getValue()
+    parameterValue = element.up('window').down("combobox[name=parameterValue]").getValue()
+    if (record)
+      record.set('parameterName', parameterName)
+      record.set('parameterValue', parameterValue)
+
+  onGridClick: (element) ->
+    record = this.getSelectedRecord(element)
+    element.up('window').down("combobox[name=parameterName]").setValue(record.get('parameterName'))
+    element.up('window').down("combobox[name=parameterValue]").setValue(record.get('parameterValue'))
+
+
 
 
 

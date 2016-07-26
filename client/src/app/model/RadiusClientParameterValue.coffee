@@ -1,10 +1,9 @@
 Ext.define 'ISPBClient.model.RadiusClientParameterValue',
   extend: 'Ext.data.Model'
   fields: [
-    { name: 'id', type: 'string' }
+    { name: 'id', type: 'int' }
+    { name: 'parameterValue', type: 'string' }
     { name: 'displayValue', type: 'string' }
-    { name: 'servletType', type: 'string' }
-    { name: 'servletParameter', type: 'string' }
   ]
 
   proxy:

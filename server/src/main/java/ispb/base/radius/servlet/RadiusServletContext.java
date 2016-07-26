@@ -1,4 +1,4 @@
-package ispb.base.radius.server;
+package ispb.base.radius.servlet;
 
 
 import ispb.base.Application;

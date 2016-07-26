@@ -1,0 +1,14 @@
+{
+  "parameters": {
+
+    "MakeAuthRequest": {
+      "display": "Создавать запросы авторизации",
+      "defaultValue": "false",
+      "values": [
+        {"display": "Да", "value": "true"},
+        {"display": "Нет", "value": "false"}
+      ]
+    }
+
+  }
+}

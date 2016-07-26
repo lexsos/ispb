@@ -78,6 +78,12 @@ Ext.define 'ISPBClient.view.radiusClient.EditRadiusClientParametersWindow',
               icon: 'static/img/delete.gif'
               action: 'delete'
             }
+            '-'
+            {
+              text: 'Изменить'
+              icon: 'static/img/edit.png'
+              action: 'change'
+            }
           ]
         }
         {
@@ -89,11 +95,14 @@ Ext.define 'ISPBClient.view.radiusClient.EditRadiusClientParametersWindow',
               name : 'parameterName'
               allowBlank: false
               displayField: 'displayName'
-              valueField: 'id'
+              valueField: 'parameterName'
               typeAhead: true
+              width: 250
               store:
                 model: 'ISPBClient.model.RadiusClientParameterName'
                 autoLoad: false
+                remoteFilter: true
+                remoteSort: false
             }
             '-'
             {
@@ -101,11 +110,14 @@ Ext.define 'ISPBClient.view.radiusClient.EditRadiusClientParametersWindow',
               name : 'parameterValue'
               allowBlank: false
               displayField: 'displayValue'
-              valueField: 'id'
+              valueField: 'parameterValue'
               typeAhead: true
+              width: 250
               store:
                 model: 'ISPBClient.model.RadiusClientParameterValue'
                 autoLoad: false
+                remoteFilter: true
+                remoteSort: false
             }
           ]
         }
@@ -124,4 +136,4 @@ Ext.define 'ISPBClient.view.radiusClient.EditRadiusClientParametersWindow',
       store.filter("radiusClientId__eq", radiusClient.get('id'))
 
       parameterName = element.down('gridpanel combobox[name=parameterName]')
-      parameterName.getStore().filter("servletType__eq", radiusClient.get("clientType"))
+      parameterName.getStore().filter("clientIp__eq", radiusClient.get("ip4Address"))

@@ -10,8 +10,10 @@ import ispb.base.radius.io.RadiusPacketReader;
 import ispb.base.radius.io.RadiusPacketWriter;
 import ispb.base.radius.middleware.RadiusMiddleProcessor;
 import ispb.base.radius.packet.RadiusPacket;
-import ispb.base.radius.server.RadiusServlet;
-import ispb.base.radius.server.RadiusServletContext;
+import ispb.base.radius.server.RadiusServer;
+import ispb.base.radius.servlet.RadiusClientRepository;
+import ispb.base.radius.servlet.RadiusServlet;
+import ispb.base.radius.servlet.RadiusServletContext;
 import ispb.base.service.LogService;
 import ispb.base.utils.HexCodec;
 
@@ -23,7 +25,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class RadiusWorker implements Runnable {
 
-    private final RadiusServerImpl server;
+    private final RadiusServer server;
     private final BlockingQueue<PacketSocket> requestQueue;
     private final Application application;
     private final LogService logService;
@@ -61,14 +63,25 @@ public class RadiusWorker implements Runnable {
             DatagramSocket serverSocket = packetSocket.getServerSocket();
             InetAddress clientAddress = requestDatagram.getAddress();
             int clientPort = requestDatagram.getPort();
+            RadiusClientRepository repository = server.getClientRepository();
 
-            RadiusServlet servlet = server.getServlet(clientAddress);
+            if (repository == null){
+                logService.warn("Client repository is empty on RADIUS server");
+                continue;
+            }
+
+            RadiusServlet servlet = repository.getServlet(clientAddress);
             if (servlet == null) {
                 logService.info("Discard RADIUS packet, not found servlet for RADIUS client " + clientAddress);
                 continue;
             }
 
-            RadiusClientDataSet client = server.getClient(clientAddress);
+            RadiusClientDataSet client = repository.getClient(clientAddress);
+            if (client == null){
+                logService.info("Discard RADIUS packet, not found client info for ip: " + clientAddress);
+                continue;
+            }
+
             String sharedSecret = servlet.getSharedSecret(client);
             if (sharedSecret == null || sharedSecret.length() == 0){
                 logService.info("Discard RADIUS packet, shared secret is empty for " + clientAddress);
