@@ -8,6 +8,7 @@ import ispb.base.radius.servlet.descriptor.ServletDescriptor;
 import ispb.base.resources.AppResources;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RadiusServlet {
@@ -44,6 +45,10 @@ public class RadiusServlet {
         else if (descriptor != null && descriptor.getParameter(parameter) != null)
             return descriptor.getParameter(parameter).getDefaultValue();
         return null;
+    }
+
+    public boolean parameterEq(String parameter, String value){
+        return Objects.equals(value, getParameter(parameter));
     }
 
     public ServletDescriptor getDescriptor(){

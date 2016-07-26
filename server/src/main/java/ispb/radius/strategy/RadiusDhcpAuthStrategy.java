@@ -16,7 +16,7 @@ public class RadiusDhcpAuthStrategy extends RadiusDefaultAuthStrategy {
 
     protected RadiusPacket unknownUser(RadiusServletContext context, String userName){
 
-        if (context.getClient().isAddAuthRequest()){
+        if (context.getServlet().parameterEq("MakeAuthRequest", "true")){
             RadiusUserDataSet user = new RadiusUserDataSet();
             user.setUserName(userName);
             try {

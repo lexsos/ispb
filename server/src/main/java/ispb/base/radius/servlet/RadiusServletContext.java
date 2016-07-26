@@ -13,12 +13,12 @@ public class RadiusServletContext {
 
     private Application application;
     private RadiusPacket request;
+    private RadiusServlet servlet;
     private RadiusClientDataSet client;
     private RadiusAttributeList attributeList;
     private LogService logService;
     private InetAddress clientAddress;
     private int clientPort;
-
 
     public RadiusPacket getRequest() {
         return request;
@@ -74,5 +74,13 @@ public class RadiusServletContext {
 
     public void setClientPort(int clientPort) {
         this.clientPort = clientPort;
+    }
+
+    public RadiusServlet getServlet() {
+        return servlet;
+    }
+
+    public void setServlet(RadiusServlet servlet) {
+        this.servlet = servlet;
     }
 }

@@ -68,15 +68,17 @@ public class RadiusClientParameterValueResource extends RestResource {
     public RestResponse getEntityList(RestContext restContext){
         DataSetFilterItem ipFilter = restContext.getDataSetFilter().getFirst("clientIp");
         DataSetFilterItem parameterFilter = restContext.getDataSetFilter().getFirst("parameterName");
-        if (ipFilter == null || parameterFilter == null)
+        if (ipFilter == null || ipFilter.getValue() == null || parameterFilter == null || parameterFilter.getValue() == null)
             return null;
 
         RadiusServer radiusServer = getRadiusServer(restContext);
         RadiusClientRepository clientRepository = radiusServer.getClientRepository();
         RadiusServlet servlet = clientRepository.getServlet(ipFilter.getValue().toString());
         ServletDescriptor servletDescriptor = servlet.getDescriptor();
-        ParameterDescriptor descriptor = servletDescriptor.getParameter(parameterFilter.getValue().toString());
+        if (servletDescriptor == null)
+            return null;
 
+        ParameterDescriptor descriptor = servletDescriptor.getParameter( parameterFilter.getValue().toString());
         return new RadiusClientParameterValueRestResponse(descriptor);
     }
 

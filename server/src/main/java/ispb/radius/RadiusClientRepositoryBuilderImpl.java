@@ -3,6 +3,7 @@ package ispb.radius;
 
 import ispb.base.Application;
 import ispb.base.db.dataset.RadiusClientDataSet;
+import ispb.base.db.dataset.RadiusClientParameterDataSet;
 import ispb.base.db.fieldtype.RadiusClientType;
 import ispb.base.radius.servlet.RadiusServlet;
 import ispb.base.radius.servlet.RadiusClientRepository;
@@ -32,7 +33,7 @@ public class RadiusClientRepositoryBuilderImpl implements RadiusClientRepository
 
     public RadiusClientRepository buildRepository(){
         RadiusClientRepository repository = new RadiusClientRepository(logService);
-        RadiusClientDictionaryService clientService = getClientService(application);
+        RadiusClientDictionaryService clientService = getClientService();
 
         List<RadiusClientDataSet> clientList = clientService.getRadiusClientList();
         for (RadiusClientDataSet client: clientList){
@@ -51,14 +52,22 @@ public class RadiusClientRepositoryBuilderImpl implements RadiusClientRepository
                 continue;
             }
 
-            // TODO: load client parameters for servlet
+            loadParameters(client, servlet);
 
             repository.addClient(client, servlet);
         }
         return repository;
     }
 
-    private RadiusClientDictionaryService getClientService(Application application){
+    private void loadParameters(RadiusClientDataSet client, RadiusServlet servlet){
+        RadiusClientDictionaryService clientService = getClientService();
+        List<RadiusClientParameterDataSet> parameterList = clientService.getClientParameters(client.getId());
+
+        for (RadiusClientParameterDataSet parameter: parameterList)
+            servlet.setParameter(parameter.getParameter(), parameter.getValue());
+    }
+
+    private RadiusClientDictionaryService getClientService(){
         return application.getByType(RadiusClientDictionaryService.class);
     }
 }

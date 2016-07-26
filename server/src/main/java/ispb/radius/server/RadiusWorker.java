@@ -109,6 +109,7 @@ public class RadiusWorker implements Runnable {
             RadiusServletContext context = new RadiusServletContext();
             context.setApplication(application);
             context.setRequest(request);
+            context.setServlet(servlet);
             context.setClient(client);
             context.setClientAddress(clientAddress);
             context.setClientPort(clientPort);

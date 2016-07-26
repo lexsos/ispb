@@ -105,6 +105,7 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
         parameterDataSet.setParameter(parameter);
         parameterDataSet.setValue(value);
         parameterDao.save(parameterDataSet);
+        sendMsg(new RadiusClientUpdatedMsq());
         return parameterDataSet;
     }
 
@@ -117,6 +118,7 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
         parameterDataSet.setParameter(parameter);
         parameterDataSet.setValue(value);
         parameterDao.save(parameterDataSet);
+        sendMsg(new RadiusClientUpdatedMsq());
         return parameterDataSet;
     }
 
@@ -137,6 +139,7 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
         if (parameterDataSet == null)
             throw new NotFoundException();
         parameterDao.delete(parameterDataSet);
+        sendMsg(new RadiusClientUpdatedMsq());
     }
 
     private RadiusClientDataSet getByIp4(String ip4Address){
