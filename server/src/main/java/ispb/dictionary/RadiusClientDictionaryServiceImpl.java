@@ -4,7 +4,9 @@ package ispb.dictionary;
 import ispb.base.Application;
 import ispb.base.db.container.RadiusClientContainer;
 import ispb.base.db.dao.RadiusClientDataSetDao;
+import ispb.base.db.dao.RadiusClientParameterDataSetDao;
 import ispb.base.db.dataset.RadiusClientDataSet;
+import ispb.base.db.dataset.RadiusClientParameterDataSet;
 import ispb.base.db.field.CmpOperator;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
@@ -88,6 +90,53 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
 
     public boolean ip4exist(String ip4Address){
         return getByIp4(ip4Address) != null;
+    }
+
+    public RadiusClientParameterDataSet createParameter(long clientId, String parameter, String value) throws NotFoundException{
+        RadiusClientDataSetDao clientDao = daoFactory.getRadiusClientDataSetDao();
+        RadiusClientParameterDataSetDao parameterDao = daoFactory.getRadiusClientParameterDataSetDao();
+
+        RadiusClientDataSet client = clientDao.getById(clientId);
+        if (client == null)
+            throw new NotFoundException();
+
+        RadiusClientParameterDataSet parameterDataSet = new RadiusClientParameterDataSet();
+        parameterDataSet.setClient(client);
+        parameterDataSet.setParameter(parameter);
+        parameterDataSet.setValue(value);
+        parameterDao.save(parameterDataSet);
+        return parameterDataSet;
+    }
+
+    public RadiusClientParameterDataSet updateParameter(long parameterId, String parameter, String value) throws NotFoundException{
+        RadiusClientParameterDataSetDao parameterDao = daoFactory.getRadiusClientParameterDataSetDao();
+        RadiusClientParameterDataSet parameterDataSet = parameterDao.getById(parameterId);
+        if (parameterDataSet == null)
+            throw new NotFoundException();
+
+        parameterDataSet.setParameter(parameter);
+        parameterDataSet.setValue(value);
+        parameterDao.save(parameterDataSet);
+        return parameterDataSet;
+    }
+
+    public List<RadiusClientParameterDataSet> getParameterList(DataSetFilter filter, DataSetSort sort){
+        RadiusClientParameterDataSetDao parameterDao = daoFactory.getRadiusClientParameterDataSetDao();
+        return parameterDao.getList(filter, sort);
+    }
+
+    public List<RadiusClientParameterDataSet> getClientParameters(long clientId){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("clientId", CmpOperator.EQ, clientId);
+        return getParameterList(filter, null);
+    }
+
+    public void deleteParameter(long parameterId) throws NotFoundException{
+        RadiusClientParameterDataSetDao parameterDao = daoFactory.getRadiusClientParameterDataSetDao();
+        RadiusClientParameterDataSet parameterDataSet = parameterDao.getById(parameterId);
+        if (parameterDataSet == null)
+            throw new NotFoundException();
+        parameterDao.delete(parameterDataSet);
     }
 
     private RadiusClientDataSet getByIp4(String ip4Address){
