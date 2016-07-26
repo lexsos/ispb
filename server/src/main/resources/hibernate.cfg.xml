@@ -33,6 +33,7 @@
         <mapping class="ispb.base.db.dataset.RadiusUserDataSet"/>
         <mapping class="ispb.base.db.dataset.RadiusUserAttributeDataSet"/>
         <mapping class="ispb.base.db.dataset.RadiusClientDataSet"/>
+        <mapping class="ispb.base.db.dataset.RadiusClientParameterDataSet"/>
 
         <mapping class="ispb.base.db.view.CustomerSummeryView"/>
 
