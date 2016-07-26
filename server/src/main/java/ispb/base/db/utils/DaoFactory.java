@@ -20,4 +20,5 @@ public interface DaoFactory {
     RadiusUserDataSetDao getRadiusUserDataSetDao();
     RadiusUserAttributeDataSetDao getRadiusUserAttributeDataSetDao();
     RadiusClientDataSetDao getRadiusClientDataSetDao();
+    RadiusClientParameterDataSetDao getRadiusClientParameterDataSetDao();
 }

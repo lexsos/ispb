@@ -1,0 +1,25 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "clientParameter.deleteAt"
+    },
+
+    "clientId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "clientParameter.client.id"
+    },
+
+    "parameter": {
+      "validOperators":["EQ", "LIKE"],
+      "valueTypeName":"java.lang.String",
+      "hqlFieldName": "clientParameter.parameter",
+      "sortable": true
+    }
+
+  },
+
+  "defaultSort": "clientParameter.client.ip4Address, clientParameter.parameter"
+}
