@@ -13,13 +13,6 @@
       "sortable": true
     },
 
-    "addAuthRequest": {
-      "validOperators":["EQ"],
-      "valueTypeName":"java.lang.Boolean",
-      "hqlFieldName": "radiusClient.addAuthRequest",
-      "sortable": true
-    },
-
     "rejectInactive": {
       "validOperators":["EQ"],
       "valueTypeName":"java.lang.Boolean",

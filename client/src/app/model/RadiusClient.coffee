@@ -5,7 +5,6 @@ Ext.define 'ISPBClient.model.RadiusClient',
     { name: 'id', type: 'int' }
     { name: 'ip4Address', type: 'string' }
     { name: 'secret', type: 'string' }
-    { name: 'addAuthRequest', type: 'boolean' }
     { name: 'rejectInactive', type: 'boolean' }
     { name: 'clientType', type: 'string' }
   ]

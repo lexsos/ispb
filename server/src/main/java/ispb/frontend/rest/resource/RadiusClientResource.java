@@ -23,7 +23,6 @@ public class RadiusClientResource extends RestResource {
 
         private final String ip4Address;
         private final String secret;
-        private final boolean addAuthRequest;
         private final boolean rejectInactive;
         private final RadiusClientType clientType;
 
@@ -31,7 +30,6 @@ public class RadiusClientResource extends RestResource {
             setId(client.getId());
             ip4Address = client.getIp4Address();
             secret = client.getSecret();
-            addAuthRequest = client.isAddAuthRequest();
             rejectInactive = client.isRejectInactive();
             clientType = client.getClientType();
         }
@@ -46,10 +44,6 @@ public class RadiusClientResource extends RestResource {
 
         public String getSecret(){
             return secret;
-        }
-
-        public boolean isAddAuthRequest(){
-            return addAuthRequest;
         }
 
         public boolean isRejectInactive(){

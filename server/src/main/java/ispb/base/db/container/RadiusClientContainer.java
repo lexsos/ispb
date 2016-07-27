@@ -8,7 +8,6 @@ public interface RadiusClientContainer {
     long getId();
     String getIp4Address();
     String getSecret();
-    boolean isAddAuthRequest();
     boolean isRejectInactive();
     RadiusClientType getClientType();
 }

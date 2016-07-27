@@ -29,9 +29,6 @@ public class RadiusClientDataSet extends BaseDataSet implements DeletedMarkable,
     private String secret;
 
     @Column(nullable = false)
-    private boolean addAuthRequest = false;
-
-    @Column(nullable = false)
     private boolean rejectInactive = true;
 
     @Column(nullable = false)
@@ -72,14 +69,6 @@ public class RadiusClientDataSet extends BaseDataSet implements DeletedMarkable,
 
     public void setSecret(String secret) {
         this.secret = secret;
-    }
-
-    public boolean isAddAuthRequest() {
-        return addAuthRequest;
-    }
-
-    public void setAddAuthRequest(boolean addAuthRequest) {
-        this.addAuthRequest = addAuthRequest;
     }
 
     public boolean isRejectInactive() {

@@ -1,0 +1,1 @@
+ALTER TABLE radius_client DROP addauthrequest;

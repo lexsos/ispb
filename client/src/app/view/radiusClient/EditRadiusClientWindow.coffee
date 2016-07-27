@@ -43,17 +43,6 @@ Ext.define 'ISPBClient.view.radiusClient.EditRadiusClientWindow',
         }
         {
           xtype: 'checkboxfield'
-          name : 'addAuthRequest'
-          fieldLabel: 'Создавать запросы авторизации'
-          margin: '5 5 5 5'
-          checked: true
-          value: true
-          inputValue: 'true',
-          uncheckedValue: 'false'
-          labelWidth: 200
-        }
-        {
-          xtype: 'checkboxfield'
           name : 'rejectInactive'
           fieldLabel: 'Отвергать заблокированные'
           margin: '5 5 5 5'

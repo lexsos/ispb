@@ -164,7 +164,6 @@ public class RadiusClientDictionaryServiceImpl implements RadiusClientDictionary
 
         client.setIp4Address(ip4normalized);
         client.setSecret(container.getSecret());
-        client.setAddAuthRequest(container.isAddAuthRequest());
         client.setRejectInactive(container.isRejectInactive());
         client.setClientType(container.getClientType());
     }
