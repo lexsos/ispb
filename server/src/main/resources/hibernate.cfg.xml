@@ -8,7 +8,7 @@
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/ispb</property>
 
-        <!-- validate create -->
+        <!-- validate create update -->
         <property name="hbm2ddl.auto">validate</property>
         <property name="show_sql">true</property>
 
@@ -34,6 +34,9 @@
         <mapping class="ispb.base.db.dataset.RadiusUserAttributeDataSet"/>
         <mapping class="ispb.base.db.dataset.RadiusClientDataSet"/>
         <mapping class="ispb.base.db.dataset.RadiusClientParameterDataSet"/>
+        <mapping class="ispb.base.db.dataset.RadiusSessionDataSet"/>
+        <mapping class="ispb.base.db.dataset.RadiusSessionAttributeDataSet"/>
+        <mapping class="ispb.base.db.dataset.RadiusSessionIpDataSet"/>
 
         <mapping class="ispb.base.db.view.CustomerSummeryView"/>
 
