@@ -85,4 +85,16 @@ public class DaoFactoryImpl implements DaoFactory {
     public RadiusClientParameterDataSetDao getRadiusClientParameterDataSetDao(){
         return new RadiusClientParameterDataSetDaoImpl(sessions, resources, queryBuilder);
     }
+
+    public RadiusSessionDataSetDao getRadiusSessionDataSetDao(){
+        return new RadiusSessionDataSetDaoImpl(sessions, resources, queryBuilder);
+    }
+
+    public RadiusSessionAttributeDataSetDao getRadiusSessionAttributeDataSetDao(){
+        return new RadiusSessionAttributeDataSetDaoImpl(sessions, resources, queryBuilder);
+    }
+
+    public RadiusSessionIpDataSetDao getRadiusSessionIpDataSetDao(){
+        return new RadiusSessionIpDataSetDaoImpl(sessions, resources, queryBuilder);
+    }
 }

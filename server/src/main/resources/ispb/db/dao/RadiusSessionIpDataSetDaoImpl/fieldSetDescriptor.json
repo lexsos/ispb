@@ -1,0 +1,37 @@
+{
+  "fieldDescriptors": {
+
+    "deleteAt": {
+      "validOperators":["IS_NULL"],
+      "hqlFieldName": "radiusSessionIp.deleteAt"
+    },
+
+    "createAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.util.Date",
+      "hqlFieldName": "radiusSessionIp.session.createAt",
+      "sortable": true
+    },
+
+    "customerId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "radiusSessionIp.session.customer.id"
+    },
+
+    "radiusUserId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "radiusSessionIp.session.radiusUser.id"
+    },
+
+    "radiusClientId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "radiusSessionIp.session.radiusClient.id"
+    }
+
+  },
+
+  "defaultSort": "radiusSessionIp.session.createAt DESC"
+}
