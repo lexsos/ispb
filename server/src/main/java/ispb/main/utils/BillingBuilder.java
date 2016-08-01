@@ -173,6 +173,9 @@ public class BillingBuilder {
         RadiusClientDictionaryService radiusClientDictionaryService = new RadiusClientDictionaryServiceImpl(daoFactory, application);
         application.addByType(RadiusClientDictionaryService.class, radiusClientDictionaryService);
 
+        RadiusSessionService radiusSessionService = new RadiusSessionServiceImpl(daoFactory);
+        application.addByType(RadiusSessionService.class, radiusSessionService);
+
         EventSystem eventSystem = new EventSystemImpl(application, conf);
         application.addByType(EventSystem.class, eventSystem);
 

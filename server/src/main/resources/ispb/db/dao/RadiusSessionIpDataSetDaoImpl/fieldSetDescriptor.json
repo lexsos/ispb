@@ -29,6 +29,12 @@
       "validOperators":["EQ"],
       "valueTypeName":"java.lang.Long",
       "hqlFieldName": "radiusSessionIp.session.radiusClient.id"
+    },
+
+    "ipAddress": {
+      "hqlFieldName": "radiusSessionIp.ipAddress",
+      "validOperators":["EQ", "LIKE"],
+      "valueTypeName":"java.lang.String"
     }
 
   },

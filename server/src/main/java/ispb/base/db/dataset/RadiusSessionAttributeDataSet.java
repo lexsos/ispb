@@ -1,6 +1,7 @@
 package ispb.base.db.dataset;
 
 
+import ispb.base.db.container.RadiusSessionAttributeContainer;
 import ispb.base.db.utils.CreatedTimestampable;
 import ispb.base.db.utils.DeletedMarkable;
 import ispb.base.db.utils.Identifiable;
@@ -10,7 +11,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "radius_session_attribute")
-public class RadiusSessionAttributeDataSet implements DeletedMarkable, Identifiable, CreatedTimestampable {
+public class RadiusSessionAttributeDataSet
+        implements DeletedMarkable, Identifiable, CreatedTimestampable, RadiusSessionAttributeContainer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,6 +87,10 @@ public class RadiusSessionAttributeDataSet implements DeletedMarkable, Identifia
 
     public void setSession(RadiusSessionDataSet session) {
         this.session = session;
+    }
+
+    public long getSessionId(){
+        return getSession().getId();
     }
 
     public String getAttribute() {
