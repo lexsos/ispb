@@ -13,6 +13,7 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.service.account.RadiusSessionService;
 import ispb.base.service.exception.InvalidIpAddressException;
 import ispb.base.service.exception.NotFoundException;
+import ispb.base.utils.DateUtils;
 import ispb.base.utils.Ip4Address;
 
 import java.util.Date;
@@ -187,6 +188,14 @@ public class RadiusSessionServiceImpl implements RadiusSessionService {
             return ipDataSet.getSession().getCustomer();
 
         return null;
+    }
+
+    public long getSessionInPeriod(RadiusUserDataSet user, int periodSeconds){
+        DataSetFilter filter = new DataSetFilter();
+        Date date = DateUtils.subSecond(new Date(), periodSeconds);
+        filter.add("radiusUserId", CmpOperator.EQ, user.getId());
+        filter.add("startAt", CmpOperator.GT_EQ, date);
+        return getSessionCount(filter);
     }
 
     private void updateSession(RadiusSessionDataSet session, RadiusSessionContainer container) throws NotFoundException {

@@ -31,6 +31,17 @@ public class DateUtils {
         return calendar.getTime();
     }
 
+    public static Date addSecond(Date date, int second){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.SECOND, second);
+        return calendar.getTime();
+    }
+
+    public static Date subSecond(Date date, int second){
+        return addSecond(date, -second);
+    }
+
     public static Date yesterday(){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);

@@ -3,10 +3,7 @@ package ispb.base.service.account;
 
 import ispb.base.db.container.RadiusSessionAttributeContainer;
 import ispb.base.db.container.RadiusSessionContainer;
-import ispb.base.db.dataset.CustomerDataSet;
-import ispb.base.db.dataset.RadiusSessionAttributeDataSet;
-import ispb.base.db.dataset.RadiusSessionDataSet;
-import ispb.base.db.dataset.RadiusSessionIpDataSet;
+import ispb.base.db.dataset.*;
 import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
@@ -40,4 +37,5 @@ public interface RadiusSessionService {
 
 
     CustomerDataSet getCustomerByIp(String ipAddress) throws InvalidIpAddressException;
+    long getSessionInPeriod(RadiusUserDataSet user, int periodSeconds);
 }

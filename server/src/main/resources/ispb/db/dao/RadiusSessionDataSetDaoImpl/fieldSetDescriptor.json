@@ -13,6 +13,13 @@
       "sortable": true
     },
 
+    "startAt": {
+      "validOperators":["GT_EQ", "LT_EQ", "LT", "GT"],
+      "valueTypeName": "java.util.Date",
+      "hqlFieldName": "radiusSession.startAt",
+      "sortable": true
+    },
+
     "customerId": {
       "validOperators":["EQ"],
       "valueTypeName":"java.lang.Long",

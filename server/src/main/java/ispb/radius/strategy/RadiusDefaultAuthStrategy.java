@@ -45,12 +45,25 @@ public class RadiusDefaultAuthStrategy implements RadiusAuthStrategy {
             return null;
 
         RadiusUserDataSet user = getUserService(context).getUserByName(userName);
+        RadiusPacket response = beforeAuth(context, user);
+
+        if (response != null)
+            return response;
+
         if (user != null)
-            return userAuth(context, user);
+            response = userAuth(context, user);
         else
-            return unknownUser(context, userName);
+            response = unknownUser(context, userName);
+        return afterAuth(context, user, response);
     }
 
+    protected RadiusPacket beforeAuth(RadiusServletContext context, RadiusUserDataSet user){
+        return null;
+    }
+
+    protected RadiusPacket afterAuth(RadiusServletContext context, RadiusUserDataSet user, RadiusPacket response){
+        return response;
+    }
 
     protected String getUserName(RadiusServletContext context){
         return context.getAttributeList().getFirstValue("User-Name");

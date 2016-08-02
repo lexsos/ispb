@@ -8,6 +8,25 @@
         {"display": "Да", "value": "true"},
         {"display": "Нет", "value": "false"}
       ]
+    },
+
+    "LimitConnections": {
+      "display": "Ограничивать количество запросов",
+      "defaultValue": "false",
+      "values": [
+        {"display": "Да", "value": "true"},
+        {"display": "Нет", "value": "false"}
+      ]
+    },
+
+    "LimitConnectionsCount": {
+      "display": "Максисмальное количество авторизаций в период",
+      "defaultValue": "3"
+    },
+
+    "LimitPeriod": {
+      "display": "Период лимитирования (секунд)",
+      "defaultValue": "600"
     }
 
   }
