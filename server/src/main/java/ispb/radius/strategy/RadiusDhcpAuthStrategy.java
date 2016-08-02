@@ -57,7 +57,7 @@ public class RadiusDhcpAuthStrategy extends RadiusDefaultAuthStrategy {
             int period =  Integer.parseInt(context.getServlet().getParameter("LimitPeriod"));
             int limit =  Integer.parseInt(context.getServlet().getParameter("LimitConnectionsCount"));
 
-            if (sessionService.getSessionInPeriod(user, period) > limit) {
+            if (sessionService.getSessionInPeriod(user, period) >= limit) {
                 logService.info("Send RADIUS reject. Too many connections from: " + user.getUserName());
                 return RadiusPacketBuilder.getAccessReject(context.getRequest());
             }

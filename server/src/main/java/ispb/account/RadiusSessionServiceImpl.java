@@ -169,7 +169,11 @@ public class RadiusSessionServiceImpl implements RadiusSessionService {
         DataSetSort sort = new DataSetSort();
         sort.add("createAt", SortDirection.DESC);
 
-        List<RadiusSessionIpDataSet> ipList = getIpList(filter, sort, null);
+        Pagination pagination = new Pagination();
+        pagination.setLimit(1);
+        pagination.setStart(0);
+
+        List<RadiusSessionIpDataSet> ipList = getIpList(filter, sort, pagination);
         if (ipList.isEmpty())
             return null;
 
