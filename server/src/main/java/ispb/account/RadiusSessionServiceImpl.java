@@ -18,6 +18,7 @@ import ispb.base.utils.Ip4Address;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 public class RadiusSessionServiceImpl implements RadiusSessionService {
@@ -200,6 +201,25 @@ public class RadiusSessionServiceImpl implements RadiusSessionService {
         filter.add("radiusUserId", CmpOperator.EQ, user.getId());
         filter.add("startAt", CmpOperator.GT_EQ, date);
         return getSessionCount(filter);
+    }
+
+    public String getSessionPattern(RadiusSessionDataSet session){
+        return "ispb:" + session.getId();
+    }
+
+    public RadiusSessionDataSet getSessionByPattern(String pattern){
+        String[] tokens = pattern.split(":");
+        if (tokens.length != 2)
+            return null;
+        if (tokens[0] == null || !Objects.equals(tokens[0],"ispb"))
+            return null;
+        try {
+            long id = Long.parseLong(tokens[1]);
+            RadiusSessionDataSetDao dao = daoFactory.getRadiusSessionDataSetDao();
+            return dao.getById(id);
+        }catch (Throwable throwable){
+            return null;
+        }
     }
 
     private void updateSession(RadiusSessionDataSet session, RadiusSessionContainer container) throws NotFoundException {

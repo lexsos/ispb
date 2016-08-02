@@ -38,4 +38,7 @@ public interface RadiusSessionService {
 
     CustomerDataSet getCustomerByIp(String ipAddress) throws InvalidIpAddressException;
     long getSessionInPeriod(RadiusUserDataSet user, int periodSeconds);
+
+    String getSessionPattern(RadiusSessionDataSet session);
+    RadiusSessionDataSet getSessionByPattern(String pattern);
 }
