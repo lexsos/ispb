@@ -10,6 +10,7 @@ import ispb.base.db.sort.SortBuilder;
 import ispb.base.db.utils.DaoFactory;
 import ispb.base.db.utils.QueryBuilder;
 import ispb.base.eventsys.message.*;
+import ispb.base.radius.middleware.*;
 import ispb.base.radius.server.RadiusAttributeListBuilder;
 import ispb.base.radius.auth.RadiusAuthProcessor;
 import ispb.base.radius.auth.RadiusChapAuth;
@@ -21,10 +22,6 @@ import ispb.base.radius.dictionary.RadiusMemoryDictionary;
 import ispb.base.radius.io.RadiusPacketReader;
 import ispb.base.radius.io.RadiusPacketSerializer;
 import ispb.base.radius.io.RadiusPacketWriter;
-import ispb.base.radius.middleware.RadiusMiddleProcessor;
-import ispb.base.radius.middleware.RadiusProxyStateMiddle;
-import ispb.base.radius.middleware.RadiusResponseAuthenticatorMiddle;
-import ispb.base.radius.middleware.RadiusUserPasswordMiddle;
 import ispb.base.radius.server.RadiusServer;
 import ispb.base.radius.servlet.RadiusClientRepository;
 import ispb.base.radius.servlet.RadiusClientRepositoryBuilder;
@@ -48,6 +45,7 @@ import ispb.radius.server.RadiusAttributeListBuilderImpl;
 import ispb.radius.server.RadiusServerImpl;
 import ispb.radius.servlet.DefaultRadiusServlet;
 import ispb.radius.servlet.DhcpRadiusServlet;
+import ispb.radius.servlet.PppRadiusServlet;
 import ispb.scheduler.EventSchedulerImpl;
 import ispb.eventsys.EventSystemImpl;
 import ispb.frontend.HttpServerImpl;
@@ -82,11 +80,13 @@ public class BillingBuilder {
         application.addByType(RadiusPacketWriter.class, serializer);
 
         RadiusMiddleProcessor middleProcessor = new RadiusMiddleProcessor();
+        middleProcessor.addIn(new RadiusAccountAuthenticatorMiddle());
         middleProcessor.addIn(new RadiusUserPasswordMiddle());
         // TODO: add  middleware for Vendor Attributes
         middleProcessor.addOut(new RadiusUserPasswordMiddle());
         middleProcessor.addOut(new RadiusProxyStateMiddle());
         middleProcessor.addOut(new RadiusResponseAuthenticatorMiddle());
+        middleProcessor.addOut(new RadiusAccountAuthenticatorMiddle());
         application.addByType(RadiusMiddleProcessor.class, middleProcessor);
 
         RadiusAuthProcessor authProcessor = new  RadiusAuthProcessor();
@@ -104,6 +104,7 @@ public class BillingBuilder {
         RadiusClientRepositoryBuilder repositoryBuilder = new RadiusClientRepositoryBuilderImpl(logService, application);
         repositoryBuilder.addServletType(RadiusClientType.DEFAULT, DefaultRadiusServlet.class);
         repositoryBuilder.addServletType(RadiusClientType.DHCP, DhcpRadiusServlet.class);
+        repositoryBuilder.addServletType(RadiusClientType.PPP, PppRadiusServlet.class);
         application.addByType(RadiusClientRepositoryBuilder.class, repositoryBuilder);
 
         RadiusClientRepository repository = repositoryBuilder.buildRepository();

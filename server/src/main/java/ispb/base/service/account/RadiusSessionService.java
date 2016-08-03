@@ -41,4 +41,6 @@ public interface RadiusSessionService {
 
     String getSessionPattern(RadiusSessionDataSet session);
     RadiusSessionDataSet getSessionByPattern(String pattern);
+
+    void closeSession(RadiusSessionDataSet session);
 }

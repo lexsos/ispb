@@ -13,6 +13,12 @@
       "sortable": true
     },
 
+    "sessionId": {
+      "validOperators":["EQ"],
+      "valueTypeName":"java.lang.Long",
+      "hqlFieldName": "radiusSessionIp.session.id"
+    },
+
     "customerId": {
       "validOperators":["EQ"],
       "valueTypeName":"java.lang.Long",

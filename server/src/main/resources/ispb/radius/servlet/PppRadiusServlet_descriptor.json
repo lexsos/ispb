@@ -1,15 +1,6 @@
 {
   "parameters": {
 
-    "MakeAuthRequest": {
-      "display": "Создавать запросы авторизации",
-      "defaultValue": "false",
-      "values": [
-        {"display": "Да", "value": "true"},
-        {"display": "Нет", "value": "false"}
-      ]
-    },
-
     "LimitConnections": {
       "display": "Ограничивать количество запросов",
       "defaultValue": "false",
@@ -31,6 +22,15 @@
 
     "SaveSessionAttributes": {
       "display": "Сохранять атрибуты сесии",
+      "defaultValue": "false",
+      "values": [
+        {"display": "Да", "value": "true"},
+        {"display": "Нет", "value": "false"}
+      ]
+    },
+
+    "SaveUserIpAddress": {
+      "display": "Сохранять IP адрес назначенный BRAS'ом",
       "defaultValue": "false",
       "values": [
         {"display": "Да", "value": "true"},

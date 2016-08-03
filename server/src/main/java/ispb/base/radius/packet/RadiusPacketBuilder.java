@@ -26,9 +26,13 @@ public class RadiusPacketBuilder {
 
     public static RadiusPacket getAccessAccept (RadiusPacket request){
         return new RadiusPacket(RadiusPacket.ACCESS_ACCEPT, request.getIdentifier());
-     }
+    }
 
     public static RadiusPacket getAccessReject (RadiusPacket request){
         return new RadiusPacket(RadiusPacket.ACCESS_REJECT, request.getIdentifier());
+    }
+
+    public static RadiusPacket getAccountingResponse (RadiusPacket request){
+        return new RadiusPacket(RadiusPacket.ACCOUNTING_RESPONSE, request.getIdentifier());
     }
 }

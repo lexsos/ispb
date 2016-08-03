@@ -1,8 +1,10 @@
 package ispb.radius.strategy;
 
+
 import ispb.base.Application;
 import ispb.base.db.dataset.RadiusSessionDataSet;
 import ispb.base.db.dataset.RadiusUserDataSet;
+import ispb.base.radius.dictionary.RadiusDictionary;
 import ispb.base.radius.packet.RadiusAttributeList;
 import ispb.base.radius.packet.RadiusPacket;
 import ispb.base.radius.packet.RadiusPacketBuilder;
@@ -11,33 +13,17 @@ import ispb.base.resources.Config;
 import ispb.base.service.LogService;
 import ispb.base.service.account.RadiusSessionService;
 import ispb.base.service.exception.NotFoundException;
-import ispb.base.service.exception.ServiceException;
 
 
-public class RadiusDhcpAuthStrategy extends RadiusDefaultAuthStrategy {
+public class RadiusPppAuthStrategy extends RadiusDefaultAuthStrategy {
 
     private final Application application;
     private final LogService logService;
 
-    public RadiusDhcpAuthStrategy(Config config, LogService logService, Application application){
+    public RadiusPppAuthStrategy(Config config, LogService logService, Application application){
         super(config);
         this.application = application;
         this.logService = logService;
-    }
-
-    protected RadiusPacket unknownUser(RadiusServletContext context, String userName){
-
-        if (context.getServlet().parameterEq("MakeAuthRequest", "true")){
-            RadiusUserDataSet user = new RadiusUserDataSet();
-            user.setUserName(userName);
-            try {
-                getUserService(context).create(user);
-            }
-            catch (ServiceException e){
-                context.getLogService().warn("Can't add new RADIUS auth request for user " + userName, e);
-            }
-        }
-        return RadiusPacketBuilder.getAccessReject(context.getRequest());
     }
 
     protected RadiusPacket afterAuth(RadiusServletContext context, RadiusUserDataSet user, RadiusPacket response){
@@ -48,7 +34,7 @@ public class RadiusDhcpAuthStrategy extends RadiusDefaultAuthStrategy {
         RadiusSessionService sessionService = getSessionService();
 
         if (RadiusStrategyHelper.connectionLimitReach(context, sessionService, user)) {
-            logService.info("DHCP RADIUS servlet send reject. Too many connections from: " + user.getUserName());
+            logService.info("PPP RADIUS servlet send reject. Too many connections from: " + user.getUserName());
             return RadiusPacketBuilder.getAccessReject(context.getRequest());
         }
 
@@ -63,6 +49,7 @@ public class RadiusDhcpAuthStrategy extends RadiusDefaultAuthStrategy {
             return response;
         }
 
+        RadiusStrategyHelper.addSessionId(sessionService, response, session, getRadiusDictionary());
         RadiusStrategyHelper.saveSessionIp(session, sessionService, logService, responseAttributes);
 
         if (context.getServlet().parameterEq("SaveSessionAttributes", "true")) {
@@ -75,5 +62,9 @@ public class RadiusDhcpAuthStrategy extends RadiusDefaultAuthStrategy {
 
     private RadiusSessionService getSessionService(){
         return application.getByType(RadiusSessionService.class);
+    }
+
+    private RadiusDictionary getRadiusDictionary(){
+        return application.getByType(RadiusDictionary.class);
     }
 }

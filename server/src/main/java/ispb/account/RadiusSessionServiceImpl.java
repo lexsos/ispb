@@ -89,6 +89,10 @@ public class RadiusSessionServiceImpl implements RadiusSessionService {
         if (ip == null)
             throw new InvalidIpAddressException();
 
+        RadiusSessionIpDataSet ipDataSet = getIpForSession(sessionId, ip);
+        if (ipDataSet != null)
+            return ipDataSet;
+
         RadiusSessionIpDataSet sessionIp = new RadiusSessionIpDataSet();
         sessionIp.setSession(session);
         sessionIp.setIpAddress(ip);
@@ -222,6 +226,14 @@ public class RadiusSessionServiceImpl implements RadiusSessionService {
         }
     }
 
+    public void closeSession(RadiusSessionDataSet session){
+        RadiusSessionDataSetDao sessionDao = daoFactory.getRadiusSessionDataSetDao();
+        session.setStopAt(new Date());
+        if (session.getExpireAt() == null)
+            session.setExpireAt(session.getStartAt());
+        sessionDao.save(session);
+    }
+
     private void updateSession(RadiusSessionDataSet session, RadiusSessionContainer container) throws NotFoundException {
         CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
         CustomerDataSet customer = customerDao.getById(container.getCustomerId());
@@ -265,5 +277,15 @@ public class RadiusSessionServiceImpl implements RadiusSessionService {
     private String normalizeIp(String ipAddress){
         // TODO: Change normalize algorithm for IPv6
         return Ip4Address.normalize(ipAddress);
+    }
+
+    private RadiusSessionIpDataSet getIpForSession(long sessionId, String ipAddress){
+        DataSetFilter filter = new DataSetFilter();
+        filter.add("ipAddress", CmpOperator.EQ, ipAddress);
+        filter.add("sessionId", CmpOperator.EQ, sessionId);
+        List<RadiusSessionIpDataSet>  ipList = getIpList(filter, null, null);
+        if (ipList.isEmpty())
+            return null;
+        return ipList.get(0);
     }
 }

@@ -43,6 +43,12 @@ public class RadiusPacket {
     public static final int ATTRIBUTE_CHAP_CHALLENGE = 60;
     public static final int ATTRIBUTE_VENDOR_SPECIFIC = 23;
 
+    // Value for attribute Acct-Status-Type
+    public static final int ACCT_STATUS_TYPE_START = 1;
+    public static final int ACCT_STATUS_TYPE_STOP = 2;
+    public static final int ACCT_STATUS_TYPE_ACCOUNTING_ON = 7;
+    public static final int ACCT_STATUS_TYPE_ACCOUNTING_OFF = 8;
+
     private int packetType;
     private int identifier;
     private final byte[] authenticator = new byte[AUTH_LENGTH];

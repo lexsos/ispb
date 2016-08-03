@@ -14,6 +14,7 @@ public class DhcpRadiusServlet extends RadiusServlet {
 
     private final RadiusAuthStrategy authStrategy;
 
+
     public DhcpRadiusServlet(Config config, LogService logService, Application application){
         authStrategy = new RadiusDhcpAuthStrategy(config, logService, application);
     }

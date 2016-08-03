@@ -105,4 +105,8 @@ public class RadiusAttributeList implements Iterable<RadiusAttributeContainer> {
             return attributes.get(attributeName).get(0);
         return null;
     }
+
+    public List<String> getValues(String attributeName){
+            return attributes.get(attributeName);
+    }
 }
