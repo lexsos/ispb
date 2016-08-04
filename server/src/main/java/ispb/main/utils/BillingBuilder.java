@@ -59,7 +59,6 @@ public class BillingBuilder {
     private static void buildRadius(Application application){
         LogService logService = application.getByType(LogService.class);
         Config conf = application.getByType(Config.class);
-        RadiusClientDictionaryService radiusClientDictionaryService = application.getByType(RadiusClientDictionaryService.class);
         CustomerAccountService customerAccountService =  application.getByType(CustomerAccountService.class);
         TariffDictionaryService tariffDictionaryService = application.getByType(TariffDictionaryService.class);
         RadiusUserService radiusUserService = application.getByType(RadiusUserService.class);

@@ -6,6 +6,7 @@ import ispb.base.db.filter.DataSetFilter;
 import ispb.base.db.sort.DataSetSort;
 import ispb.base.db.utils.Pagination;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RadiusSessionDataSetDao {
@@ -14,4 +15,6 @@ public interface RadiusSessionDataSetDao {
     List<RadiusSessionDataSet> getList(DataSetFilter filter, DataSetSort sort, Pagination pagination);
     long getCount(DataSetFilter filter);
     RadiusSessionDataSet getById(long id);
+
+    void eraseOld(Date olderThen);
 }

@@ -12,6 +12,7 @@ import ispb.base.resources.AppResources;
 import ispb.db.util.BaseDao;
 import org.hibernate.SessionFactory;
 
+import java.util.Date;
 import java.util.List;
 
 public class RadiusSessionAttributeDataSetDaoImpl extends BaseDao implements RadiusSessionAttributeDataSetDao {
@@ -20,6 +21,7 @@ public class RadiusSessionAttributeDataSetDaoImpl extends BaseDao implements Rad
     private final FieldSetDescriptor fieldsDescriptor;
     private final String hqlListTmpl;
     private final String hqlCountTmpl;
+    private final String hqlDeleteOlder;
 
     public RadiusSessionAttributeDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
@@ -28,6 +30,7 @@ public class RadiusSessionAttributeDataSetDaoImpl extends BaseDao implements Rad
         fieldsDescriptor = loadFieldDescriptor(resources, "RadiusSessionAttributeDataSetDaoImpl/fieldSetDescriptor.json");
         hqlListTmpl = resources.getAsString(this.getClass(), "RadiusSessionAttributeDataSetDaoImpl/tmpl_list.hql");
         hqlCountTmpl = resources.getAsString(this.getClass(), "RadiusSessionAttributeDataSetDaoImpl/tmpl_count.hql");
+        hqlDeleteOlder = resources.getAsString(this.getClass(), "RadiusSessionAttributeDataSetDaoImpl/delete_old.hql");
     }
 
     public long save(RadiusSessionAttributeDataSet attribute){
@@ -47,7 +50,17 @@ public class RadiusSessionAttributeDataSetDaoImpl extends BaseDao implements Rad
     public long getCount(DataSetFilter filter){
         return getCountWithoutDeleted(filter, queryBuilder, fieldsDescriptor, hqlCountTmpl);
     }
+
     public RadiusSessionAttributeDataSet getById(long id){
         return getEntityById(RadiusSessionAttributeDataSet.class, id);
+    }
+
+    public void eraseOld(Date olderThen){
+        this.doTransaction(
+                (session, transaction) -> {
+                    session.createQuery(hqlDeleteOlder).setParameter("olderThen", olderThen).executeUpdate();
+                    return null;
+                }
+        );
     }
 }

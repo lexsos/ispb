@@ -11,6 +11,7 @@ import ispb.base.resources.AppResources;
 import ispb.db.util.BaseDao;
 import org.hibernate.SessionFactory;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,6 +21,7 @@ public class RadiusSessionDataSetDaoImpl extends BaseDao implements RadiusSessio
     private final FieldSetDescriptor fieldsDescriptor;
     private final String hqlListTmpl;
     private final String hqlCountTmpl;
+    private final String hqlDeleteOlder;
 
     public RadiusSessionDataSetDaoImpl(SessionFactory sessions, AppResources resources, QueryBuilder queryBuilder){
         super(sessions);
@@ -28,6 +30,7 @@ public class RadiusSessionDataSetDaoImpl extends BaseDao implements RadiusSessio
         fieldsDescriptor = loadFieldDescriptor(resources, "RadiusSessionDataSetDaoImpl/fieldSetDescriptor.json");
         hqlListTmpl = resources.getAsString(this.getClass(), "RadiusSessionDataSetDaoImpl/tmpl_list.hql");
         hqlCountTmpl = resources.getAsString(this.getClass(), "RadiusSessionDataSetDaoImpl/tmpl_count.hql");
+        hqlDeleteOlder = resources.getAsString(this.getClass(), "RadiusSessionDataSetDaoImpl/delete_old.hql");
     }
 
     public long save(RadiusSessionDataSet session){
@@ -50,5 +53,14 @@ public class RadiusSessionDataSetDaoImpl extends BaseDao implements RadiusSessio
 
     public RadiusSessionDataSet getById(long id){
         return getEntityById(RadiusSessionDataSet.class, id);
+    }
+
+    public void eraseOld(Date olderThen){
+        this.doTransaction(
+                (session, transaction) -> {
+                    session.createQuery(hqlDeleteOlder).setParameter("olderThen", olderThen).executeUpdate();
+                    return null;
+                }
+        );
     }
 }

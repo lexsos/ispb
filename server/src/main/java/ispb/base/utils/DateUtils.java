@@ -42,6 +42,17 @@ public class DateUtils {
         return addSecond(date, -second);
     }
 
+    public static Date addDay(Date date, int days){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, days);
+        return calendar.getTime();
+    }
+
+    public static Date subDay(Date date, int days){
+        return addDay(date, -days);
+    }
+
     public static Date yesterday(){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);

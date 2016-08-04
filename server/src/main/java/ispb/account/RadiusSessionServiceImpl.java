@@ -234,6 +234,18 @@ public class RadiusSessionServiceImpl implements RadiusSessionService {
         sessionDao.save(session);
     }
 
+    public void eraseOldSession(Date olderThen){
+
+        RadiusSessionIpDataSetDao ipDao = daoFactory.getRadiusSessionIpDataSetDao();
+        ipDao.eraseOld(olderThen);
+
+        RadiusSessionAttributeDataSetDao attributeDao = daoFactory.getRadiusSessionAttributeDataSetDao();
+        attributeDao.eraseOld(olderThen);
+
+        RadiusSessionDataSetDao sessionDao = daoFactory.getRadiusSessionDataSetDao();
+        sessionDao.eraseOld(olderThen);
+    }
+
     private void updateSession(RadiusSessionDataSet session, RadiusSessionContainer container) throws NotFoundException {
         CustomerDataSetDao customerDao = daoFactory.getCustomerDao();
         CustomerDataSet customer = customerDao.getById(container.getCustomerId());

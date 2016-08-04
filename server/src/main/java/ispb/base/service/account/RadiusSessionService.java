@@ -10,6 +10,7 @@ import ispb.base.db.utils.Pagination;
 import ispb.base.service.exception.InvalidIpAddressException;
 import ispb.base.service.exception.NotFoundException;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RadiusSessionService {
@@ -43,4 +44,6 @@ public interface RadiusSessionService {
     RadiusSessionDataSet getSessionByPattern(String pattern);
 
     void closeSession(RadiusSessionDataSet session);
+
+    void eraseOldSession(Date olderThen);
 }
